@@ -62,7 +62,12 @@ export const mastra = new Mastra({
     storage: new LibSQLStore({
         id: "mastra-storage",
         // stores observability, scores, ... into persistent file storage
-        url: "file:./data/mastra.db"
+        // url: "file:./data/mastra.db"
+        // Url différente selon dev ou prod, si prod, utilisation du volume docker pour la persistance sinon sqlite défault de mastra
+        url:
+            process.env.NODE_ENV === "production"
+                ? "file:/data/mastra.db"
+                : "../mastra/public/mastra.db"
     }),
     logger: new PinoLogger({
         name: "Mastra",

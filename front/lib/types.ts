@@ -4,6 +4,7 @@ export interface ArticleSection {
 }
 
 export interface ArticleData {
+    url: string;
     source: string;
     title: string;
     authors: string[];

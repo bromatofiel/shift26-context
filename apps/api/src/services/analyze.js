@@ -14,7 +14,7 @@ export async function runAnalysis(request) {
   let fetchError = "";
 
   try {
-    article = await fetchArticle(request.url, timeoutMs);
+    article = await fetchArticle(request.url, timeoutMs, { mode: request.mode || "balanced" });
   } catch (error) {
     fetchError = error?.message || "article fetch failed";
   }
@@ -62,6 +62,7 @@ export async function runAnalysis(request) {
   }
 
   if (!analysis) {
+    console.log("[Analyze] LLM failed or not configured, using fallback");
     analysis = article
       ? buildFallbackAnalysis({ article, alternatives, request })
       : buildSearchFirstFallback({
@@ -70,6 +71,43 @@ export async function runAnalysis(request) {
           fetchError
         });
   }
+
+  if (article) {
+    if (!analysis.source_article) analysis.source_article = {};
+
+    analysis.source_article.extracted_content_length = article.contentText?.length || 0;
+    analysis.source_article.extraction_method = article.extractionMethod || "unknown";
+    analysis.source_article.full_text_length = article.contentText?.length || 0;
+
+    if (article.contentText) {
+      analysis.source_article.full_scraped_text =
+        article.contentText.substring(0, 1000) +
+        (article.contentText.length > 1000 ? "..." : "");
+    }
+  }
+
+  // Format the exact structured input payload expected by the user.
+  analysis.structured_input = article
+    ? {
+        source: article.siteName || article.hostname || "Unknown source",
+        title: article.title || request.title_hint || "Shared article",
+        authors: article.byline
+          ? article.byline
+              .split(/,| et /i)
+              .map((name) => name.trim())
+              .filter(Boolean)
+          : [],
+        sections: (article.structured?.sections || []).map((section) => ({
+          ...(section.heading ? { heading: section.heading } : {}),
+          paragraphs: (section.paragraphs || []).filter(Boolean)
+        }))
+      }
+    : {
+        source: request.source || "Unknown source",
+        title: request.title_hint || "Shared article",
+        authors: [],
+        sections: []
+      };
 
   const llmMs = Date.now() - llmStartedAt;
   const validated = analysisSchema.parse(analysis);

@@ -15,6 +15,7 @@ export const analyzeRequestSchema = z.object({
   text_hint: z.string().optional().nullable(),
   locale: z.string().optional().nullable(),
   source: z.string().optional().nullable(),
+  mode: z.enum(["balanced", "main_article_only"]).optional().nullable(),
   timeout_ms: z.number().int().positive().max(15000).optional().nullable()
 });
 
@@ -47,7 +48,20 @@ export const analysisSchema = z.object({
   confidence: z.object({
     level: z.enum(["low", "medium", "high"]),
     reason: z.string()
-  })
+  }),
+  structured_input: z
+    .object({
+      source: z.string(),
+      title: z.string(),
+      authors: z.array(z.string()),
+      sections: z.array(
+        z.object({
+          heading: z.string().optional(),
+          paragraphs: z.array(z.string())
+        })
+      )
+    })
+    .optional()
 });
 
 export const analysisJsonSchema = {
@@ -105,6 +119,26 @@ export const analysisJsonSchema = {
         reason: { type: "string" }
       },
       required: ["level", "reason"]
+    },
+    structured_input: {
+      type: "object",
+      properties: {
+        source: { type: "string" },
+        title: { type: "string" },
+        authors: { type: "array", items: { type: "string" } },
+        sections: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              heading: { type: "string" },
+              paragraphs: { type: "array", items: { type: "string" } }
+            },
+            required: ["paragraphs"]
+          }
+        }
+      },
+      required: ["source", "title", "authors", "sections"]
     }
   },
   required: ["source_article", "counter_perspectives", "global_context", "confidence"]

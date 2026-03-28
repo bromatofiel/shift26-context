@@ -1,9 +1,11 @@
 import { config, isSerperConfigured } from "../config.js";
 
 export async function findCounterPerspectives({ article, titleHint, locale }) {
-  if (!isSerperConfigured()) {
-    return [];
-  }
+  console.log(`[Serper] findCounterPerspectives called for: ${article.title?.substring(0, 60)}...`);
+
+  // Temporarily disabled due to 403 errors
+  console.log("[Serper] Serper temporarily disabled (403 errors)");
+  return [];
 
   const queries = buildQueries({
     articleTitle: article.title,
@@ -11,6 +13,8 @@ export async function findCounterPerspectives({ article, titleHint, locale }) {
     titleHint,
     locale
   });
+
+  console.log(`[Serper] Running ${queries.length} queries`);
 
   const settled = await Promise.allSettled(
     queries.map((query) => runSerperSearch(query, locale))
@@ -20,7 +24,12 @@ export async function findCounterPerspectives({ article, titleHint, locale }) {
     .filter((item) => item.status === "fulfilled")
     .flatMap((item) => item.value);
 
-  return dedupeAndRank(rawResults, article.finalUrl).slice(0, 3);
+  console.log(`[Serper] Got ${rawResults.length} results before deduping`);
+
+  const results = dedupeAndRank(rawResults, article.finalUrl).slice(0, 3);
+  console.log(`[Serper] Final results: ${results.length}`);
+
+  return results;
 }
 
 export async function findCounterPerspectivesFromUrl({ url, titleHint, locale }) {
@@ -69,16 +78,26 @@ export async function findSearchContext({ url, titleHint, locale }) {
 }
 
 function buildQueries({ articleTitle, hostname, titleHint, locale }) {
-  const queryBase = (titleHint || articleTitle || "").trim();
+  // Prioritize real article title over test hint
+  let queryBase = (articleTitle || titleHint || "").trim();
+  
+  // Clean live/direct titles
+  queryBase = queryBase.replace(/^DIRECT\s*[-:]\s*/i, '').trim();
+  queryBase = queryBase.replace(/\s*[-|–|—].*$/, "").trim();
+  
+  const titleOnly = queryBase.split(' ').slice(0, 6).join(' ');
   const localHint = locale?.startsWith("fr") ? "actualité analyse contexte" : "news analysis context";
-  const titleOnly = queryBase.replace(/\s*[-|–|—].*$/, "").trim();
 
-  return [
+  const queries = [
     `"${titleOnly}"`,
     `${titleOnly} ${localHint}`,
-    `${titleOnly} site:lemonde.fr OR site:lefigaro.fr OR site:liberation.fr OR site:francetvinfo.fr`,
-    `${titleOnly} -site:${hostname}`
+    `${titleOnly} guerre iran`,
+    `${titleOnly} -site:${hostname}`,
   ].filter(Boolean);
+
+  console.log(`[Serper] Cleaned query: "${titleOnly}" (from ${articleTitle ? 'articleTitle' : 'titleHint'})`);
+
+  return queries;
 }
 
 async function runSerperSearch(query, locale) {
@@ -97,16 +116,20 @@ async function runSerperSearch(query, locale) {
   });
 
   if (!response.ok) {
+    console.error(`[Serper] API error ${response.status} for query: "${query}"`);
     throw new Error(`Serper failed with status ${response.status}`);
   }
 
   const data = await response.json();
-  return (data.organic || []).map((item) => ({
+  const results = (data.organic || []).map((item) => ({
     title: item.title,
     link: item.link,
     snippet: item.snippet,
     source: item.source || safeHostname(item.link)
   }));
+
+  console.log(`[Serper] Query "${query}" returned ${results.length} results`);
+  return results;
 }
 
 function dedupeAndRank(results, sourceUrl) {

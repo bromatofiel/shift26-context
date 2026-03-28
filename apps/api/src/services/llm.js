@@ -7,6 +7,7 @@ export async function analyzeWithGemini({ article, alternatives, request }) {
   }
 
   const prompt = buildPrompt({ article, alternatives, request });
+  console.log(`[LLM] Sending prompt with ${article.contentText?.length || 0} chars of content to Gemini`);
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent`,
@@ -32,7 +33,8 @@ export async function analyzeWithGemini({ article, alternatives, request }) {
   );
 
   if (!response.ok) {
-    throw new Error(`Gemini failed with status ${response.status}`);
+    console.error(`[Gemini] API error: ${response.status}`);
+    return null; // fallback instead of crashing
   }
 
   const data = await response.json();
@@ -76,7 +78,7 @@ function buildPrompt({ article, alternatives, request }) {
     `media=${article.siteName || article.hostname}`,
     `byline=${article.byline || "unknown"}`,
     `excerpt=${article.excerpt || "none"}`,
-    `content=${truncate(article.contentText, 12000)}`,
+    `content=${truncate(article.contentText, 6000)}`,
     "",
     "Alternative coverage:",
     alternativesBlock,

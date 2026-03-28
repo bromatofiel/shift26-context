@@ -1,5 +1,4 @@
-import { Readability } from "@mozilla/readability";
-import { JSDOM } from "jsdom";
+import { extractStructuredArticle } from "./extractStructured.js";
 
 const USER_AGENTS = [
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
@@ -8,90 +7,33 @@ const USER_AGENTS = [
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
 ];
 
-export async function fetchArticle(url, timeoutMs = 6000) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-  for (let i = 0; i < USER_AGENTS.length; i++) {
-    const userAgent = USER_AGENTS[i];
+export async function fetchArticle(url, timeoutMs = 8000, options = {}) {
+  try {
+    const structured = await extractStructuredArticle(url, timeoutMs, options);
     
-    try {
-      const response = await fetch(url, {
-        redirect: "follow",
-        signal: controller.signal,
-        headers: {
-          "User-Agent": userAgent,
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8,en-US;q=0.7",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Referer": "https://www.google.com/",
-          "Cache-Control": "no-cache",
-          "Pragma": "no-cache",
-          "Sec-Fetch-Mode": "navigate",
-          "Sec-Fetch-Site": "none",
-          "Sec-Fetch-User": "?1",
-          "Upgrade-Insecure-Requests": "1"
-        }
-      });
-
-      if (response.ok) {
-        const html = await response.text();
-        const dom = new JSDOM(html, { url: response.url });
-        const article = new Readability(dom.window.document).parse();
-
-        clearTimeout(timeout);
-
-        const contentText = cleanText(article?.textContent || "");
-
-        return {
-          finalUrl: response.url,
-          hostname: safeHostname(response.url),
-          title: article?.title || extractTitle(dom.window.document.title, response.url),
-          byline: article?.byline || null,
-          excerpt: article?.excerpt || extractExcerpt(contentText),
-          contentText: contentText,
-          contentHtml: article?.content || "",
-          siteName: article?.siteName || safeHostname(response.url),
-          lang: dom.window.document.documentElement.lang || null,
-          extractionMethod: "readability-js"
-        };
-      }
-
-      if (response.status === 403 || response.status === 429 || response.status >= 500) {
-        console.warn(`[fetchArticle] ${response.status} on attempt ${i+1}/${USER_AGENTS.length} with UA: ${userAgent.substring(0, 60)}...`);
-        continue; // try next user agent
-      }
-
-      throw new Error(`HTTP ${response.status}`);
-    } catch (err) {
-      if (err.name === "AbortError") {
-        throw new Error("Request timeout");
-      }
-      if (i === USER_AGENTS.length - 1) {
-        throw err;
-      }
-      continue;
-    }
+    console.log(`[fetchArticle] SUCCESS - ${structured.source} | Title: "${structured.title}" | Content: ${structured.contentLength} chars`);
+    
+    return {
+      finalUrl: structured.url,
+      hostname: structured.source.toLowerCase(),
+      title: structured.title,
+      byline: structured.authors?.join(", ") || null,
+      excerpt: structured.sections?.[0]?.paragraphs?.[0] || "",
+      contentText: structured.fullText || structured.sections?.flatMap(s => s.paragraphs || []).join("\n\n") || "",
+      contentHtml: "",
+      siteName: structured.source,
+      lang: "fr",
+      extractionMethod: "structured",
+      rawContentLength: structured.contentLength,
+      structured: structured // keep full structured data
+    };
+  } catch (error) {
+    console.error("[fetchArticle] Structured extraction failed:", error.message);
+    throw error;
   }
-
-  clearTimeout(timeout);
-  throw new Error("All fetch attempts failed (403/429 blocked)");
 }
 
-function extractTitle(title, url) {
-  return cleanText(title || safeHostname(url) || "Shared article");
-}
-
-function extractExcerpt(text) {
-  if (!text) return "";
-  const sentences = text.split(/[.!?]+/).slice(0, 2).join('. ');
-  return cleanText(sentences).slice(0, 280);
-}
-
-function cleanText(value) {
-  return String(value || "").replace(/\s+/g, " ").trim();
-}
-
+// Old functions kept for compatibility
 function safeHostname(value) {
   try {
     return new URL(value).hostname.replace(/^www\./, "");

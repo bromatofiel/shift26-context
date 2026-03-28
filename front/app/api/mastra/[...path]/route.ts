@@ -1,6 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-const MASTRA_BASE = process.env.MASTRA_URL ?? "http://localhost:4111/api";
+const isProd = process.env.NODE_ENV === "production";
+
+if (isProd && !process.env.MASTRA_URL) {
+    throw new Error("MASTRA_URL must be set in production");
+}
+
+const MASTRA_BASE = (
+    process.env.MASTRA_URL || "http://localhost:4111/api"
+).replace(/\/$/, "");
 
 async function proxy(req: NextRequest, params: { path: string[] }) {
     const path = params.path.join("/");

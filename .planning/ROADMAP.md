@@ -54,7 +54,7 @@
 Plans:
 - [x] 02-01-PLAN.md - URL ingestion and content extraction (Readability + paywall handling)
 - [x] 02-02-PLAN.md - LLM analysis core (Gemini + few-shot + Zod validation)
-- [ ] 02-03-PLAN.md - Search integration and pipeline wiring (Grounded Search + differences)
+- [x] 02-03-PLAN.md - Search integration and pipeline wiring (Grounded Search + differences)
 
 ---
 

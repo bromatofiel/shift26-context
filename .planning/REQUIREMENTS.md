@@ -21,9 +21,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Recherche
 
-- [ ] **SRC-01**: Le système recherche 2-4 articles alternatifs sur le même sujet (Serper)
-- [ ] **SRC-02**: Le système déduplique les domaines et filtre les résultats non pertinents
-- [ ] **SRC-03**: Le système priorise les sources récentes et diversifiées
+- [x] **SRC-01**: Le système recherche 2-4 articles alternatifs sur le même sujet (Serper)
+- [x] **SRC-02**: Le système déduplique les domaines et filtre les résultats non pertinents
+- [x] **SRC-03**: Le système priorise les sources récentes et diversifiées
 
 ### Analyse
 
@@ -100,9 +100,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXT-01 | Phase 2 | Complete |
 | EXT-02 | Phase 2 | Complete |
 | EXT-03 | Phase 2 | Complete |
-| SRC-01 | Phase 2 | Pending |
-| SRC-02 | Phase 2 | Pending |
-| SRC-03 | Phase 2 | Pending |
+| SRC-01 | Phase 2 | Complete |
+| SRC-02 | Phase 2 | Complete |
+| SRC-03 | Phase 2 | Complete |
 | ANA-01 | Phase 2 | Complete |
 | ANA-02 | Phase 2 | Complete |
 | ANA-03 | Phase 2 | Complete |

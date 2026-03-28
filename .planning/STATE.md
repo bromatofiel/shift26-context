@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-03-28T11:28:00.707Z"
+last_updated: "2026-03-28T11:44:22.727Z"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
-  percent: 67
+  completed_plans: 3
+  percent: 100
 ---
 
 # Project State: L'Angle Mort
@@ -34,24 +34,24 @@ Phase 02 — backend-pipeline
 
 ## Current Position
 
-Phase: 02 (backend-pipeline) — EXECUTING
+Phase: 02 (backend-pipeline) — COMPLETE
 Plan: 3 of 3
 **Phase:** Phase 02
-**Plan:** 02-02-PLAN.md (Complete)
+**Plan:** 02-03-PLAN.md (Complete)
 **Node:** None
-**Status:** Phase 02 in progress
+**Status:** Phase 02 complete - all 3 plans finished
 
 **Progress:**
 
 ```
-[███████░░░] 67% - Phase 2: Backend Pipeline (2/3 plans complete)
+[██████████] 100% - Phase 2: Backend Pipeline (3/3 plans complete)
 ```
 
 **Coverage:**
 
 - Total v1 requirements: 23
 - Requirements mapped: 23/23 (100%)
-- Requirements completed: 10/23 (43%)
+- Requirements completed: 14/23 (61%)
 - Orphaned requirements: 0
 
 ---
@@ -60,8 +60,8 @@ Plan: 3 of 3
 
 ### Velocity
 
-- **Phases completed:** 0/4
-- **Plans completed:** 2
+- **Phases completed:** 1/4 (Phase 02 complete)
+- **Plans completed:** 3
 - **Nodes completed:** 0
 
 ### Quality
@@ -93,6 +93,8 @@ Plan: 3 of 3
 | Discriminated unions for errors | Type-safe error handling, explicit error states | Forces compile-time error handling (02-01) |
 | Gemini Flash with function calling | Guaranteed structured JSON output, few-shot prompting for consistency | Core LLM integration (02-02) |
 | French language output | Product targets French news media | All prompts and responses in French (02-02) |
+| GoogleSearchRetrieval API for Grounded Search | Correct Gemini API structure (not googleSearch field) | Search integration (02-03) |
+| Two-phase LLM calls (analysis + differences) | Enables richer analysis with timeout budget management | Complete pipeline (02-03) |
 
 ### Active TODOs
 
@@ -124,28 +126,29 @@ None - hackathon mode prioritizes execution over research.
 
 **What happened:**
 
-- Executed plan 02-02-PLAN.md (LLM analysis core)
-- Created Zod schemas for LLM response validation
-- Implemented few-shot bias analysis prompt in French
-- Integrated Gemini 1.5 Flash with function calling
-- Completed 5 requirements: ANA-01, ANA-02, ANA-03, ANA-04, ANA-05
-- Fixed TypeScript discriminated union syntax from 02-01
+- Executed plan 02-03-PLAN.md (Search integration and pipeline wiring)
+- Implemented Gemini Grounded Search for alternative article discovery
+- Created differences extraction service with dedicated LLM call
+- Wired complete pipeline: fetch → extract → analyze → search → differences
+- Completed 4 requirements: SRC-01, SRC-02, SRC-03, ANA-03
+- Phase 02 complete: all 14 backend requirements met
 
 **What's next:**
 
-- Execute plan 02-03-PLAN.md (Search integration and pipeline wiring)
-- Wire gemini.ts + fetcher.ts + extractor.ts into /v1/analyze endpoint
-- Implement Serper search for counter-perspectives
+- Begin Phase 03: Frontend (React PWA)
+- Create UI components for analysis display
+- Integrate with /v1/analyze endpoint
+- Implement Share Target for Android
 
 **Context to preserve:**
 
 - This is a 48h hackathon - speed is critical
-- Backend must support <10s response time (P80)
-- Gemini client uses temperature 0.2 for consistent analysis
-- Few-shot prompting with 2 examples (neutral + biased)
-- Function calling guarantees JSON schema compliance
-- All LLM output validated with Zod before returning
+- Backend complete with <10s response target (2 LLM calls)
+- Pipeline implements graceful degradation on timeout
+- Grounded Search uses GoogleSearchRetrieval API tool
+- Two-phase LLM: analysis (8s) + differences (4s) with 2s reserve
 - All services use discriminated unions for type-safe error handling
+- Ready for frontend integration via /v1/analyze endpoint
 
 ### Quick Start (Next Session)
 

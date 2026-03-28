@@ -30,6 +30,7 @@ export interface SummaryResult {
 export interface Entity {
     name: string;
     type: string;
+    category?: string;
     description?: string;
 }
 
@@ -55,4 +56,42 @@ export interface OtherMediaItem {
 
 export interface OtherMediaResult {
     otherMedia: OtherMediaItem[];
+}
+
+export type BiasFamily =
+    | "selection_faits"
+    | "cadrage_lexical"
+    | "causalite_fragile"
+    | "usage_chiffres"
+    | "structure_recit"
+    | "qualite_argumentative";
+
+export interface BiasSignal {
+    family: BiasFamily;
+    bias: string;
+    confidence: "low" | "medium" | "high";
+    excerpt?: string;
+    explanation: string;
+}
+
+export interface CognitiveBiasResult {
+    signals: BiasSignal[];
+    globalScore: number;
+    summary: string;
+}
+
+export interface OtherMediaArticle {
+    title: string;
+    media: string;
+    url: string;
+}
+
+export interface FullAnalysisResult {
+    entities: Entity[];
+    summary: string;
+    keywords: string[];
+    blindspots: string[];
+    media: MediaResult;
+    otherMedia: OtherMediaArticle[];
+    cognitiveBias: CognitiveBiasResult;
 }

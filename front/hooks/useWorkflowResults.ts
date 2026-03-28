@@ -7,7 +7,8 @@ import type {
     EntitiesResult,
     BlindSpotsResult,
     MediaResult,
-    OtherMediaResult
+    OtherMediaResult,
+    CognitiveBiasResult
 } from "@/lib/types";
 
 export interface WorkflowResults {
@@ -17,6 +18,7 @@ export interface WorkflowResults {
     blindspots: WorkflowState<BlindSpotsResult>;
     media: WorkflowState<MediaResult>;
     otherMedia: WorkflowState<OtherMediaResult>;
+    cognitiveBias: WorkflowState<CognitiveBiasResult>;
 }
 
 type WorkflowKey = keyof WorkflowResults;
@@ -36,7 +38,8 @@ const initialState: WorkflowResults = {
     entities: makeIdle(),
     blindspots: makeIdle(),
     media: makeIdle(),
-    otherMedia: makeIdle()
+    otherMedia: makeIdle(),
+    cognitiveBias: makeIdle()
 };
 
 function reducer(state: WorkflowResults, action: Action): WorkflowResults {
@@ -95,6 +98,10 @@ const WORKFLOWS: { key: WorkflowKey; endpoint: string }[] = [
     {
         key: "otherMedia",
         endpoint: "/api/mastra/workflows/other-media/start-async"
+    },
+    {
+        key: "cognitiveBias",
+        endpoint: "/api/mastra/workflows/cognitive-bias-analysis/start-async"
     }
 ];
 

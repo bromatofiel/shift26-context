@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { PWARegister } from "@/components/PWARegister";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -62,6 +63,7 @@ export default function RootLayout({
                 inter.variable
             )}>
             <body className="min-h-full flex flex-col" suppressHydrationWarning>
+                <PWARegister />
                 {children}
             </body>
         </html>

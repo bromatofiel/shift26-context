@@ -30,7 +30,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Monorepo setup with shared TypeScript types
+- [x] 01-01-PLAN.md — Monorepo setup with shared TypeScript types
 - [ ] 01-02-PLAN.md — Hono backend with health and mock analysis endpoints
 
 ---
@@ -104,7 +104,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & API Scaffold | 0/2 | Planned | - |
+| 1. Foundation & API Scaffold | 1/2 | In Progress | - |
 | 2. Backend Pipeline | 0/0 | Not started | - |
 | 3. Frontend & Integration | 0/0 | Not started | - |
 | 4. Robustness & Polish | 0/0 | Not started | - |

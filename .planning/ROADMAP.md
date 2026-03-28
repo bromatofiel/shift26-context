@@ -37,7 +37,7 @@
 
 **Depends on:** Phase 1
 
-**Requirements:** ING-01, ING-02, ING-03, EXT-01, EXT-02, EXT-03, SRC-01, SRC-02, SRC-03, ANA-01, ANA-02, ANA-03, ANA-04, ANA-05
+**Requirements:** ING-02, ING-03, EXT-01, EXT-02, EXT-03, SRC-01, SRC-02, SRC-03, ANA-01, ANA-02, ANA-03, ANA-04, ANA-05
 
 **Success Criteria** (what must be TRUE):
 1. User can submit any news article URL and receive normalized, redirected HTML content
@@ -64,7 +64,7 @@ Plans:
 
 **Depends on:** Phase 2
 
-**Requirements:** UI-01, UI-02, UI-03, UI-04, UI-05
+**Requirements:** ING-01, UI-01, UI-02, UI-03, UI-04, UI-05
 
 **Success Criteria** (what must be TRUE):
 1. User can share article link from Android browser/app to BlindSpot via Share Target

@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ING-01 | Phase 2 | Pending |
+| ING-01 | Phase 3 | Pending |
 | ING-02 | Phase 2 | Complete |
 | ING-03 | Phase 2 | Complete |
 | EXT-01 | Phase 2 | Complete |

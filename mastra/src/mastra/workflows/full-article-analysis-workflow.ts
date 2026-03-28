@@ -5,6 +5,7 @@ import {
     entitySchema,
     mediaSchema,
     otherMediaArticleSchema,
+    cognitiveBiasSchema,
     analysisResultSchema,
     articleToText
 } from "../schemas/article";
@@ -128,6 +129,21 @@ const otherMediaStep = createStep({
     }
 });
 
+const cognitiveBiasStep = createStep({
+    id: "cognitive-bias",
+    description: "Détecte les biais cognitifs présents dans l'article",
+    inputSchema: articleSchema,
+    outputSchema: cognitiveBiasSchema,
+    execute: async ({ inputData, mastra }) => {
+        const agent = mastra?.getAgent("cognitiveBiasAgent");
+        if (!agent) throw new Error("cognitiveBiasAgent not found");
+        const result = await agent.generate(articleToText(inputData), {
+            structuredOutput: { schema: cognitiveBiasSchema }
+        });
+        return result.object;
+    }
+});
+
 // ── Aggregate step ─────────────────────────────────────────────────────────────
 
 const aggregateStep = createStep({
@@ -141,7 +157,8 @@ const aggregateStep = createStep({
         "media-research": mediaSchema,
         "other-media": z.object({
             otherMedia: z.array(otherMediaArticleSchema)
-        })
+        }),
+        "cognitive-bias": cognitiveBiasSchema
     }),
     outputSchema: analysisResultSchema,
     execute: async ({ inputData }) => {
@@ -151,7 +168,8 @@ const aggregateStep = createStep({
             keywords: inputData["extract-keywords"].keywords,
             blindspots: inputData["blindspots"].blindspots,
             media: inputData["media-research"],
-            otherMedia: inputData["other-media"].otherMedia
+            otherMedia: inputData["other-media"].otherMedia,
+            cognitiveBias: inputData["cognitive-bias"]
         };
     }
 });
@@ -170,7 +188,8 @@ export const fullArticleAnalysisWorkflow = createWorkflow({
         extractKeywordsStep,
         blindspotsStep,
         mediaResearchStep,
-        otherMediaStep
+        otherMediaStep,
+        cognitiveBiasStep
     ])
     .then(aggregateStep)
     .commit();

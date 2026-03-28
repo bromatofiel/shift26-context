@@ -7,7 +7,7 @@
 ## Phases
 
 - [ ] **Phase 1: Foundation & API Scaffold** - Project setup, mock endpoints, schema definition
-- [ ] **Phase 2: Backend Pipeline** - URL ingestion, content extraction, search, LLM analysis
+- [x] **Phase 2: Backend Pipeline** - URL ingestion, content extraction, search, LLM analysis
 - [ ] **Phase 3: Frontend & Integration** - React PWA with Share Target, results UI, integration
 - [ ] **Phase 4: Robustness & Polish** - Performance optimization, error handling, edge cases
 
@@ -75,7 +75,11 @@ Plans:
 6. User can open alternative sources in browser from result cards
 7. First useful screen appears in <3s (loading screen with progress)
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md - PWA configuration (manifest, service worker, share handler)
+- [ ] 03-02-PLAN.md - Loading UI and BiasScoreCard (multi-stage progress, color-coded score)
 
 **UI hint:** yes
 
@@ -106,8 +110,8 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & API Scaffold | 0/0 | Not started | - |
-| 2. Backend Pipeline | 1/3 | In progress | - |
-| 3. Frontend & Integration | 0/0 | Not started | - |
+| 2. Backend Pipeline | 3/3 | Complete | 2026-03-28 |
+| 3. Frontend & Integration | 0/2 | In progress | - |
 | 4. Robustness & Polish | 0/0 | Not started | - |
 
 ---
@@ -137,4 +141,4 @@ Each phase builds on the previous:
 
 ---
 
-*Last updated: 2026-03-28 after Phase 2 planning*
+*Last updated: 2026-03-28 after Phase 3 planning*

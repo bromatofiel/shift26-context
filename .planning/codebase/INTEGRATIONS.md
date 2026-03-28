@@ -8,54 +8,62 @@ BlindSpot integrates with AI APIs for content analysis and uses file-based stora
 
 ## AI & LLM Services
 
-### Gemini API (Google)
-**Package:** `@google/generative-ai@0.21.0`
-
-**Models Used:**
-- `gemini-2.5-flash` - Primary analysis (backend)
-- `gemini-1.5-flash` - Grounded search (backend)
-- Note: Gemini 1.5 models deprecated in 2026
-
-**Authentication:**
-- Environment variable: `GEMINI_API_KEY` (required)
-- API key passed via `GoogleGenerativeAI` client
-
-**Used In:**
-- `backend/src/services/gemini.ts` - Article analysis
-- `backend/src/services/grounded-search.ts` - Alternative article discovery
-- `backend/src/services/differences.ts` - Perspective extraction
-
-**API Features Used:**
-- Structured JSON output with `response_mime_type: "application/json"`
-- Function calling for grounded search
-- GoogleSearchRetrieval tool for web search
-- Few-shot prompting for consistency
-
-**Rate Limits:**
-- Free tier: 60 requests per minute (QPM)
-- May affect concurrent analysis
-
-**Error Handling:**
-- Timeout on slow responses (8s for analysis, 4s for differences)
-- Graceful degradation on API failures
-- JSON parsing with markdown wrapper fallback
-
-### OpenAI API
+### OpenAI API (Primary) ✅ **ACTIVE**
 **Package:** `@ai-sdk/openai@3.0.48`
 
 **Models Used:**
-- GPT-5.4 models for Mastra workflow agents
+- **GPT-5.4** models for all Mastra agents
+- Model name configured per agent in Mastra
 
 **Authentication:**
-- Environment variable: `OPENAI_API_KEY` (required for Mastra)
+- Environment variable: `OPENAI_API_KEY` (required)
+- Configured in Mastra instance
 
 **Used In:**
-- `mastra/src/agents/` - 11 workflow agents
-- `mastra/src/workflows/` - Agent orchestration
+- `mastra/src/mastra/agents/` - 9 specialized agents:
+  - `articleExtractorAgent` - Fetch & extract article content
+  - `keywordsAgent` - Extract keywords
+  - `summaryAgent` - Generate summary
+  - `entityAgent` - Extract named entities
+  - `blindspotsAgent` - Identify missing angles
+  - `cognitiveBiasAgent` - Detect cognitive biases
+  - `mediaAgent` - Research media source
+  - `otherMediaAgent` - Find alternative articles (with Grounding)
+  - `synthesisAgent` - Final aggregation
 
-**Integration Pattern:**
-- Mastra handles OpenAI client configuration
-- Used exclusively in Mastra service, not backend
+**API Features Used:**
+- **Structured output** with Zod schemas
+- **Google Grounding** (via `otherMediaAgent`) for web search
+- **Streaming** support (optional)
+- Automatic retry and error handling
+
+**Rate Limits:**
+- Depends on OpenAI tier
+- Monitor via OpenAI dashboard
+- Consider usage-based rate limiting
+
+**Error Handling:**
+- Mastra handles retries
+- Structured error responses
+- Workflow-level timeout management
+
+---
+
+### Gemini API (Legacy - Not Used) ⚠️ **OBSOLETE**
+**Package:** `@google/generative-ai@0.21.0`
+
+**Status:** Package exists in `backend/` but is not deployed or used
+
+**Previous Usage:**
+- `backend/src/services/gemini.ts` - Article analysis (replaced by OpenAI agents)
+- `backend/src/services/grounded-search.ts` - Search (replaced by Grounding via OpenAI)
+- `backend/src/services/differences.ts` - Perspectives (replaced by synthesisAgent)
+
+**Migration:**
+- Gemini 2.5-flash → GPT-5.4 (via Mastra agents)
+- GoogleSearchRetrieval → Google Grounding (via OpenAI)
+
+**Recommendation:** Remove `@google/generative-ai` dependency from active services
 
 ## Storage
 
@@ -164,13 +172,13 @@ No inbound or outbound webhooks. Service operates on synchronous request/respons
 
 ## Environment Variables
 
-### Required
+### Required (Active Services)
 ```bash
-# Backend
-GEMINI_API_KEY=<google-gemini-api-key>
+# Mastra (PRIMARY BACKEND)
+OPENAI_API_KEY=<openai-api-key>  # Required for all agents
 
-# Mastra
-OPENAI_API_KEY=<openai-api-key>
+# Frontend
+# (Uses environment variables for build-time config if any)
 ```
 
 ### Optional
@@ -185,8 +193,14 @@ NODE_ENV=development|production
 HOSTNAME=<hostname-for-mastra-server>
 ```
 
-### Missing Validation
-No startup validation for required environment variables. Services fail at runtime if keys missing.
+### Obsolete (Not Used)
+```bash
+# Backend (not deployed)
+GEMINI_API_KEY=<google-gemini-api-key>  # No longer needed
+```
+
+### Validation Status
+⚠️ No startup validation for required environment variables. Mastra will fail at runtime if `OPENAI_API_KEY` is missing.
 
 ## Security Considerations
 

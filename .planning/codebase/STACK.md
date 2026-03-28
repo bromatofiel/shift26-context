@@ -20,25 +20,29 @@ BlindSpot uses a distributed 3-service architecture with modern TypeScript acros
 
 ## Core Frameworks
 
-### Backend API (`backend/`)
-- **Hono 4.6.14** - Lightweight HTTP framework
-- **@hono/node-server** - Node.js adapter
-- **@hono/zod-validator** - Request validation middleware
+### Backend API (`backend/`) ⚠️ **OBSOLETE**
+- **Hono 4.6.14** - Not deployed
+- **@hono/node-server** - Not used
+- **@hono/zod-validator** - Not used
 
-### Frontend PWA (`front/`)
+*All backend functionality migrated to Mastra agents*
+
+### Frontend PWA (`front/`) ✅ **ACTIVE**
 - **Next.js 16.2.1** - React framework with App Router
 - **React 19.2.4** - UI library
 - **Tailwind CSS 4.x** - Utility-first styling
 - **PostCSS** - CSS processing
 
-### Workflow Orchestration (`mastra/`)
-- **Mastra 1.3.15** - Agentic workflow engine
-- **@mastra/core 1.17.0** - Core orchestration
-- **@mastra/libsql 1.7.2** - LibSQL storage
-- **@mastra/memory 1.10.0** - Agent memory
-- **@mastra/observability 1.5.1** - Tracing
-- **@mastra/loggers 1.0.3** - Logging infrastructure
-- **@mastra/evals 1.1.2** - Agent evaluation
+### Workflow Orchestration (`mastra/`) ✅ **ACTIVE - PRIMARY BACKEND**
+- **Mastra 1.3.15** - Agentic workflow engine (CLI + server)
+- **@mastra/core 1.17.0** - Core orchestration, workflow + agent primitives
+- **@mastra/libsql 1.7.2** - LibSQL storage for execution history
+- **@mastra/memory 1.10.0** - Agent memory management
+- **@mastra/observability 1.5.1** - Tracing and monitoring
+- **@mastra/loggers 1.0.3** - Pino-based logging
+- **@mastra/evals 1.1.2** - Agent evaluation and scoring
+
+**Note:** Mastra handles all article processing that was previously in `backend/`
 
 ## Build Tools
 

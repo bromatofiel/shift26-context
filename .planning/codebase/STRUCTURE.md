@@ -12,14 +12,17 @@ shift26-context/
 │   ├── PROJECT.md      # Project vision
 │   ├── ROADMAP.md      # Phase roadmap
 │   └── STATE.md        # Project state
-├── backend/            # Hono API service
-├── front/              # Next.js PWA
-├── mastra/             # Mastra workflow orchestration
-├── shared/             # Shared TypeScript types
+├── backend/            # ⚠️ OBSOLETE - Legacy Hono API (not in use)
+├── front/              # ✅ Next.js PWA (active)
+├── mastra/             # ✅ Mastra platform (active - workflows + agents)
+├── shared/             # Shared TypeScript types (if used)
 ├── langle_mort.md      # Original hackathon spec
 ├── docker-compose.yml  # Multi-service orchestration
 └── README.md
 ```
+
+**Active Services:** `front/` + `mastra/` only
+**Obsolete:** `backend/` (functionality migrated to Mastra agents)
 
 ## Service Directories
 
@@ -76,77 +79,91 @@ front/
 - React 19 + Next.js 16 App Router
 - Tailwind CSS + shadcn/ui components
 
-### Backend (`backend/`)
+### Backend (`backend/`) ⚠️ **OBSOLETE**
 
 ```
 backend/
 ├── src/
-│   ├── index.ts            # Server entry point
-│   ├── routes/             # HTTP endpoints
-│   │   ├── health.ts       # Health check endpoint
-│   │   └── v1/
-│   │       └── analyze.ts  # Main analysis endpoint
-│   ├── services/           # Business logic
-│   │   ├── fetcher.ts      # Article fetching
-│   │   ├── extractor.ts    # Content extraction (Readability)
-│   │   ├── gemini.ts       # Gemini API client
-│   │   ├── grounded-search.ts  # Alternative article discovery
-│   │   └── differences.ts  # Perspective extraction
-│   ├── schemas/            # Zod validation schemas
-│   │   └── article.schema.ts
-│   ├── prompts/            # LLM prompt templates
-│   │   ├── analysis.prompt.ts
-│   │   └── differences.prompt.ts
-│   └── mocks/              # Test fixtures
-│       └── article-sample.json
-├── Dockerfile
+│   ├── index.ts            # [NOT USED] Server entry point
+│   ├── routes/             # [NOT USED] HTTP endpoints
+│   │   ├── health.ts
+│   │   └── analyze.ts
+│   ├── services/           # [NOT USED] Business logic
+│   │   ├── fetcher.ts      # → Replaced by articleExtractorAgent
+│   │   ├── extractor.ts    # → Replaced by articleExtractorAgent
+│   │   ├── gemini.ts       # → Replaced by OpenAI agents
+│   │   ├── grounded-search.ts # → Replaced by otherMediaAgent
+│   │   └── differences.ts  # → Replaced by synthesisAgent
+│   ├── schemas/            # → Migrated to mastra/schemas/
+│   ├── prompts/            # → Now in agent instructions
+│   └── mocks/
+├── Dockerfile              # Not deployed
 ├── package.json
-├── tsconfig.json
-└── .env.example
+└── tsconfig.json
 ```
 
-**Purpose:**
-- Core article processing pipeline
-- Gemini API integration
-- Stateless HTTP API (Hono)
+**Status:** Code exists but is not deployed or used. All functionality migrated to Mastra agents.
 
-### Mastra (`mastra/`)
+**Migration mapping:**
+- `fetcher.ts + extractor.ts` → `articleExtractorAgent` (Mastra)
+- `gemini.ts analysis` → `cognitiveBiasAgent`, `blindspotsAgent`, etc.
+- `grounded-search.ts` → `otherMediaAgent` with Google Grounding
+- `differences.ts` → `synthesisAgent`
+
+**Recommendation:** Can be safely deleted or archived.
+
+### Mastra (`mastra/`) ✅ **ACTIVE**
 
 ```
 mastra/
 ├── src/
-│   ├── index.ts            # Mastra server entry
-│   ├── workflows/          # Workflow definitions
-│   │   ├── article-analysis.ts           # Full pipeline
-│   │   ├── keywords-extraction.ts        # Keywords only
-│   │   ├── article-summary.ts            # Summary only
-│   │   ├── entities-analysis.ts          # Entities only
-│   │   ├── blindspots-analysis.ts        # Blindspots only
-│   │   ├── media-research.ts             # Media research
-│   │   ├── other-media.ts                # Alternative media
-│   │   └── [4 more workflows]
-│   ├── agents/             # LLM-powered agents
-│   │   ├── keywords-agent.ts
-│   │   ├── summary-agent.ts
-│   │   ├── entities-agent.ts
-│   │   ├── blindspots-agent.ts
-│   │   ├── media-research-agent.ts
-│   │   ├── other-media-agent.ts
-│   │   └── [5 more agents]
-│   ├── tools/              # Agent tools
-│   └── scorers/            # Evaluation scorers
-├── AGENTS.md               # Agent documentation
-├── README.md               # Mastra usage guide
+│   └── mastra/                # Mastra configuration root
+│       ├── index.ts           # Mastra instance + registration
+│       ├── workflows/         # 11 workflow definitions
+│       │   ├── full-article-analysis-workflow.ts  # Main pipeline
+│       │   ├── article-extractor-workflow.ts      # Fetch + extract
+│       │   ├── keywords-workflow.ts
+│       │   ├── summary-workflow.ts
+│       │   ├── entities-workflow.ts
+│       │   ├── blindspots-workflow.ts
+│       │   ├── cognitive-bias-workflow.ts
+│       │   ├── media-research-workflow.ts
+│       │   ├── other-media-workflow.ts
+│       │   ├── synthesis-workflow.ts
+│       │   └── example-weather-workflow.ts  # Example/template
+│       ├── agents/            # 9+ LLM-powered agents
+│       │   ├── article-extractor-agent.ts   # Fetch & extract
+│       │   ├── keywords-agent.ts
+│       │   ├── summary-agent.ts
+│       │   ├── entity-agent.ts
+│       │   ├── blindspots-agent.ts
+│       │   ├── cognitive-bias-agent.ts
+│       │   ├── media-agent.ts
+│       │   ├── other-media.ts               # With Grounding
+│       │   ├── synthesis-agent.ts
+│       │   ├── article-agent.ts
+│       │   └── example-weather-agent.ts
+│       ├── schemas/           # Zod schemas for structured outputs
+│       │   └── article.ts     # All analysis schemas
+│       ├── tools/             # Agent tools (if any)
+│       │   └── example-weather-tool.ts
+│       └── scorers/           # Evaluation scorers
+│           └── example-weather-scorer.ts
+├── AGENTS.md               # Agent architecture docs
+├── README.md               # Usage guide (API endpoints, curl examples)
 ├── Dockerfile
 ├── package.json
 ├── tsconfig.json
-└── .env.example
+└── .env.example            # OPENAI_API_KEY required
 ```
 
 **Purpose:**
-- Workflow orchestration
-- Parallel agent execution
-- OpenAI integration for agents
+- **Complete article analysis pipeline** (replaces backend)
+- Workflow orchestration (sequential + parallel steps)
+- LLM agent coordination (9 specialized agents)
+- Structured output with Zod validation
+- Google Grounding for web search (otherMediaAgent)
+- Execution history tracking (LibSQL)
 
 ### Shared Types (`shared/`)
 
@@ -233,26 +250,46 @@ shared/
 ## Where to Add Code
 
 ### New Feature: Article Analysis Step
-1. Add service in `backend/src/services/new-analysis.ts`
-2. Add route handler in `backend/src/routes/v1/analyze.ts`
-3. Add Mastra agent in `mastra/src/agents/new-agent.ts`
-4. Add workflow in `mastra/src/workflows/new-workflow.ts`
-5. Update frontend component in `front/components/custom/`
+1. **Create Mastra agent** in `mastra/src/mastra/agents/new-analysis-agent.ts`
+   - Define agent with instructions
+   - Configure GPT model
+   - Add structured output schema
+
+2. **Create workflow step** in target workflow file
+   - Add `createStep()` with agent execution
+   - Define input/output schemas (Zod)
+
+3. **Update schema** in `mastra/src/mastra/schemas/article.ts`
+   - Add new Zod schema for output
+   - Export schema type
+
+4. **Add to workflow** in `mastra/src/mastra/workflows/`
+   - Add step to `.parallel([])` or `.then()`
+   - Update workflow output schema
+   - Update aggregate step if needed
+
+5. **Update frontend** in `front/components/custom/`
+   - Add UI component to display new analysis
 
 ### New UI Component
 1. If reusable primitive → `front/components/ui/`
 2. If domain-specific → `front/components/custom/`
 3. If page-specific → Keep in `app/[route]/page.tsx`
 
-### New API Endpoint
-1. Add route in `backend/src/routes/`
-2. Add service logic in `backend/src/services/`
-3. Add Zod schema in `backend/src/schemas/`
+### New Workflow (Independent)
+1. Create workflow file in `mastra/src/mastra/workflows/new-workflow.ts`
+2. Define steps with agents
+3. Register in `mastra/src/mastra/index.ts`
+4. Access via `POST /api/workflows/new-workflow/start-async`
 
 ### New Utility
-1. Backend utility → `backend/src/utils/` (create if needed)
-2. Frontend utility → `front/lib/utils.ts`
-3. Shared type → `shared/src/types/`
+1. Frontend utility → `front/lib/utils.ts`
+2. Mastra utility → `mastra/src/mastra/utils/` (create if needed)
+3. Shared type → `mastra/src/mastra/schemas/` (Zod schemas preferred)
+
+### ⚠️ Do NOT Add Code To:
+- `backend/` - This directory is obsolete
+- Use Mastra agents instead of backend services
 
 ## Special Directories
 

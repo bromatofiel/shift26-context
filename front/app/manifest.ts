@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "BlindSpot",
         short_name: "BlindSpot",
         description: "On hacke vos articles pour exposer leurs angles morts.",
-        start_url: "/",
+        start_url: "/search",
         display: "standalone",
         background_color: "#0a0a0a",
         theme_color: "#0a0a0a",

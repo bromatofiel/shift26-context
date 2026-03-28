@@ -1,0 +1,128 @@
+# Requirements: L'Angle Mort
+
+**Defined:** 2026-03-28
+**Core Value:** Transformer un lien partagé en contexte lisible, nuancé et actionnable en moins de 5 secondes.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Ingestion
+
+- [ ] **ING-01**: L'utilisateur peut partager un lien vers l'app via Share Target Android
+- [ ] **ING-02**: L'app valide et normalise l'URL reçue
+- [ ] **ING-03**: L'app suit les redirections et récupère le HTML
+
+### Extraction
+
+- [ ] **EXT-01**: Le système extrait le contenu principal de l'article (titre, texte, média, date)
+- [ ] **EXT-02**: Le système gère les paywalls en mode dégradé (titre + snippets)
+- [ ] **EXT-03**: Le système signale quand l'extraction est partielle
+
+### Recherche
+
+- [ ] **SRC-01**: Le système recherche 2-4 articles alternatifs sur le même sujet (Serper)
+- [ ] **SRC-02**: Le système déduplique les domaines et filtre les résultats non pertinents
+- [ ] **SRC-03**: Le système priorise les sources récentes et diversifiées
+
+### Analyse
+
+- [ ] **ANA-01**: Le LLM produit un score de biais (0-10) avec couleur Vert/Orange/Rouge
+- [ ] **ANA-02**: Le LLM identifie les signaux principaux (ton, cadrage, omissions)
+- [ ] **ANA-03**: Le LLM génère 2-3 contre-perspectives avec différences mises en avant
+- [ ] **ANA-04**: Le LLM produit un résumé global du contexte
+- [ ] **ANA-05**: Le système valide la sortie JSON du LLM
+
+### Interface
+
+- [ ] **UI-01**: L'utilisateur voit un écran de chargement avec étapes (Analyse, Recherche, Synthèse)
+- [ ] **UI-02**: L'utilisateur voit le score couleur en premier (verdict visuel immédiat)
+- [ ] **UI-03**: L'utilisateur peut voir le détail des biais détectés
+- [ ] **UI-04**: L'utilisateur voit 2-3 cartes "Autres angles" cliquables
+- [ ] **UI-05**: L'utilisateur peut ouvrir les sources alternatives dans le navigateur
+
+### Robustesse
+
+- [ ] **ROB-01**: Le système répond en moins de 5 secondes (P80)
+- [ ] **ROB-02**: Le système affiche un premier écran utile en moins de 3 secondes
+- [ ] **ROB-03**: Le système gère les erreurs avec messages clairs (FETCH_FAILED, PAYWALL, TIMEOUT, etc.)
+- [ ] **ROB-04**: Le système propose un retry si l'erreur est récupérable
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Historique
+
+- **HIST-01**: L'utilisateur peut voir ses analyses récentes (stockage local)
+- **HIST-02**: L'utilisateur peut supprimer son historique
+
+### Modes
+
+- **MODE-01**: L'utilisateur peut basculer entre mode simple et expert
+- **MODE-02**: Le mode expert affiche plus de détails sur les signaux
+
+### Favoris
+
+- **FAV-01**: L'utilisateur peut sauvegarder une analyse
+- **FAV-02**: L'utilisateur peut partager le résultat d'analyse
+
+### iOS
+
+- **IOS-01**: L'utilisateur iOS peut analyser via Safari Extension
+- **IOS-02**: L'utilisateur iOS peut analyser via Raccourci Siri
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Comptes utilisateurs | Stateless MVP, pas de friction à l'usage |
+| Authentification | Pas nécessaire sans comptes |
+| Persistance serveur | Vie privée, simplicité, coûts |
+| Scraping headless | Trop lent (>5s), trop lourd pour hackathon |
+| Panel fixe de médias | Recherche dynamique plus flexible |
+| Notation politique (gauche/droite) | Biais = cadrage, pas orientation politique |
+| Comparaison multi-articles | Complexité excessive pour MVP |
+| Dashboard admin | Pas de gestion utilisateurs |
+| Mobile app native | PWA suffit pour Android MVP |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| ING-01 | — | Pending |
+| ING-02 | — | Pending |
+| ING-03 | — | Pending |
+| EXT-01 | — | Pending |
+| EXT-02 | — | Pending |
+| EXT-03 | — | Pending |
+| SRC-01 | — | Pending |
+| SRC-02 | — | Pending |
+| SRC-03 | — | Pending |
+| ANA-01 | — | Pending |
+| ANA-02 | — | Pending |
+| ANA-03 | — | Pending |
+| ANA-04 | — | Pending |
+| ANA-05 | — | Pending |
+| UI-01 | — | Pending |
+| UI-02 | — | Pending |
+| UI-03 | — | Pending |
+| UI-04 | — | Pending |
+| UI-05 | — | Pending |
+| ROB-01 | — | Pending |
+| ROB-02 | — | Pending |
+| ROB-03 | — | Pending |
+| ROB-04 | — | Pending |
+
+**Coverage:**
+- v1 requirements: 23 total
+- Mapped to phases: 0
+- Unmapped: 23 ⚠️
+
+---
+*Requirements defined: 2026-03-28*
+*Last updated: 2026-03-28 after initial definition*

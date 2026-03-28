@@ -1,18 +1,14 @@
 import { useEffect, useReducer } from "react";
-import type { FullAnalysisResult, WorkflowStatus } from "@/lib/types";
+import type { ArticleData, WorkflowState } from "@/lib/types";
 
-interface State {
-    status: WorkflowStatus;
-    data: FullAnalysisResult | null;
-    error: string | null;
-}
+type State = WorkflowState<ArticleData>;
 
 type Action =
     | { type: "LOADING" }
-    | { type: "SUCCESS"; data: FullAnalysisResult }
+    | { type: "SUCCESS"; data: ArticleData }
     | { type: "ERROR"; error: string };
 
-function reducer(state: State, action: Action): State {
+function reducer(_state: State, action: Action): State {
     switch (action.type) {
         case "LOADING":
             return { status: "loading", data: null, error: null };
@@ -25,7 +21,7 @@ function reducer(state: State, action: Action): State {
 
 const initialState: State = { status: "idle", data: null, error: null };
 
-export function useFullAnalysis(url: string): State {
+export function useArticleExtraction(url: string): State {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
@@ -33,7 +29,7 @@ export function useFullAnalysis(url: string): State {
 
         dispatch({ type: "LOADING" });
 
-        fetch("/api/mastra/workflows/full-article-analysis/start-async", {
+        fetch("/api/mastra/workflows/article-extractor/start-async", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ inputData: { url } }),

@@ -7,13 +7,20 @@ import {
 } from "@/hooks/useWorkflowResults";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EntitiesCard from "@/components/custom/analysis/EntitiesCard";
-import KeywordsCard from "@/components/custom/analysis/KeywordsCard";
 import SummaryCard from "@/components/custom/analysis/SummaryCard";
+import MediaCard from "@/components/custom/analysis/MediaCard";
+import OtherMediaCard from "@/components/custom/analysis/OtherMediaCard";
+import CognitiveBiasCard from "@/components/custom/analysis/CognitiveBiasCard";
+import BlindSpotsCard from "@/components/custom/analysis/BlindSpotsCard";
 import type {
     ArticleData,
     EntitiesResult,
     KeywordsResult,
-    SummaryResult
+    SummaryResult,
+    MediaResult,
+    OtherMediaArticle,
+    CognitiveBiasResult,
+    BlindSpotsResult
 } from "@/lib/types";
 
 const WORKFLOW_LABELS: Record<keyof WorkflowResults, string> = {
@@ -73,22 +80,16 @@ export default function AnalysisCards({
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Résumé + Mots-clefs empilés verticalement */}
-            <div className="flex flex-col gap-4 sm:col-span-2">
+            <div className="sm:col-span-2">
                 <SummaryCard
                     status={results.summary.status}
                     summary={
                         (results.summary.data as SummaryResult | null)?.summary
                     }
-                    error={results.summary.error}
-                />
-                <KeywordsCard
-                    status={results.keywords.status}
                     keywords={
-                        (results.keywords.data as KeywordsResult | null)
-                            ?.keywords
+                        (results.keywords.data as KeywordsResult | null)?.keywords
                     }
-                    error={results.keywords.error}
+                    error={results.summary.error}
                 />
             </div>
             <EntitiesCard
@@ -98,15 +99,35 @@ export default function AnalysisCards({
                 }
                 error={results.entities.error}
             />
-            {(
-                ["blindspots", "media", "otherMedia", "cognitiveBias"] as const
-            ).map((key) => (
-                <WorkflowCard
-                    key={key}
-                    title={WORKFLOW_LABELS[key]}
-                    state={results[key]}
+            <BlindSpotsCard
+                status={results.blindspots.status}
+                blindspots={
+                    (results.blindspots.data as BlindSpotsResult | null)?.blindspots
+                }
+                error={results.blindspots.error}
+            />
+            <CognitiveBiasCard
+                status={results.cognitiveBias.status}
+                cognitiveBias={
+                    (results.cognitiveBias.data as CognitiveBiasResult | null) ?? undefined
+                }
+                error={results.cognitiveBias.error}
+            />
+            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <OtherMediaCard
+                    status={results.otherMedia.status}
+                    otherMedia={
+                        (results.otherMedia.data as { otherMedia: OtherMediaArticle[] } | null)
+                            ?.otherMedia
+                    }
+                    error={results.otherMedia.error}
                 />
-            ))}
+                <MediaCard
+                    status={results.media.status}
+                    media={(results.media.data as MediaResult | null) ?? undefined}
+                    error={results.media.error}
+                />
+            </div>
         </div>
     );
 }

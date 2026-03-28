@@ -1,0 +1,47 @@
+import { Eye } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function BlindSpotsCard({
+    blindspots,
+    status,
+    error
+}: {
+    blindspots?: string[];
+    status: "idle" | "loading" | "success" | "error";
+    error?: string | null;
+}) {
+    return (
+        <Card className="sm:col-span-2">
+            <CardHeader>
+                <CardTitle className="text-sm font-medium">
+                    Angles manquants
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="max-h-[300px] overflow-y-auto">
+                {status === "idle" && (
+                    <p className="text-xs text-gray-400">En attente…</p>
+                )}
+                {status === "loading" && (
+                    <p className="text-xs text-gray-400 animate-pulse">
+                        Chargement…
+                    </p>
+                )}
+                {status === "error" && (
+                    <p className="text-xs text-red-500">{error}</p>
+                )}
+                {status === "success" && blindspots && (
+                    <ul className="space-y-2">
+                        {blindspots.map((spot, i) => (
+                            <li
+                                key={i}
+                                className="flex gap-2.5 text-xs text-gray-700 leading-relaxed">
+                                <Eye className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400" />
+                                <span>{spot}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </CardContent>
+        </Card>
+    );
+}

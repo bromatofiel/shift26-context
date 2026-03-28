@@ -23,10 +23,7 @@ RUN pnpm build
 FROM node:22-alpine AS runtime
 WORKDIR /app-front
 
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-# Mastra backend URL — override at runtime (e.g. http://app-mastra:4111/api)
-ENV MASTRA_URL=http://localhost:4111/api
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs

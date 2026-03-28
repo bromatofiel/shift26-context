@@ -24,7 +24,6 @@ COPY --from=builder /app-mastra/.mastra ./.mastra
 
 RUN mkdir -p /data && chown node:node /data
 
-ENV NODE_ENV=production
 EXPOSE 4111
 VOLUME /data
 

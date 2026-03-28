@@ -63,3 +63,29 @@ just deploy-front my-branch
 - `just deploy-front` : déploie uniquement le front
 
 Le `Justfile` utilise une cible générique interne de déploiement Clever Cloud pour éviter de dupliquer la logique entre services.
+
+## Docker Compose
+
+Un `docker-compose.yml` est disponible à la racine pour lancer les apps `front` et `mastra` ensemble.
+
+Prérequis :
+
+- définir `OPENAI_API_KEY` dans votre environnement avant le lancement
+- pour le front en local hors Docker, définir `MASTRA_URL` dans `front/.env.local`
+
+Lancement :
+
+```bash
+docker compose up --build
+```
+
+Accès :
+
+- front : `http://localhost:3000`
+- mastra : `http://localhost:4111`
+
+### Variables d'environnement
+
+- local front : [front/.env.local](/home/jmarc/Documents/Perso/code/shift26-context/front/.env.local)
+- exemple de configuration : [front/.env.example](/home/jmarc/Documents/Perso/code/shift26-context/front/.env.example)
+- production / conteneur : injecter `MASTRA_URL` dans l'environnement d'exécution, sans la coder en dur dans le `Dockerfile`

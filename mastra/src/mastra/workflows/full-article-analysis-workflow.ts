@@ -2,6 +2,7 @@ import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
 import {
     articleSchema,
+    articleDataSchema,
     entitySchema,
     mediaSchema,
     otherMediaArticleSchema,
@@ -10,13 +11,30 @@ import {
     articleToText
 } from "../schemas/article";
 
+// ── Fetch step ────────────────────────────────────────────────────────────────
+
+const fetchArticleStep = createStep({
+    id: "fetch-article",
+    description: "Fetches and extracts article content from a URL",
+    inputSchema: z.object({ url: z.string() }),
+    outputSchema: articleDataSchema,
+    execute: async ({ inputData, mastra }) => {
+        const agent = mastra?.getAgent("articleExtractorAgent");
+        if (!agent) throw new Error("articleExtractorAgent not found");
+        const result = await agent.generate(inputData.url, {
+            structuredOutput: { schema: articleDataSchema }
+        });
+        return result.object;
+    }
+});
+
 // ── Parallel steps ─────────────────────────────────────────────────────────────
 
 const extractEntitiesStep = createStep({
     id: "extract-entities",
     description:
         "Extrait les personnes et organisations mentionnées dans l'article",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: z.object({
         entities: z.array(entitySchema)
     }),
@@ -35,7 +53,7 @@ const extractEntitiesStep = createStep({
 const summarizeStep = createStep({
     id: "summarize",
     description: "Produit un résumé de l'article",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: z.object({
         summary: z.string()
     }),
@@ -54,7 +72,7 @@ const summarizeStep = createStep({
 const extractKeywordsStep = createStep({
     id: "extract-keywords",
     description: "Extrait les mots-clefs de l'article",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: z.object({
         keywords: z.array(z.string())
     }),
@@ -73,7 +91,7 @@ const extractKeywordsStep = createStep({
 const blindspotsStep = createStep({
     id: "blindspots",
     description: "Identifie les angles manquants de l'article",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: z.object({
         blindspots: z.array(z.string())
     }),
@@ -93,7 +111,7 @@ const mediaResearchStep = createStep({
     id: "media-research",
     description:
         "Recherche le média source et ses conflits d'intérêts potentiels",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: mediaSchema,
     execute: async ({ inputData, mastra }) => {
         const agent = mastra?.getAgent("mediaAgent");
@@ -110,7 +128,7 @@ const otherMediaStep = createStep({
     id: "other-media",
     description:
         "Recherche des articles sur le même sujet dans d'autres médias",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: z.object({
         otherMedia: z.array(otherMediaArticleSchema)
     }),
@@ -132,7 +150,7 @@ const otherMediaStep = createStep({
 const cognitiveBiasStep = createStep({
     id: "cognitive-bias",
     description: "Détecte les biais cognitifs présents dans l'article",
-    inputSchema: articleSchema,
+    inputSchema: articleDataSchema,
     outputSchema: cognitiveBiasSchema,
     execute: async ({ inputData, mastra }) => {
         const agent = mastra?.getAgent("cognitiveBiasAgent");
@@ -179,9 +197,10 @@ const aggregateStep = createStep({
 export const fullArticleAnalysisWorkflow = createWorkflow({
     id: "full-article-analysis",
     description: "Full Article Analysis Workflow",
-    inputSchema: articleSchema,
+    inputSchema: z.object({ url: z.string() }),
     outputSchema: analysisResultSchema
 })
+    .then(fetchArticleStep)
     .parallel([
         extractEntitiesStep,
         summarizeStep,

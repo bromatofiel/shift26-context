@@ -16,6 +16,7 @@ import { blindspotsWorkflow } from "./workflows/blindspots-workflow";
 import { mediaResearchWorkflow } from "./workflows/media-research-workflow";
 import { otherMediaWorkflow } from "./workflows/other-media-workflow";
 import { cognitiveBiasWorkflow } from "./workflows/cognitive-bias-workflow";
+import { articleExtractorWorkflow } from "./workflows/article-extractor-workflow";
 import { weatherAgent } from "./agents/example-weather-agent";
 import { articleAgent } from "./agents/article-agent";
 import { entityAgent } from "./agents/entity-agent";
@@ -25,6 +26,7 @@ import { blindspotsAgent } from "./agents/blindspots-agent";
 import { mediaAgent } from "./agents/media-agent";
 import { otherMediaAgent } from "./agents/other-media";
 import { cognitiveBiasAgent } from "./agents/cognitive-bias-agent";
+import { articleExtractorAgent } from "./agents/article-extractor-agent";
 import {
     toolCallAppropriatenessScorer,
     completenessScorer,
@@ -41,7 +43,8 @@ export const mastra = new Mastra({
         blindspotsWorkflow,
         mediaResearchWorkflow,
         otherMediaWorkflow,
-        cognitiveBiasWorkflow
+        cognitiveBiasWorkflow,
+        articleExtractorWorkflow
     },
     agents: {
         weatherAgent,
@@ -52,7 +55,8 @@ export const mastra = new Mastra({
         blindspotsAgent,
         mediaAgent,
         otherMediaAgent,
-        cognitiveBiasAgent
+        cognitiveBiasAgent,
+        articleExtractorAgent
     },
     scorers: {
         toolCallAppropriatenessScorer,

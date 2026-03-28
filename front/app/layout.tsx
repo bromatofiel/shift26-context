@@ -17,7 +17,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "BlindSpot",
-    description: "On hacke vos articles pour exposer leurs angles morts."
+    description: "On hacke vos articles pour exposer leurs angles morts.",
+    manifest: "/manifest.webmanifest",
+    themeColor: "#0a0a0a",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "black-translucent",
+        title: "BlindSpot"
+    },
+    icons: {
+        icon: [
+            { url: "/favicon.ico" },
+            { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+            { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" }
+        ],
+        apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }]
+    }
 };
 
 export default function RootLayout({
@@ -27,7 +42,7 @@ export default function RootLayout({
 }>) {
     return (
         <html
-            lang="en"
+            lang="fr"
             className={cn(
                 "h-full",
                 "antialiased",

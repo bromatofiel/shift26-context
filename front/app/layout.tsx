@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     title: "BlindSpot",
     description: "On hacke vos articles pour exposer leurs angles morts.",
     manifest: "/manifest.webmanifest",
-    themeColor: "#0a0a0a",
     appleWebApp: {
         capable: true,
         statusBarStyle: "black-translucent",
@@ -40,6 +39,10 @@ export const metadata: Metadata = {
             }
         ]
     }
+};
+
+export const viewport: Viewport = {
+    themeColor: "#0a0a0a"
 };
 
 export default function RootLayout({

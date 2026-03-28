@@ -20,14 +20,46 @@ just --version
 
 ### Utilisation
 
-Déployer le service Mastra sur Clever Cloud :
+Déployer tous les services configurés sur Clever Cloud :
+
+```bash
+just deploy
+```
+
+Déployer tous les services avec une autre branche source :
+
+```bash
+just deploy my-branch
+```
+
+Déployer le service Mastra sur Clever Cloud uniquement :
 
 ```bash
 just deploy-mastra
 ```
 
-Déployer une autre branche que `main` :
+Déployer Mastra avec une autre branche que `main` :
 
 ```bash
 just deploy-mastra my-branch
 ```
+
+Déployer le front sur Clever Cloud uniquement :
+
+```bash
+just deploy-front
+```
+
+Déployer le front avec une autre branche que `main` :
+
+```bash
+just deploy-front my-branch
+```
+
+### Cibles disponibles
+
+- `just deploy` : déploie tous les services configurés
+- `just deploy-mastra` : déploie uniquement le service Mastra
+- `just deploy-front` : déploie uniquement le front
+
+Le `Justfile` utilise une cible générique interne de déploiement Clever Cloud pour éviter de dupliquer la logique entre services.

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-const MASTRA_BASE = process.env.MASTRA_URL ?? "http://localhost:4111/api";
+const MASTRA_BASE = process.env.MASTRA_URL || "http://localhost:4111/api";
 
 async function proxy(req: NextRequest, params: { path: string[] }) {
     const path = params.path.join("/");

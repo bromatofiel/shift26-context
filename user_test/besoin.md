@@ -35,3 +35,10 @@
 Tous les médias mentent, voyez ce que dit le votre
 Découvrez la version non édulcorée/neutralisée de votre article
 Révélez les casseroles des personnalités citées
+Brief.me
+
+transparence
+ingérence
+gen IA
+
+frontières porte conteneurs

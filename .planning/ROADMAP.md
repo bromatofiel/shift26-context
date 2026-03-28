@@ -31,7 +31,7 @@
 
 Plans:
 - [x] 01-01-PLAN.md — Monorepo setup with shared TypeScript types
-- [ ] 01-02-PLAN.md — Hono backend with health and mock analysis endpoints
+- [x] 01-02-PLAN.md — Hono backend with health and mock analysis endpoints
 
 ---
 

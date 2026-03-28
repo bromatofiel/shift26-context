@@ -6,7 +6,15 @@ import {
     type WorkflowResults
 } from "@/hooks/useWorkflowResults";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ArticleData } from "@/lib/types";
+import EntitiesCard from "@/components/custom/analysis/EntitiesCard";
+import KeywordsCard from "@/components/custom/analysis/KeywordsCard";
+import SummaryCard from "@/components/custom/analysis/SummaryCard";
+import type {
+    ArticleData,
+    EntitiesResult,
+    KeywordsResult,
+    SummaryResult
+} from "@/lib/types";
 
 const WORKFLOW_LABELS: Record<keyof WorkflowResults, string> = {
     keywords: "Mots-clefs",
@@ -30,7 +38,7 @@ function WorkflowCard({
             <CardHeader>
                 <CardTitle className="text-sm font-medium">{title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-h-[300px] overflow-y-auto">
                 {state.status === "idle" && (
                     <p className="text-xs text-gray-400">En attente…</p>
                 )}
@@ -65,15 +73,40 @@ export default function AnalysisCards({
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {(Object.keys(WORKFLOW_LABELS) as (keyof WorkflowResults)[]).map(
-                (key) => (
-                    <WorkflowCard
-                        key={key}
-                        title={WORKFLOW_LABELS[key]}
-                        state={results[key]}
-                    />
-                )
-            )}
+            {/* Résumé + Mots-clefs empilés verticalement */}
+            <div className="flex flex-col gap-4 sm:col-span-2">
+                <SummaryCard
+                    status={results.summary.status}
+                    summary={
+                        (results.summary.data as SummaryResult | null)?.summary
+                    }
+                    error={results.summary.error}
+                />
+                <KeywordsCard
+                    status={results.keywords.status}
+                    keywords={
+                        (results.keywords.data as KeywordsResult | null)
+                            ?.keywords
+                    }
+                    error={results.keywords.error}
+                />
+            </div>
+            <EntitiesCard
+                status={results.entities.status}
+                entities={
+                    (results.entities.data as EntitiesResult | null)?.entities
+                }
+                error={results.entities.error}
+            />
+            {(
+                ["blindspots", "media", "otherMedia", "cognitiveBias"] as const
+            ).map((key) => (
+                <WorkflowCard
+                    key={key}
+                    title={WORKFLOW_LABELS[key]}
+                    state={results[key]}
+                />
+            ))}
         </div>
     );
 }

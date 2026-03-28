@@ -1,4 +1,4 @@
-# Requirements: L'Angle Mort
+# Requirements: BlindSpot
 
 **Defined:** 2026-03-28
 **Core Value:** Transformer un lien partagé en contexte lisible, nuancé et actionnable en moins de 5 secondes.

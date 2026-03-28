@@ -122,7 +122,7 @@ This roadmap is optimized for 48h delivery. Each phase represents a major delive
 - Phase 4 (H36-H48): Hardening and demo prep
 
 **Stack Decision:**
-The original langle_mort.md specified Flutter, but PROJECT.md indicates React PWA. This roadmap follows the React PWA approach for faster web deployment without app store friction.
+PROJECT.md indicates React PWA. This roadmap follows the React PWA approach for faster web deployment without app store friction.
 
 **Performance Targets (updated after Phase 2 discussion):**
 - P80 total time: <10s (2 LLM calls required)

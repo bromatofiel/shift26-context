@@ -11,7 +11,7 @@ progress:
   completed_plans: 3
 ---
 
-# Project State: L'Angle Mort
+# Project State: BlindSpot
 
 **Last Updated:** 2026-03-28
 **Mode:** YOLO (Hackathon 48h)

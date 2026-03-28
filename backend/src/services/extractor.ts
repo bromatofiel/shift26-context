@@ -6,7 +6,7 @@
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
 
-export interface ExtractionResult {
+export type ExtractionResult = {
   ok: true;
   article: {
     title: string;

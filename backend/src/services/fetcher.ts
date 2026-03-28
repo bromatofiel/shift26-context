@@ -3,7 +3,7 @@
  * Per ING-01, ING-02, ING-03: Fetch HTML with redirect handling and timeout
  */
 
-export interface FetchResult {
+export type FetchResult = {
   ok: true;
   html: string;
   finalUrl: string;  // After redirects

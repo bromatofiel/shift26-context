@@ -1,4 +1,4 @@
-import type { AnalysisResponse } from '@blindspot/shared/types/analysis';
+import type { AnalysisResponse } from '../../../shared/dist/types/analysis.js';
 
 /**
  * Mock analysis generator for testing

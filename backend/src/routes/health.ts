@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import type { HealthResponse } from '@blindspot/shared/types/analysis';
+import type { HealthResponse } from '../../../shared/dist/types/analysis.js';
 
 /**
  * Health check route

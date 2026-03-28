@@ -1,6 +1,7 @@
 import { AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { MediaResult } from "@/lib/types";
+import AnimatedCardContent from "@/components/custom/AnimatedCardContent";
 
 // Parses markdown links like ([text](url)) or [text](url) into <a> tags
 function RichText({ text }: { text: string }) {
@@ -44,39 +45,41 @@ export default function MediaCard({
                 </CardTitle>
             </CardHeader>
             <CardContent className="max-h-[300px] overflow-y-auto">
-                {status === "idle" && (
-                    <p className="text-xs text-gray-400">En attente…</p>
-                )}
-                {status === "loading" && (
-                    <p className="text-xs text-gray-400 animate-pulse">
-                        Chargement…
-                    </p>
-                )}
-                {status === "error" && (
-                    <p className="text-xs text-red-500">{error}</p>
-                )}
-                {status === "success" && media && (
-                    <div className="space-y-3">
-                        <p className="text-sm font-semibold text-gray-800">
-                            {media.mediaName}
+                <AnimatedCardContent contentKey={status}>
+                    {status === "idle" && (
+                        <p className="text-xs text-gray-400">En attente…</p>
+                    )}
+                    {status === "loading" && (
+                        <p className="text-xs text-gray-400 animate-pulse">
+                            Chargement…
                         </p>
-                        {media.conflicts.length > 0 && (
-                            <div className="space-y-1.5 pt-1">
-                                {media.conflicts.map((c, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex gap-2 text-xs text-orange-700 bg-orange-50 rounded-md px-2 py-1.5">
-                                        <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                                        <span>{c}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                        <p className="text-xs text-gray-600 leading-relaxed">
-                            <RichText text={media.description} />
-                        </p>
-                    </div>
-                )}
+                    )}
+                    {status === "error" && (
+                        <p className="text-xs text-red-500">{error}</p>
+                    )}
+                    {status === "success" && media && (
+                        <div className="space-y-3">
+                            <p className="text-sm font-semibold text-gray-800">
+                                {media.mediaName}
+                            </p>
+                            {media.conflicts.length > 0 && (
+                                <div className="space-y-1.5 pt-1">
+                                    {media.conflicts.map((c, i) => (
+                                        <div
+                                            key={i}
+                                            className="flex gap-2 text-xs text-orange-700 bg-orange-50 rounded-md px-2 py-1.5">
+                                            <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                                            <span>{c}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            <p className="text-xs text-gray-600 leading-relaxed">
+                                <RichText text={media.description} />
+                            </p>
+                        </div>
+                    )}
+                </AnimatedCardContent>
             </CardContent>
         </Card>
     );

@@ -1,5 +1,6 @@
 import { Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import AnimatedCardContent from "@/components/custom/AnimatedCardContent";
 
 export default function BlindSpotsCard({
     blindspots,
@@ -18,29 +19,31 @@ export default function BlindSpotsCard({
                 </CardTitle>
             </CardHeader>
             <CardContent className="max-h-[300px] overflow-y-auto">
-                {status === "idle" && (
-                    <p className="text-xs text-gray-400">En attente…</p>
-                )}
-                {status === "loading" && (
-                    <p className="text-xs text-gray-400 animate-pulse">
-                        Chargement…
-                    </p>
-                )}
-                {status === "error" && (
-                    <p className="text-xs text-red-500">{error}</p>
-                )}
-                {status === "success" && blindspots && (
-                    <ul className="space-y-2">
-                        {blindspots.map((spot, i) => (
-                            <li
-                                key={i}
-                                className="flex gap-2.5 text-xs text-gray-700 leading-relaxed">
-                                <Eye className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400" />
-                                <span>{spot}</span>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <AnimatedCardContent contentKey={status}>
+                    {status === "idle" && (
+                        <p className="text-xs text-gray-400">En attente…</p>
+                    )}
+                    {status === "loading" && (
+                        <p className="text-xs text-gray-400 animate-pulse">
+                            Chargement…
+                        </p>
+                    )}
+                    {status === "error" && (
+                        <p className="text-xs text-red-500">{error}</p>
+                    )}
+                    {status === "success" && blindspots && (
+                        <ul className="space-y-2">
+                            {blindspots.map((spot, i) => (
+                                <li
+                                    key={i}
+                                    className="flex gap-2.5 text-xs text-gray-700 leading-relaxed">
+                                    <Eye className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400" />
+                                    <span>{spot}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </AnimatedCardContent>
             </CardContent>
         </Card>
     );

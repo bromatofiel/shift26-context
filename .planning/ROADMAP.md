@@ -27,7 +27,11 @@
 3. JSON schema matches expected structure (source_article, counter_perspectives, global_context)
 4. Response includes all required fields (score, color, main_signals, alternatives)
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Monorepo setup with shared TypeScript types
+- [ ] 01-02-PLAN.md — Hono backend with health and mock analysis endpoints
 
 ---
 
@@ -100,7 +104,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & API Scaffold | 0/0 | Not started | - |
+| 1. Foundation & API Scaffold | 0/2 | Planned | - |
 | 2. Backend Pipeline | 0/0 | Not started | - |
 | 3. Frontend & Integration | 0/0 | Not started | - |
 | 4. Robustness & Polish | 0/0 | Not started | - |
@@ -132,4 +136,4 @@ Each phase builds on the previous:
 
 ---
 
-*Last updated: 2026-03-28 after roadmap creation*
+*Last updated: 2026-03-28 after phase 1 planning*

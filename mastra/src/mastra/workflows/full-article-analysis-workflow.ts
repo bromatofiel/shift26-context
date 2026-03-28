@@ -1,67 +1,13 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-
-// ── Shared schemas ─────────────────────────────────────────────────────────────
-
-const articleSchema = z.object({
-    source: z.string(),
-    title: z.string(),
-    authors: z.array(z.string()),
-    sections: z.array(
-        z.object({
-            heading: z.string().optional(),
-            paragraphs: z.array(z.string())
-        })
-    )
-});
-
-const entitySchema = z.object({
-    name: z.string(),
-    type: z.enum(["person", "organization"]),
-    category: z
-        .string()
-        .describe(
-            "Ex: Personnalité politique, Entreprise tech, Parti politique, Média, Institution, Investisseur, Inconnue…"
-        )
-});
-
-const mediaSchema = z.object({
-    mediaName: z.string(),
-    description: z.string(),
-    conflicts: z.array(z.string())
-});
-
-const otherMediaArticleSchema = z.object({
-    title: z.string(),
-    media: z.string(),
-    url: z.string()
-});
-
-const analysisResultSchema = z.object({
-    entities: z.array(entitySchema),
-    summary: z.string(),
-    keywords: z.array(z.string()),
-    blindspots: z.array(z.string()),
-    media: mediaSchema,
-    otherMedia: z.array(otherMediaArticleSchema)
-});
-
-// ── Helper ─────────────────────────────────────────────────────────────────────
-
-function articleToText(article: z.infer<typeof articleSchema>): string {
-    const parts: string[] = [
-        `Titre : ${article.title}`,
-        `Auteurs : ${article.authors.join(", ") || "Non précisé"}`,
-        `Source : ${article.source}`,
-        ""
-    ];
-    for (const section of article.sections) {
-        if (section.heading) parts.push(`## ${section.heading}`);
-        parts.push(...section.paragraphs);
-        parts.push("");
-    }
-    return parts.join("\n");
-}
+import {
+    articleSchema,
+    entitySchema,
+    mediaSchema,
+    otherMediaArticleSchema,
+    analysisResultSchema,
+    articleToText
+} from "../schemas/article";
 
 // ── Parallel steps ─────────────────────────────────────────────────────────────
 
@@ -212,9 +158,9 @@ const aggregateStep = createStep({
 
 // ── Workflow ───────────────────────────────────────────────────────────────────
 
-export const articleAnalysisWorkflow = createWorkflow({
-    id: "article-analysis",
-    description: "Article Analysis Workflow",
+export const fullArticleAnalysisWorkflow = createWorkflow({
+    id: "full-article-analysis",
+    description: "Full Article Analysis Workflow",
     inputSchema: articleSchema,
     outputSchema: analysisResultSchema
 })

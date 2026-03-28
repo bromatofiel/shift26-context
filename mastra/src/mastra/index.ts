@@ -7,9 +7,15 @@ import {
     CloudExporter,
     SensitiveDataFilter
 } from "@mastra/observability";
-import { weatherWorkflow } from "./workflows/weather-workflow";
-import { articleAnalysisWorkflow } from "./workflows/article-analysis-workflow";
-import { weatherAgent } from "./agents/weather-agent";
+import { weatherWorkflow } from "./workflows/example-weather-workflow";
+import { fullArticleAnalysisWorkflow } from "./workflows/full-article-analysis-workflow";
+import { entitiesWorkflow } from "./workflows/entities-workflow";
+import { summaryWorkflow } from "./workflows/summary-workflow";
+import { keywordsWorkflow } from "./workflows/keywords-workflow";
+import { blindspotsWorkflow } from "./workflows/blindspots-workflow";
+import { mediaResearchWorkflow } from "./workflows/media-research-workflow";
+import { otherMediaWorkflow } from "./workflows/other-media-workflow";
+import { weatherAgent } from "./agents/example-weather-agent";
 import { articleAgent } from "./agents/article-agent";
 import { entityAgent } from "./agents/entity-agent";
 import { summaryAgent } from "./agents/summary-agent";
@@ -21,10 +27,19 @@ import {
     toolCallAppropriatenessScorer,
     completenessScorer,
     translationScorer
-} from "./scorers/weather-scorer";
+} from "./scorers/example-weather-scorer";
 
 export const mastra = new Mastra({
-    workflows: { weatherWorkflow, articleAnalysisWorkflow },
+    workflows: {
+        weatherWorkflow,
+        fullArticleAnalysisWorkflow,
+        entitiesWorkflow,
+        summaryWorkflow,
+        keywordsWorkflow,
+        blindspotsWorkflow,
+        mediaResearchWorkflow,
+        otherMediaWorkflow
+    },
     agents: {
         weatherAgent,
         articleAgent,

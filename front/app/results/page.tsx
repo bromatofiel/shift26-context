@@ -3,6 +3,7 @@ import type { ArticleData } from "@/lib/types";
 
 export default function ResultsPage() {
     const articleStructuredData: ArticleData = {
+        url: "https://www.20minutes.fr/politique/4213018-20260323-resultats-municipales-2026-nantes-non-regrette-rien-johanna-rolland-rempile-lfi",
         source: "20minutes.fr",
         title: "Résultats municipales 2026 à Nantes : Non, elle ne « regrette » rien… Johanna Rolland rempile, mais avec LFI",
         authors: ["Annabelle Rochet"],

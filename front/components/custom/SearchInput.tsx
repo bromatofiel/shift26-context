@@ -4,11 +4,13 @@ import { useState } from "react";
 interface SearchInputProps {
     placeholder?: string;
     onSearch?: (value: string) => void;
+    onSubmit?: (value: string) => void;
 }
 
 export default function SearchInput({
     placeholder = "Search...",
-    onSearch
+    onSearch,
+    onSubmit
 }: SearchInputProps) {
     const [value, setValue] = useState("");
 
@@ -23,12 +25,19 @@ export default function SearchInput({
         onSearch?.("");
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && value.trim()) {
+            onSubmit?.(value.trim());
+        }
+    };
+
     return (
         <div className="flex items-center gap-2">
             <input
                 type="text"
                 value={value}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 placeholder={placeholder}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -39,6 +48,12 @@ export default function SearchInput({
                     ✕
                 </button>
             )}
+            <button
+                onClick={() => value.trim() && onSubmit?.(value.trim())}
+                disabled={!value.trim()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed">
+                Analyser
+            </button>
         </div>
     );
 }

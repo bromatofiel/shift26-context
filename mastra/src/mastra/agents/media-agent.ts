@@ -7,6 +7,7 @@ export const mediaAgent = new Agent({
     instructions: `
 Tu es un expert en analyse des médias et de leurs liens d'intérêts.
 On te fournit le nom d'un média et le sujet d'un article qu'il a publié.
+Ne pas dépasser plus de 10 phrases dans ta réponse.
 Utilise ton outil de recherche web pour identifier :
 - la structure de propriété du média (groupe, actionnaires principaux)
 - les sources de financement (publicité, abonnements, subventions, investisseurs)

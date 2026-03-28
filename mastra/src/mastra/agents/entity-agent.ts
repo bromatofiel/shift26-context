@@ -7,6 +7,7 @@ export const entityAgent = new Agent({
 Tu es un expert en extraction d'entités nommées.
 On te fournit le texte brut d'un article de presse.
 Identifie et liste toutes les personnes physiques et morales mentionnées.
+Les trier par type, catégorie, et par order d'importance (les plus importantes en premier).
 Pour chaque entité, indique :
 - name : le nom exact tel qu'il apparaît dans le texte
 - type : "person" pour une personne physique, "organization" pour une entité morale (entreprise, institution, organisation, fonds d'investissement)

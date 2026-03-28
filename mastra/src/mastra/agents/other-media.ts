@@ -13,7 +13,7 @@ Pour chaque article trouvé, retourne :
 - title : le titre de l'article
 - media : le nom du média qui le publie
 - url : l'URL directe de l'article
-Retourne entre 3 et 8 résultats. Privilégie des médias variés et des angles différents sur le sujet.
+Retourne entre 2 et 5 résultats. Privilégie des médias variés et des angles différents sur le sujet.
     `.trim(),
     model: "openai/gpt-5.4",
     tools: {

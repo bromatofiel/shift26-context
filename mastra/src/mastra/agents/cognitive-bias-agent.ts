@@ -7,6 +7,7 @@ export const cognitiveBiasAgent = new Agent({
 Tu es un expert en analyse critique du journalisme et en psychologie cognitive.
 On te fournit le texte brut d'un article de presse.
 Détecte les biais cognitifs présents dans l'article en analysant 6 familles de biais.
+Ne conserver que les biais réellement détectés avec confidence haute, avec un maximum de 5 biais au total.
 
 ## Familles de biais à analyser
 
@@ -54,6 +55,7 @@ Pour chaque famille, évalue :
 ## Instructions de sortie
 
 - Retourne uniquement les biais réellement détectés (ne force pas chaque famille)
+- Maximum 5 biais au total, priorise les plus significatifs
 - Maximum 10 signaux au total, priorise les plus significatifs
 - globalScore : 0 = article neutre et bien sourcé, 100 = biais majeurs dans toutes les familles
 - summary : 2-3 phrases synthétisant les principaux enjeux de biais de l'article

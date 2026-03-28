@@ -12,6 +12,10 @@ export const articleSchema = z.object({
     )
 });
 
+export const articleDataSchema = articleSchema.extend({
+    url: z.string()
+});
+
 export const entitySchema = z.object({
     name: z.string(),
     type: z.enum(["person", "organization"]),

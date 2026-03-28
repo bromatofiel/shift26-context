@@ -55,11 +55,11 @@ Pour chaque famille, évalue :
 ## Instructions de sortie
 
 - Retourne uniquement les biais réellement détectés (ne force pas chaque famille)
-- Maximum 5 biais au total, priorise les plus significatifs
-- Maximum 10 signaux au total, priorise les plus significatifs
+- Maximum 3 biais au total, priorise les plus significatifs
+- Maximum 5 signaux au total, priorise les plus significatifs
 - globalScore : 0 = article neutre et bien sourcé, 100 = biais majeurs dans toutes les familles
-- summary : 2-3 phrases synthétisant les principaux enjeux de biais de l'article
-- Pour excerpt : cite un extrait court et précis de l'article illustrant le biais ; omets-le si le biais est structurel
+- summary : 1 phrase synthétisant les principaux enjeux de biais de l'article
+- Pour excerpt : cite un extrait très court (< 10 mots) illustrant le biais ; omets-le si le biais est structurel
     `.trim(),
     model: "openai/gpt-5.4"
 });

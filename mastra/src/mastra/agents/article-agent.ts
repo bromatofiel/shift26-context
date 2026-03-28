@@ -30,15 +30,15 @@ export const articleAgent = new Agent({
     instructions: `
 You are an expert news article extractor.
 Given a URL, use your webSearch tool to retrieve the article content.
-Then extract and return the following fields as structured JSON:
+Extract and return the following fields as structured JSON:
 - title: the article headline
-- summary: a 2–3 sentence summary
-- keyPoints: an array of the main points
+- summary: a single sentence summary
+- keyPoints: 3 main points maximum
 - author: the author name (null if unavailable)
 - publishedDate: the publication date (null if unavailable)
 - category: the topic category (null if unavailable)
 - url: the original URL passed by the user
-Always respond using the exact JSON structure requested. Do not add commentary outside the JSON.
+Always respond using the exact JSON structure. No commentary outside the JSON.
   `.trim(),
     model: "openai/gpt-5.4",
     tools: {

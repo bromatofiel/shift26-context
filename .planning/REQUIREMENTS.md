@@ -10,14 +10,14 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Ingestion
 
 - [ ] **ING-01**: L'utilisateur peut partager un lien vers l'app via Share Target Android
-- [ ] **ING-02**: L'app valide et normalise l'URL reçue
-- [ ] **ING-03**: L'app suit les redirections et récupère le HTML
+- [x] **ING-02**: L'app valide et normalise l'URL reçue
+- [x] **ING-03**: L'app suit les redirections et récupère le HTML
 
 ### Extraction
 
-- [ ] **EXT-01**: Le système extrait le contenu principal de l'article (titre, texte, média, date)
-- [ ] **EXT-02**: Le système gère les paywalls en mode dégradé (titre + snippets)
-- [ ] **EXT-03**: Le système signale quand l'extraction est partielle
+- [x] **EXT-01**: Le système extrait le contenu principal de l'article (titre, texte, média, date)
+- [x] **EXT-02**: Le système gère les paywalls en mode dégradé (titre + snippets)
+- [x] **EXT-03**: Le système signale quand l'extraction est partielle
 
 ### Recherche
 
@@ -95,11 +95,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | ING-01 | Phase 2 | Pending |
-| ING-02 | Phase 2 | Pending |
-| ING-03 | Phase 2 | Pending |
-| EXT-01 | Phase 2 | Pending |
-| EXT-02 | Phase 2 | Pending |
-| EXT-03 | Phase 2 | Pending |
+| ING-02 | Phase 2 | Complete |
+| ING-03 | Phase 2 | Complete |
+| EXT-01 | Phase 2 | Complete |
+| EXT-02 | Phase 2 | Complete |
+| EXT-03 | Phase 2 | Complete |
 | SRC-01 | Phase 2 | Pending |
 | SRC-02 | Phase 2 | Pending |
 | SRC-03 | Phase 2 | Pending |

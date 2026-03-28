@@ -52,7 +52,7 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md - URL ingestion and content extraction (Readability + paywall handling)
+- [x] 02-01-PLAN.md - URL ingestion and content extraction (Readability + paywall handling)
 - [ ] 02-02-PLAN.md - LLM analysis core (Gemini + few-shot + Zod validation)
 - [ ] 02-03-PLAN.md - Search integration and pipeline wiring (Grounded Search + differences)
 
@@ -106,7 +106,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & API Scaffold | 0/0 | Not started | - |
-| 2. Backend Pipeline | 0/3 | Planning complete | - |
+| 2. Backend Pipeline | 1/3 | In progress | - |
 | 3. Frontend & Integration | 0/0 | Not started | - |
 | 4. Robustness & Polish | 0/0 | Not started | - |
 

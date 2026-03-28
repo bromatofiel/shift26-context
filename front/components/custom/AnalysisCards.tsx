@@ -12,6 +12,7 @@ import MediaCard from "@/components/custom/analysis/MediaCard";
 import OtherMediaCard from "@/components/custom/analysis/OtherMediaCard";
 import CognitiveBiasCard from "@/components/custom/analysis/CognitiveBiasCard";
 import BlindSpotsCard from "@/components/custom/analysis/BlindSpotsCard";
+import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
 import type {
     ArticleData,
     EntitiesResult,
@@ -20,7 +21,8 @@ import type {
     MediaResult,
     OtherMediaArticle,
     CognitiveBiasResult,
-    BlindSpotsResult
+    BlindSpotsResult,
+    SynthesisResult
 } from "@/lib/types";
 
 function WorkflowCard({
@@ -70,6 +72,16 @@ export default function AnalysisCards({
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {results.synthesis.status !== "idle" && (
+                <SynthesisCard
+                    status={results.synthesis.status}
+                    points={
+                        (results.synthesis.data as SynthesisResult | null)
+                            ?.points
+                    }
+                    error={results.synthesis.error}
+                />
+            )}
             <div className="sm:col-span-2">
                 <SummaryCard
                     status={results.summary.status}

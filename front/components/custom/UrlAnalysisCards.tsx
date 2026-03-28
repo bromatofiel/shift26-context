@@ -2,9 +2,10 @@
 
 import { useFullAnalysis } from "@/hooks/useFullAnalysis";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
 import type { FullAnalysisResult } from "@/lib/types";
 
-const SECTION_LABELS: Record<keyof FullAnalysisResult, string> = {
+const SECTION_LABELS = {
     summary: "Résumé",
     keywords: "Mots-clefs",
     entities: "Entités",
@@ -72,7 +73,14 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
     if (!data) return null;
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-4">
+            {data.synthesis && (
+                <SynthesisCard
+                    status="success"
+                    points={data.synthesis.points}
+                />
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <AnalysisCard title={SECTION_LABELS.summary}>
                 <p className="text-xs">{data.summary}</p>
             </AnalysisCard>
@@ -171,6 +179,7 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
                     ))}
                 </ul>
             </AnalysisCard>
+            </div>
         </div>
     );
 }

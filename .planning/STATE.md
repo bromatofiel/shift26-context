@@ -3,12 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-03-28T11:15:40.423Z"
+last_updated: "2026-03-28T11:28:00.707Z"
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 3
-  completed_plans: 0
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State: L'Angle Mort
@@ -34,23 +35,23 @@ Phase 02 — backend-pipeline
 ## Current Position
 
 Phase: 02 (backend-pipeline) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 **Phase:** Phase 02
-**Plan:** 02-01-PLAN.md (Complete)
+**Plan:** 02-02-PLAN.md (Complete)
 **Node:** None
 **Status:** Phase 02 in progress
 
 **Progress:**
 
 ```
-[███░░░░░░░] 33% - Phase 2: Backend Pipeline (1/3 plans complete)
+[███████░░░] 67% - Phase 2: Backend Pipeline (2/3 plans complete)
 ```
 
 **Coverage:**
 
 - Total v1 requirements: 23
 - Requirements mapped: 23/23 (100%)
-- Requirements completed: 5/23 (22%)
+- Requirements completed: 10/23 (43%)
 - Orphaned requirements: 0
 
 ---
@@ -60,7 +61,7 @@ Plan: 2 of 3
 ### Velocity
 
 - **Phases completed:** 0/4
-- **Plans completed:** 1
+- **Plans completed:** 2
 - **Nodes completed:** 0
 
 ### Quality
@@ -90,6 +91,8 @@ Plan: 2 of 3
 | Native fetch over node-fetch | No external dependency, built-in AbortSignal support | Simpler dependencies (02-01) |
 | @mozilla/readability | Industry standard for article extraction | May fail on JS-rendered content (02-01) |
 | Discriminated unions for errors | Type-safe error handling, explicit error states | Forces compile-time error handling (02-01) |
+| Gemini Flash with function calling | Guaranteed structured JSON output, few-shot prompting for consistency | Core LLM integration (02-02) |
+| French language output | Product targets French news media | All prompts and responses in French (02-02) |
 
 ### Active TODOs
 
@@ -121,25 +124,27 @@ None - hackathon mode prioritizes execution over research.
 
 **What happened:**
 
-- Executed plan 02-01-PLAN.md (URL ingestion and content extraction)
-- Created backend source structure with TypeScript configuration
-- Implemented fetcher service with redirect handling and timeout management
-- Implemented extractor service with Readability + paywall detection
-- Completed 5 requirements: ING-02, ING-03, EXT-01, EXT-02, EXT-03
+- Executed plan 02-02-PLAN.md (LLM analysis core)
+- Created Zod schemas for LLM response validation
+- Implemented few-shot bias analysis prompt in French
+- Integrated Gemini 1.5 Flash with function calling
+- Completed 5 requirements: ANA-01, ANA-02, ANA-03, ANA-04, ANA-05
+- Fixed TypeScript discriminated union syntax from 02-01
 
 **What's next:**
 
-- Execute plan 02-02-PLAN.md (LLM analysis core)
 - Execute plan 02-03-PLAN.md (Search integration and pipeline wiring)
-- Integrate fetcher + extractor into /v1/analyze endpoint
+- Wire gemini.ts + fetcher.ts + extractor.ts into /v1/analyze endpoint
+- Implement Serper search for counter-perspectives
 
 **Context to preserve:**
 
 - This is a 48h hackathon - speed is critical
-- Backend must support <10s response time (P80) - updated from <5s after Phase 2 discussion
-- Fetcher uses native fetch API with redirect: 'follow'
-- Extractor uses @mozilla/readability with paywall detection
-- Degraded mode returns partial_content when Readability fails
+- Backend must support <10s response time (P80)
+- Gemini client uses temperature 0.2 for consistent analysis
+- Few-shot prompting with 2 examples (neutral + biased)
+- Function calling guarantees JSON schema compliance
+- All LLM output validated with Zod before returning
 - All services use discriminated unions for type-safe error handling
 
 ### Quick Start (Next Session)
@@ -154,6 +159,7 @@ cat .planning/ROADMAP.md
 # Start Phase 1
 
 /gsd:plan-phase 1
+
 ```
 
 ---

@@ -27,11 +27,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Analyse
 
-- [ ] **ANA-01**: Le LLM produit un score de biais (0-10) avec couleur Vert/Orange/Rouge
-- [ ] **ANA-02**: Le LLM identifie les signaux principaux (ton, cadrage, omissions)
-- [ ] **ANA-03**: Le LLM génère 2-3 contre-perspectives avec différences mises en avant
-- [ ] **ANA-04**: Le LLM produit un résumé global du contexte
-- [ ] **ANA-05**: Le système valide la sortie JSON du LLM
+- [x] **ANA-01**: Le LLM produit un score de biais (0-10) avec couleur Vert/Orange/Rouge
+- [x] **ANA-02**: Le LLM identifie les signaux principaux (ton, cadrage, omissions)
+- [x] **ANA-03**: Le LLM génère 2-3 contre-perspectives avec différences mises en avant
+- [x] **ANA-04**: Le LLM produit un résumé global du contexte
+- [x] **ANA-05**: Le système valide la sortie JSON du LLM
 
 ### Interface
 
@@ -103,11 +103,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SRC-01 | Phase 2 | Pending |
 | SRC-02 | Phase 2 | Pending |
 | SRC-03 | Phase 2 | Pending |
-| ANA-01 | Phase 2 | Pending |
-| ANA-02 | Phase 2 | Pending |
-| ANA-03 | Phase 2 | Pending |
-| ANA-04 | Phase 2 | Pending |
-| ANA-05 | Phase 2 | Pending |
+| ANA-01 | Phase 2 | Complete |
+| ANA-02 | Phase 2 | Complete |
+| ANA-03 | Phase 2 | Complete |
+| ANA-04 | Phase 2 | Complete |
+| ANA-05 | Phase 2 | Complete |
 | UI-01 | Phase 3 | Pending |
 | UI-02 | Phase 3 | Pending |
 | UI-03 | Phase 3 | Pending |

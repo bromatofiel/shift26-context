@@ -8,7 +8,7 @@ if (isProd && !process.env.MASTRA_URL) {
 
 const MASTRA_BASE = (
     process.env.MASTRA_URL || "http://localhost:4111/api"
-).replace(/\/$/, "");
+).replace(/\/+$/, "");
 
 async function proxy(req: NextRequest, params: { path: string[] }) {
     const path = params.path.join("/");

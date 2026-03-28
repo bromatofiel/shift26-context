@@ -2,7 +2,7 @@ set shell := ["bash", "-cu"]
 
 # Generic Clever Cloud deployment helper.
 _deploy remote branch="main":
-  git push -u {{remote}} {{branch}}:main
+  git fetch origin {{branch}} && git push -u {{remote}} {{branch}}:master
 
 # Deploy the Mastra service to Clever Cloud.
 deploy-mastra branch="main":

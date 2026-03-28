@@ -22,11 +22,11 @@ RUN npm install -g mastra@1.3.15
 
 COPY --from=builder /app-mastra/.mastra ./.mastra
 
-RUN mkdir -p /app-mastra/data && chown node:node /app-mastra/data
+RUN mkdir -p /data && chown node:node /data
 
 ENV NODE_ENV=production
 EXPOSE 4111
-VOLUME /app-mastra/data
+VOLUME /data
 
 USER node
 CMD ["npm", "run", "start"]

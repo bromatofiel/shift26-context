@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useRef } from "react";
+import { useReducer, useCallback, useRef, useEffect } from "react";
 import type {
     ArticleData,
     WorkflowState,
@@ -8,7 +8,9 @@ import type {
     BlindSpotsResult,
     MediaResult,
     OtherMediaResult,
-    CognitiveBiasResult
+    CognitiveBiasResult,
+    SynthesisResult,
+    OtherMediaArticle
 } from "@/lib/types";
 
 export interface WorkflowResults {
@@ -19,6 +21,7 @@ export interface WorkflowResults {
     media: WorkflowState<MediaResult>;
     otherMedia: WorkflowState<OtherMediaResult>;
     cognitiveBias: WorkflowState<CognitiveBiasResult>;
+    synthesis: WorkflowState<SynthesisResult>;
 }
 
 type WorkflowKey = keyof WorkflowResults;
@@ -39,7 +42,8 @@ const initialState: WorkflowResults = {
     blindspots: makeIdle(),
     media: makeIdle(),
     otherMedia: makeIdle(),
-    cognitiveBias: makeIdle()
+    cognitiveBias: makeIdle(),
+    synthesis: makeIdle()
 };
 
 function reducer(state: WorkflowResults, action: Action): WorkflowResults {
@@ -111,6 +115,80 @@ export function useWorkflowResults(articleData: ArticleData): {
 } {
     const [results, dispatch] = useReducer(reducer, initialState);
     const controllersRef = useRef<AbortController[]>([]);
+    const synthesisControllerRef = useRef<AbortController | null>(null);
+
+    // Trigger synthesis only once all 4 dependencies succeed
+    useEffect(() => {
+        const { blindspots, cognitiveBias, media, otherMedia, synthesis } =
+            results;
+        if (
+            blindspots.status === "success" &&
+            blindspots.data != null &&
+            cognitiveBias.status === "success" &&
+            cognitiveBias.data != null &&
+            media.status === "success" &&
+            media.data != null &&
+            otherMedia.status === "success" &&
+            otherMedia.data != null &&
+            synthesis.status === "idle"
+        ) {
+            const controller = new AbortController();
+            synthesisControllerRef.current = controller;
+            dispatch({ type: "LOADING", workflow: "synthesis" });
+
+            fetch("/api/mastra/workflows/synthesis/start-async", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    inputData: {
+                        blindspots: (blindspots.data as BlindSpotsResult)
+                            .blindspots,
+                        cognitiveBias: cognitiveBias.data,
+                        media: media.data,
+                        otherMedia: (
+                            otherMedia.data as unknown as {
+                                otherMedia: OtherMediaArticle[];
+                            }
+                        ).otherMedia
+                    }
+                }),
+                signal: controller.signal
+            })
+                .then((res) => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then((json) => {
+                    dispatch({
+                        type: "SUCCESS",
+                        workflow: "synthesis",
+                        data: json.result
+                    });
+                })
+                .catch((err: unknown) => {
+                    if (err instanceof Error && err.name === "AbortError")
+                        return;
+                    dispatch({
+                        type: "ERROR",
+                        workflow: "synthesis",
+                        error:
+                            err instanceof Error ? err.message : "Unknown error"
+                    });
+                });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        results.blindspots.status,
+        results.cognitiveBias.status,
+        results.media.status,
+        results.otherMedia.status,
+        results.synthesis.status
+    ]);
+
+    // Abort synthesis on unmount
+    useEffect(() => {
+        return () => synthesisControllerRef.current?.abort();
+    }, []);
 
     const start = useCallback(() => {
         controllersRef.current.forEach((c) => c.abort());

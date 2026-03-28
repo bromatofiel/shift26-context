@@ -7,6 +7,7 @@ import {
     mediaSchema,
     otherMediaArticleSchema,
     cognitiveBiasSchema,
+    synthesisResultSchema,
     analysisResultSchema,
     articleToText
 } from "../schemas/article";
@@ -166,7 +167,7 @@ const cognitiveBiasStep = createStep({
 
 const aggregateStep = createStep({
     id: "aggregate",
-    description: "Consolide les résultats de toutes les branches d'analyse",
+    description: "Consolide les résultats et produit la synthèse finale",
     inputSchema: z.object({
         "extract-entities": z.object({ entities: z.array(entitySchema) }),
         summarize: z.object({ summary: z.string() }),
@@ -179,15 +180,60 @@ const aggregateStep = createStep({
         "cognitive-bias": cognitiveBiasSchema
     }),
     outputSchema: analysisResultSchema,
-    execute: async ({ inputData }) => {
+    execute: async ({ inputData, mastra }) => {
+        const cognitiveBias = inputData["cognitive-bias"];
+        const media = inputData["media-research"];
+        const blindspots = inputData["blindspots"].blindspots;
+        const otherMedia = inputData["other-media"].otherMedia;
+
+        const agent = mastra?.getAgent("synthesisAgent");
+        let synthesis:
+            | {
+                  points: {
+                      label: string;
+                      severity: "green" | "orange" | "red";
+                  }[];
+              }
+            | undefined;
+
+        if (agent) {
+            const parts: string[] = [
+                "## Biais cognitifs détectés",
+                `Score global : ${cognitiveBias.globalScore}/100`,
+                `Synthèse : ${cognitiveBias.summary}`,
+                ...cognitiveBias.signals.map(
+                    (s) =>
+                        `- ${s.bias} (${s.family}, confiance : ${s.confidence}) : ${s.explanation}`
+                ),
+                "\n## Angles manquants",
+                ...blindspots.map((b) => `- ${b}`),
+                "\n## Média source",
+                `${media.mediaName} : ${media.description}`,
+                ...(media.conflicts.length > 0
+                    ? [
+                          "Conflits d'intérêts :",
+                          ...media.conflicts.map((c) => `- ${c}`)
+                      ]
+                    : []),
+                "\n## Articles alternatifs trouvés",
+                ...otherMedia.map((a) => `- "${a.title}" (${a.media})`)
+            ];
+
+            const result = await agent.generate(parts.join("\n"), {
+                structuredOutput: { schema: synthesisResultSchema }
+            });
+            synthesis = result.object;
+        }
+
         return {
             entities: inputData["extract-entities"].entities,
             summary: inputData["summarize"].summary,
             keywords: inputData["extract-keywords"].keywords,
-            blindspots: inputData["blindspots"].blindspots,
-            media: inputData["media-research"],
-            otherMedia: inputData["other-media"].otherMedia,
-            cognitiveBias: inputData["cognitive-bias"]
+            blindspots,
+            media,
+            otherMedia,
+            cognitiveBias,
+            synthesis
         };
     }
 });

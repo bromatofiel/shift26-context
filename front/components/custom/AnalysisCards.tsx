@@ -6,17 +6,24 @@ import {
     type WorkflowResults
 } from "@/hooks/useWorkflowResults";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ArticleData } from "@/lib/types";
-
-const WORKFLOW_LABELS: Record<keyof WorkflowResults, string> = {
-    keywords: "Mots-clefs",
-    summary: "Résumé",
-    entities: "Entités",
-    blindspots: "Angles manquants",
-    media: "Analyse du média",
-    otherMedia: "Autres médias",
-    cognitiveBias: "Biais cognitifs"
-};
+import EntitiesCard from "@/components/custom/analysis/EntitiesCard";
+import SummaryCard from "@/components/custom/analysis/SummaryCard";
+import MediaCard from "@/components/custom/analysis/MediaCard";
+import OtherMediaCard from "@/components/custom/analysis/OtherMediaCard";
+import CognitiveBiasCard from "@/components/custom/analysis/CognitiveBiasCard";
+import BlindSpotsCard from "@/components/custom/analysis/BlindSpotsCard";
+import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
+import type {
+    ArticleData,
+    EntitiesResult,
+    KeywordsResult,
+    SummaryResult,
+    MediaResult,
+    OtherMediaArticle,
+    CognitiveBiasResult,
+    BlindSpotsResult,
+    SynthesisResult
+} from "@/lib/types";
 
 function WorkflowCard({
     title,
@@ -30,7 +37,7 @@ function WorkflowCard({
             <CardHeader>
                 <CardTitle className="text-sm font-medium">{title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-h-[300px] overflow-y-auto">
                 {state.status === "idle" && (
                     <p className="text-xs text-gray-400">En attente…</p>
                 )}
@@ -65,15 +72,72 @@ export default function AnalysisCards({
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {(Object.keys(WORKFLOW_LABELS) as (keyof WorkflowResults)[]).map(
-                (key) => (
-                    <WorkflowCard
-                        key={key}
-                        title={WORKFLOW_LABELS[key]}
-                        state={results[key]}
-                    />
-                )
+            {results.synthesis.status !== "idle" && (
+                <SynthesisCard
+                    status={results.synthesis.status}
+                    points={
+                        (results.synthesis.data as SynthesisResult | null)
+                            ?.points
+                    }
+                    error={results.synthesis.error}
+                />
             )}
+            <div className="sm:col-span-2">
+                <SummaryCard
+                    status={results.summary.status}
+                    summary={
+                        (results.summary.data as SummaryResult | null)?.summary
+                    }
+                    keywords={
+                        (results.keywords.data as KeywordsResult | null)
+                            ?.keywords
+                    }
+                    error={results.summary.error}
+                />
+            </div>
+            <BlindSpotsCard
+                status={results.blindspots.status}
+                blindspots={
+                    (results.blindspots.data as BlindSpotsResult | null)
+                        ?.blindspots
+                }
+                error={results.blindspots.error}
+            />
+            <CognitiveBiasCard
+                status={results.cognitiveBias.status}
+                cognitiveBias={
+                    (results.cognitiveBias
+                        .data as CognitiveBiasResult | null) ?? undefined
+                }
+                error={results.cognitiveBias.error}
+            />
+            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <OtherMediaCard
+                    status={results.otherMedia.status}
+                    otherMedia={
+                        (
+                            results.otherMedia.data as {
+                                otherMedia: OtherMediaArticle[];
+                            } | null
+                        )?.otherMedia
+                    }
+                    error={results.otherMedia.error}
+                />
+                <MediaCard
+                    status={results.media.status}
+                    media={
+                        (results.media.data as MediaResult | null) ?? undefined
+                    }
+                    error={results.media.error}
+                />
+            </div>
+            <EntitiesCard
+                status={results.entities.status}
+                entities={
+                    (results.entities.data as EntitiesResult | null)?.entities
+                }
+                error={results.entities.error}
+            />
         </div>
     );
 }

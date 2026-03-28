@@ -80,6 +80,24 @@ export const cognitiveBiasSchema = z.object({
         )
 });
 
+export const synthesisPointSchema = z.object({
+    label: z.string().describe("Point clé en 12 mots maximum"),
+    severity: z
+        .enum(["green", "orange", "red"])
+        .describe(
+            "green = élément positif, orange = risque modéré, red = biais fort ou conflit critique"
+        )
+});
+
+export const synthesisResultSchema = z.object({
+    points: z
+        .array(synthesisPointSchema)
+        .max(3)
+        .describe(
+            "1 à 3 points de synthèse, les plus importants pour le lecteur"
+        )
+});
+
 export const analysisResultSchema = z.object({
     entities: z.array(entitySchema),
     summary: z.string(),
@@ -87,7 +105,8 @@ export const analysisResultSchema = z.object({
     blindspots: z.array(z.string()),
     media: mediaSchema,
     otherMedia: z.array(otherMediaArticleSchema),
-    cognitiveBias: cognitiveBiasSchema
+    cognitiveBias: cognitiveBiasSchema,
+    synthesis: synthesisResultSchema.optional()
 });
 
 export function articleToText(article: z.infer<typeof articleSchema>): string {

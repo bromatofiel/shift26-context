@@ -86,6 +86,15 @@ export interface OtherMediaArticle {
     url: string;
 }
 
+export interface SynthesisPoint {
+    label: string;
+    severity: "green" | "orange" | "red";
+}
+
+export interface SynthesisResult {
+    points: SynthesisPoint[];
+}
+
 export interface FullAnalysisResult {
     entities: Entity[];
     summary: string;
@@ -94,4 +103,5 @@ export interface FullAnalysisResult {
     media: MediaResult;
     otherMedia: OtherMediaArticle[];
     cognitiveBias: CognitiveBiasResult;
+    synthesis?: SynthesisResult;
 }

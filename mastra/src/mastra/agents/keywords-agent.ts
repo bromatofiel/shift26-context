@@ -6,9 +6,7 @@ export const keywordsAgent = new Agent({
     instructions: `
 Tu es un expert en indexation de contenu journalistique.
 On te fournit le texte brut d'un article de presse.
-Extrais les mots-clefs les plus significatifs et pertinents de l'article.
-Limite-toi à 15 mots-clefs maximum.
-Préfère les termes spécifiques et informatifs (noms propres, concepts techniques, secteurs) aux termes génériques.
+Extrais 5 mots-clefs maximum, spécifiques et informatifs (noms propres, concepts, secteurs). Pas de termes génériques.
     `.trim(),
     model: "openai/gpt-5.4"
 });

@@ -6,14 +6,8 @@ export const blindspotsAgent = new Agent({
     instructions: `
 Tu es un expert en analyse critique du journalisme.
 On te fournit le texte brut d'un article de presse.
-Identifie les angles manquants, les biais potentiels, et les points de vue absents de cet article.
-Maximum 5 observations.
-Pense aux :
-- perspectives omises (acteurs ignorés, voix absentes)
-- questions non posées qui auraient été pertinentes
-- contextes ou données manquants
-- biais de cadrage ou de sélection ou autres biais cognitifs
-Formule chaque manque comme une observation factuelle et constructive.
+Identifie les angles manquants et points de vue absents. Maximum 3 observations, 1 phrase chacune.
+Cibles : perspectives omises, questions non posées, données manquantes, biais de cadrage.
     `.trim(),
     model: "openai/gpt-5.4"
 });

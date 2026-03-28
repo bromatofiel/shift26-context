@@ -18,12 +18,12 @@ app.route('/', healthRoute);
 app.route('/', analyzeRoute);
 
 // Start server
-const port = 3001;
-console.log(`🚀 BlindSpot API starting on port ${port}...`);
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+console.log(`BlindSpot API starting on port ${port}...`);
 
 serve({
   fetch: app.fetch,
   port
 }, (info) => {
-  console.log(`✓ Server running at http://localhost:${info.port}`);
+  console.log(`Server running at http://localhost:${info.port}`);
 });

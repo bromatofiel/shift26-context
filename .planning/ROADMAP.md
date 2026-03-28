@@ -2,7 +2,7 @@
 
 **Created:** 2026-03-28
 **Granularity:** Coarse (4 phases for 48h hackathon)
-**Core Value:** Transformer un lien partagé en contexte lisible, nuancé et actionnable en moins de 5 secondes.
+**Core Value:** Transformer un lien partage en contexte lisible, nuance et actionnable en moins de 10 secondes.
 
 ## Phases
 
@@ -33,7 +33,7 @@
 
 ### Phase 2: Backend Pipeline
 
-**Goal:** Backend can fetch, extract, search, and analyze real articles in <5s
+**Goal:** Backend can fetch, extract, search, and analyze real articles in <10s P80
 
 **Depends on:** Phase 1
 
@@ -47,9 +47,14 @@
 5. LLM produces structured JSON with bias score (0-10), color (green/orange/red), and signals
 6. LLM identifies 2-3 counter-perspectives with missing facts highlighted
 7. System validates LLM JSON output and rejects malformed responses
-8. Pipeline completes in <5s for 80% of requests
+8. Pipeline completes in <10s for 80% of requests
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md - URL ingestion and content extraction (Readability + paywall handling)
+- [ ] 02-02-PLAN.md - LLM analysis core (Gemini + few-shot + Zod validation)
+- [ ] 02-03-PLAN.md - Search integration and pipeline wiring (Grounded Search + differences)
 
 ---
 
@@ -63,7 +68,7 @@
 
 **Success Criteria** (what must be TRUE):
 1. User can share article link from Android browser/app to BlindSpot via Share Target
-2. User sees loading screen with progress stages (Analyse, Recherche, Synthèse)
+2. User sees loading screen with progress stages (Analyse, Recherche, Synthese)
 3. User sees color-coded bias score as first visual element on results screen
 4. User can tap to expand detailed bias signals and explanations
 5. User sees 2-3 "Autres angles" cards with clickable links to alternative sources
@@ -87,7 +92,7 @@
 **Success Criteria** (what must be TRUE):
 1. System displays clear error messages for common failures (FETCH_FAILED, PAYWALL, TIMEOUT, NO_ARTICLE)
 2. User can retry analysis when error is recoverable
-3. System responds in <5s for P80 of requests (80th percentile)
+3. System responds in <10s for P80 of requests (80th percentile)
 4. System shows first useful screen (loading state) in <3s
 5. System handles edge cases: invalid URLs, empty extractions, search failures, malformed LLM output
 6. User receives partial results when some pipeline steps fail (degraded mode)
@@ -101,7 +106,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & API Scaffold | 0/0 | Not started | - |
-| 2. Backend Pipeline | 0/0 | Not started | - |
+| 2. Backend Pipeline | 0/3 | Planning complete | - |
 | 3. Frontend & Integration | 0/0 | Not started | - |
 | 4. Robustness & Polish | 0/0 | Not started | - |
 
@@ -119,17 +124,17 @@ This roadmap is optimized for 48h delivery. Each phase represents a major delive
 **Stack Decision:**
 The original langle_mort.md specified Flutter, but PROJECT.md indicates React PWA. This roadmap follows the React PWA approach for faster web deployment without app store friction.
 
-**Performance Targets:**
-- P80 total time: <5s (ROB-01)
+**Performance Targets (updated after Phase 2 discussion):**
+- P80 total time: <10s (2 LLM calls required)
 - First screen: <3s (ROB-02)
 - These targets drive parallelization decisions in backend pipeline
 
 **Dependency Flow:**
 Each phase builds on the previous:
-1 → 2: Mock API → Real implementation
-2 → 3: Backend ready → Frontend integration
-3 → 4: Working flow → Production-ready
+1 -> 2: Mock API -> Real implementation
+2 -> 3: Backend ready -> Frontend integration
+3 -> 4: Working flow -> Production-ready
 
 ---
 
-*Last updated: 2026-03-28 after roadmap creation*
+*Last updated: 2026-03-28 after Phase 2 planning*

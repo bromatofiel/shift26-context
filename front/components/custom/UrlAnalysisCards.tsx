@@ -47,4 +47,3 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
         </div>
     );
 }
-

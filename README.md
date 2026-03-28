@@ -61,6 +61,7 @@ just deploy-front my-branch
 - `just deploy` : déploie tous les services configurés
 - `just deploy-mastra` : déploie uniquement le service Mastra
 - `just deploy-front` : déploie uniquement le front
+- `just up` : démarre la stack locale avec Docker Compose
 
 Le `Justfile` utilise une cible générique interne de déploiement Clever Cloud pour éviter de dupliquer la logique entre services.
 
@@ -77,6 +78,12 @@ Lancement :
 
 ```bash
 docker compose up --build
+```
+
+Ou via `just` :
+
+```bash
+just up
 ```
 
 Accès :

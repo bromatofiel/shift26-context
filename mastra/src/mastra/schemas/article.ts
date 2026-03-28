@@ -1,0 +1,59 @@
+import { z } from "zod";
+
+export const articleSchema = z.object({
+    source: z.string(),
+    title: z.string(),
+    authors: z.array(z.string()),
+    sections: z.array(
+        z.object({
+            heading: z.string().optional(),
+            paragraphs: z.array(z.string())
+        })
+    )
+});
+
+export const entitySchema = z.object({
+    name: z.string(),
+    type: z.enum(["person", "organization"]),
+    category: z
+        .string()
+        .describe(
+            "Ex: Personnalité politique, Entreprise tech, Parti politique, Média, Institution, Investisseur, Inconnue…"
+        )
+});
+
+export const mediaSchema = z.object({
+    mediaName: z.string(),
+    description: z.string(),
+    conflicts: z.array(z.string())
+});
+
+export const otherMediaArticleSchema = z.object({
+    title: z.string(),
+    media: z.string(),
+    url: z.string()
+});
+
+export const analysisResultSchema = z.object({
+    entities: z.array(entitySchema),
+    summary: z.string(),
+    keywords: z.array(z.string()),
+    blindspots: z.array(z.string()),
+    media: mediaSchema,
+    otherMedia: z.array(otherMediaArticleSchema)
+});
+
+export function articleToText(article: z.infer<typeof articleSchema>): string {
+    const parts: string[] = [
+        `Titre : ${article.title}`,
+        `Auteurs : ${article.authors.join(", ") || "Non précisé"}`,
+        `Source : ${article.source}`,
+        ""
+    ];
+    for (const section of article.sections) {
+        if (section.heading) parts.push(`## ${section.heading}`);
+        parts.push(...section.paragraphs);
+        parts.push("");
+    }
+    return parts.join("\n");
+}

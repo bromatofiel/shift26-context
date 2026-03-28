@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Ingestion
 
-- [ ] **ING-01**: L'utilisateur peut partager un lien vers l'app via Share Target Android
+- [x] **ING-01**: L'utilisateur peut partager un lien vers l'app via Share Target Android
 - [x] **ING-02**: L'app valide et normalise l'URL reçue
 - [x] **ING-03**: L'app suit les redirections et récupère le HTML
 
@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ING-01 | Phase 3 | Pending |
+| ING-01 | Phase 3 | Complete |
 | ING-02 | Phase 2 | Complete |
 | ING-03 | Phase 2 | Complete |
 | EXT-01 | Phase 2 | Complete |

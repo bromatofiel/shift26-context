@@ -78,7 +78,7 @@ Plans:
 **Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 03-01-PLAN.md - PWA configuration (manifest, service worker, share handler)
+- [x] 03-01-PLAN.md - PWA configuration (manifest, service worker, share handler)
 - [x] 03-02-PLAN.md - Loading UI and BiasScoreCard (multi-stage progress, color-coded score)
 
 **UI hint:** yes

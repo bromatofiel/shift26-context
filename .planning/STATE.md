@@ -94,6 +94,7 @@ Plan: 3 of 3
 | French language output | Product targets French news media | All prompts and responses in French (02-02) |
 | GoogleSearchRetrieval API for Grounded Search | Correct Gemini API structure (not googleSearch field) | Search integration (02-03) |
 | Two-phase LLM calls (analysis + differences) | Enables richer analysis with timeout budget management | Complete pipeline (02-03) |
+| Gemini 2.5 Flash migration | Gemini 1.5 models deprecated in 2026, 2.5-flash is current stable version | UAT blocker resolution (Q001) |
 
 ### Active TODOs
 
@@ -111,11 +112,19 @@ Plan: 3 of 3
 
 ### Known Blockers
 
-None identified yet.
+None - previous Gemini model 404 blocker resolved via Q001.
 
 ### Research Flags
 
 None - hackathon mode prioritizes execution over research.
+
+---
+
+## Quick Tasks Completed
+
+| ID | Description | Completed | Files |
+|----|-------------|-----------|-------|
+| Q001 | Fix Gemini model deprecation (1.5-flash → 2.5-flash) | 2026-03-28 | gemini.ts, differences.ts |
 
 ---
 

@@ -4,7 +4,7 @@ import { BIAS_ANALYSIS_JSON_SCHEMA, validateLLMResponse, BiasAnalysis } from '..
 
 export interface GeminiConfig {
   apiKey: string;
-  model?: string;  // Default: gemini-1.5-flash
+  model?: string;  // Default: gemini-2.5-flash
   timeoutMs?: number;  // Default: 8000
 }
 
@@ -26,7 +26,7 @@ export class GeminiClient {
 
   constructor(config: GeminiConfig) {
     this.client = new GoogleGenerativeAI(config.apiKey);
-    this.model = config.model || 'gemini-1.5-flash';
+    this.model = config.model || 'gemini-2.5-flash';
     this.timeoutMs = config.timeoutMs || 8000;
   }
 

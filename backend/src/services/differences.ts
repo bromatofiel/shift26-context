@@ -43,7 +43,7 @@ export class DifferencesExtractor {
 
   constructor(config: DifferencesConfig) {
     this.client = new GoogleGenerativeAI(config.apiKey);
-    this.model = config.model || 'gemini-1.5-flash';
+    this.model = config.model || 'gemini-2.5-flash';
     this.timeoutMs = config.timeoutMs || 4000;
   }
 

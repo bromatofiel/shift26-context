@@ -1,27 +1,94 @@
 # shift26-blindspot-mastra
 
-Welcome to your new [Mastra](https://mastra.ai/) project! We're excited to see what you'll build.
-
 ## Getting Started
-
-Start the development server:
 
 ```shell
 npm run dev
 ```
 
-Open [http://localhost:4111](http://localhost:4111) in your browser to access [Mastra Studio](https://mastra.ai/docs/getting-started/studio). It provides an interactive UI for building and testing your agents, along with a REST API that exposes your Mastra application as a local service. This lets you start building without worrying about integration right away.
+Studio UI → [http://localhost:4111](http://localhost:4111)  
+Swagger UI → [http://localhost:4111/swagger-ui](http://localhost:4111/swagger-ui)
 
-You can start editing files inside the `src/mastra` directory. The development server will automatically reload whenever you make changes.
+---
 
-## Learn more
+## Workflows API
 
-To learn more about Mastra, visit our [documentation](https://mastra.ai/docs/). Your bootstrapped project includes example code for [agents](https://mastra.ai/docs/agents/overview), [tools](https://mastra.ai/docs/agents/using-tools), [workflows](https://mastra.ai/docs/workflows/overview), [scorers](https://mastra.ai/docs/evals/overview), and [observability](https://mastra.ai/docs/observability/overview).
+Base URL: `http://localhost:4111/api`
 
-If you're new to AI agents, check out our [course](https://mastra.ai/course) and [YouTube videos](https://youtube.com/@mastra-ai). You can also join our [Discord](https://discord.gg/BTYqqHKUrf) community to get help and share your projects.
+All article workflows share the same request body:
 
-## Deploy on Mastra Cloud
+```json
+{
+    "inputData": {
+        "source": "Le Monde",
+        "title": "Titre de l'article",
+        "authors": ["Prénom Nom"],
+        "sections": [
+            {
+                "heading": "Sous-titre optionnel",
+                "paragraphs": ["Paragraphe 1", "Paragraphe 2"]
+            }
+        ]
+    }
+}
+```
 
-[Mastra Cloud](https://cloud.mastra.ai/) gives you a serverless agent environment with atomic deployments. Access your agents from anywhere and monitor performance. Make sure they don't go off the rails with evals and tracing.
+### Individual workflows (fire in parallel from the frontend)
 
-Check out the [deployment guide](https://mastra.ai/docs/deployment/overview) for more details.
+| Workflow         | Endpoint                                          | Output                                  | Speed         |
+| ---------------- | ------------------------------------------------- | --------------------------------------- | ------------- |
+| Mots-clefs       | `POST /workflows/keywords-extraction/start-async` | `{ keywords: string[] }`                | ⚡ rapide     |
+| Résumé           | `POST /workflows/article-summary/start-async`     | `{ summary: string }`                   | ⚡ rapide     |
+| Entités          | `POST /workflows/entities-analysis/start-async`   | `{ entities: [...] }`                   | ⚡ rapide     |
+| Angles manquants | `POST /workflows/blindspots-analysis/start-async` | `{ blindspots: string[] }`              | ⚡ rapide     |
+| Analyse du média | `POST /workflows/media-research/start-async`      | `{ mediaName, description, conflicts }` | 🐢 web search |
+| Autres médias    | `POST /workflows/other-media/start-async`         | `{ otherMedia: [...] }`                 | 🐢 web search |
+
+### Monolithic workflow (toutes les étapes en séquence)
+
+```
+POST /workflows/article-analysis/start-async
+```
+
+---
+
+### Exemples `curl`
+
+**Lancer tous les workflows rapides en parallèle :**
+
+```bash
+# Keywords
+curl -X POST http://localhost:4111/api/workflows/keywords-extraction/start-async \
+  -H "Content-Type: application/json" \
+  -d '{"inputData":{"source":"Le Monde","title":"Mon article","authors":["Jean Dupont"],"sections":[{"paragraphs":["Contenu..."]}]}}'
+
+# Résumé
+curl -X POST http://localhost:4111/api/workflows/article-summary/start-async \
+  -H "Content-Type: application/json" \
+  -d '{"inputData":{"source":"Le Monde","title":"Mon article","authors":["Jean Dupont"],"sections":[{"paragraphs":["Contenu..."]}]}}'
+```
+
+**Réponse (`status: "success"`) :**
+
+```json
+{
+  "status": "success",
+  "result": { "keywords": ["IA", "régulation", "Europe"] },
+  "steps": { ... },
+  "input": { ... }
+}
+```
+
+**Streamer l'exécution (SSE) :**
+
+```bash
+# 1. Créer un run pour obtenir un runId
+RUN_ID=$(curl -s -X POST http://localhost:4111/api/workflows/keywords-extraction/create-run \
+  -H "Content-Type: application/json" \
+  -d '{}' | jq -r '.runId')
+
+# 2. Streamer
+curl -X POST "http://localhost:4111/api/workflows/keywords-extraction/stream?runId=$RUN_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"inputData":{"source":"Le Monde","title":"Mon article","authors":[],"sections":[{"paragraphs":["Contenu..."]}]}}'
+```

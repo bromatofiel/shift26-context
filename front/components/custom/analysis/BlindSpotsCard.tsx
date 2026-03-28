@@ -32,12 +32,12 @@ export default function BlindSpotsCard({
                         <p className="text-xs text-red-500">{error}</p>
                     )}
                     {status === "success" && blindspots && (
-                        <ul className="space-y-2">
+                        <ul className="space-y-4">
                             {blindspots.map((spot, i) => (
                                 <li
                                     key={i}
-                                    className="flex gap-2.5 text-xs text-gray-700 leading-relaxed">
-                                    <Eye className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400" />
+                                    className="flex gap-4 text-sm text-gray-700">
+                                    <Eye className="w-3.5 h-3.5 shrink-0 mt-3 text-gray-400" />
                                     <span>{spot}</span>
                                 </li>
                             ))}

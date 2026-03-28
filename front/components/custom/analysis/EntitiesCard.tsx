@@ -28,13 +28,13 @@ function EntityRow({ entity }: { entity: Entity }) {
         : HelpCircle;
 
     return (
-        <div className="flex items-center gap-2 py-1.5">
+        <div className="flex items-center gap-2 py-1">
             <CategoryIcon className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-            <span className="text-sm font-medium text-gray-800 truncate">
+            <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0">
                 {entity.name}
             </span>
             {entity.category && (
-                <span className="ml-auto text-xs text-gray-400 shrink-0 pl-2">
+                <span className="text-xs text-gray-400 shrink-0">
                     {entity.category}
                 </span>
             )}
@@ -53,7 +53,7 @@ function EntityGroup({
 }) {
     if (entities.length === 0) return null;
     return (
-        <div className="mb-6 last:mb-0">
+        <div className="mb-6 last:mb-0 bg-gray-50 p-4 rounded-lg">
             <div className="flex items-center gap-1.5 mb-2">
                 <Icon className="w-3.5 h-3.5 text-gray-500" />
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -100,7 +100,7 @@ export default function EntitiesCard({
             <CardHeader>
                 <CardTitle className="text-sm font-medium">Entités</CardTitle>
             </CardHeader>
-            <CardContent className="max-h-[300px] overflow-y-auto">
+            <CardContent>
                 <AnimatedCardContent contentKey={status}>
                     {status === "idle" && (
                         <p className="text-xs text-gray-400">En attente…</p>
@@ -114,7 +114,7 @@ export default function EntitiesCard({
                         <p className="text-xs text-red-500">{error}</p>
                     )}
                     {status === "success" && entities && (
-                        <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 items-start">
                             <EntityGroup
                                 icon={User}
                                 label="Personnes"
@@ -125,7 +125,7 @@ export default function EntitiesCard({
                                 label="Organisations"
                                 entities={orgs}
                             />
-                        </>
+                        </div>
                     )}
                 </AnimatedCardContent>
             </CardContent>

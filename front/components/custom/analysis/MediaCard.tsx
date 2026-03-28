@@ -3,17 +3,30 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { MediaResult } from "@/lib/types";
 import AnimatedCardContent from "@/components/custom/AnimatedCardContent";
 
-// Parses markdown links like ([text](url)) or [text](url) into <a> tags
+/**
+ * Renders text with markdown links and newline-separated paragraphs.
+ * Handles both `[text](url)` and `([text](url))` formats.
+ */
 function RichText({ text }: { text: string }) {
-    const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+    // Matches optional outer parens: ([text](url)) or [text](url)
+    const linkRegex = /\(?\[([^\]]+)\]\(([^)]+)\)\)?/g;
+    const paragraphs = text.split(/\n+/).filter(Boolean);
+
     return (
-        <>
-            {parts.map((part, i) => {
-                const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-                if (match) {
-                    return (
+        <div className="space-y-2">
+            {paragraphs.map((para, pIdx) => {
+                const nodes: React.ReactNode[] = [];
+                let lastIndex = 0;
+                linkRegex.lastIndex = 0;
+                let match: RegExpExecArray | null;
+
+                while ((match = linkRegex.exec(para)) !== null) {
+                    if (match.index > lastIndex) {
+                        nodes.push(para.slice(lastIndex, match.index));
+                    }
+                    nodes.push(
                         <a
-                            key={i}
+                            key={match.index}
                             href={match[2]}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -21,10 +34,22 @@ function RichText({ text }: { text: string }) {
                             {match[1]}
                         </a>
                     );
+                    lastIndex = match.index + match[0].length;
                 }
-                return <span key={i}>{part}</span>;
+
+                if (lastIndex < para.length) {
+                    nodes.push(para.slice(lastIndex));
+                }
+
+                return (
+                    <p
+                        key={pIdx}
+                        className="text-xs text-gray-600 leading-relaxed">
+                        {nodes}
+                    </p>
+                );
             })}
-        </>
+        </div>
     );
 }
 
@@ -74,9 +99,7 @@ export default function MediaCard({
                                     ))}
                                 </div>
                             )}
-                            <p className="text-xs text-gray-600 leading-relaxed">
-                                <RichText text={media.description} />
-                            </p>
+                            <RichText text={media.description} />
                         </div>
                     )}
                 </AnimatedCardContent>

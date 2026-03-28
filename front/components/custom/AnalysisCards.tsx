@@ -23,16 +23,6 @@ import type {
     BlindSpotsResult
 } from "@/lib/types";
 
-const WORKFLOW_LABELS: Record<keyof WorkflowResults, string> = {
-    keywords: "Mots-clefs",
-    summary: "Résumé",
-    entities: "Entités",
-    blindspots: "Angles manquants",
-    media: "Analyse du média",
-    otherMedia: "Autres médias",
-    cognitiveBias: "Biais cognitifs"
-};
-
 function WorkflowCard({
     title,
     state
@@ -87,9 +77,46 @@ export default function AnalysisCards({
                         (results.summary.data as SummaryResult | null)?.summary
                     }
                     keywords={
-                        (results.keywords.data as KeywordsResult | null)?.keywords
+                        (results.keywords.data as KeywordsResult | null)
+                            ?.keywords
                     }
                     error={results.summary.error}
+                />
+            </div>
+            <BlindSpotsCard
+                status={results.blindspots.status}
+                blindspots={
+                    (results.blindspots.data as BlindSpotsResult | null)
+                        ?.blindspots
+                }
+                error={results.blindspots.error}
+            />
+            <CognitiveBiasCard
+                status={results.cognitiveBias.status}
+                cognitiveBias={
+                    (results.cognitiveBias
+                        .data as CognitiveBiasResult | null) ?? undefined
+                }
+                error={results.cognitiveBias.error}
+            />
+            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <OtherMediaCard
+                    status={results.otherMedia.status}
+                    otherMedia={
+                        (
+                            results.otherMedia.data as {
+                                otherMedia: OtherMediaArticle[];
+                            } | null
+                        )?.otherMedia
+                    }
+                    error={results.otherMedia.error}
+                />
+                <MediaCard
+                    status={results.media.status}
+                    media={
+                        (results.media.data as MediaResult | null) ?? undefined
+                    }
+                    error={results.media.error}
                 />
             </div>
             <EntitiesCard
@@ -99,35 +126,6 @@ export default function AnalysisCards({
                 }
                 error={results.entities.error}
             />
-            <BlindSpotsCard
-                status={results.blindspots.status}
-                blindspots={
-                    (results.blindspots.data as BlindSpotsResult | null)?.blindspots
-                }
-                error={results.blindspots.error}
-            />
-            <CognitiveBiasCard
-                status={results.cognitiveBias.status}
-                cognitiveBias={
-                    (results.cognitiveBias.data as CognitiveBiasResult | null) ?? undefined
-                }
-                error={results.cognitiveBias.error}
-            />
-            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <OtherMediaCard
-                    status={results.otherMedia.status}
-                    otherMedia={
-                        (results.otherMedia.data as { otherMedia: OtherMediaArticle[] } | null)
-                            ?.otherMedia
-                    }
-                    error={results.otherMedia.error}
-                />
-                <MediaCard
-                    status={results.media.status}
-                    media={(results.media.data as MediaResult | null) ?? undefined}
-                    error={results.media.error}
-                />
-            </div>
         </div>
     );
 }

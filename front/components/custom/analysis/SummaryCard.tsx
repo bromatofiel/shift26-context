@@ -40,7 +40,7 @@ export default function SummaryCard({
                             {keywords.map((kw) => (
                                 <span
                                     key={kw}
-                                    className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600">
+                                    className="rounded-full bg-gray-100 px-2.5 py-0.5 text-sm text-gray-600">
                                     {kw}
                                 </span>
                             ))}

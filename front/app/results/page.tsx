@@ -17,21 +17,15 @@ export default async function ResultsPage({
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-480 mx-auto px-4">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                    Analyse de votre article
-                </h1>
-                <p className="text-sm text-gray-500 mb-8">
+            <div className="max-w-[66%] mx-auto px-4 gap-8 flex flex-col">
+                <h2>Analyse de votre article</h2>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2 max-w-2xl wrap-break-word">
                     {exampleArticle?.title ?? url}
-                </p>
+                </h1>
                 {exampleArticle ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-                        <div className="w-full min-w-0">
-                            <ArticleContent article={exampleArticle} />
-                        </div>
-                        <div className="w-full min-w-0">
-                            <AnalysisCards articleData={exampleArticle} />
-                        </div>
+                    <div className="flex flex-col gap-8 w-full">
+                        <ArticleContent article={exampleArticle} />
+                        <AnalysisCards articleData={exampleArticle} />
                     </div>
                 ) : (
                     <UrlAnalysisCards url={url} />

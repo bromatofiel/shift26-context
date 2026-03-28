@@ -87,7 +87,7 @@ export default function CognitiveBiasCard({
 
                             {/* Résumé */}
                             <div className="py-4">
-                                <p className="text-xs text-gray-600 leading-relaxed border-l-2 border-gray-200 pl-3">
+                                <p className="text-sm text-gray-600 leading-relaxed border-l-2 border-gray-200 pl-3">
                                     {cognitiveBias.summary}
                                 </p>
                             </div>
@@ -99,7 +99,7 @@ export default function CognitiveBiasCard({
                                         key={i}
                                         className="rounded-lg border border-gray-100 bg-gray-50 p-3 space-y-1.5">
                                         <div className="flex flex-wrap items-center gap-2">
-                                            <span className="text-xs font-semibold text-gray-800">
+                                            <span className="text-sm font-semibold text-gray-800">
                                                 {signal.bias}
                                             </span>
                                             <span

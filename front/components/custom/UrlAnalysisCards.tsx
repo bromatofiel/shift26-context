@@ -3,6 +3,8 @@
 import { useFullAnalysis } from "@/hooks/useFullAnalysis";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
+import { BiasScoreCard, BiasScoreSkeleton } from "@/components/custom/BiasScoreCard";
+import { ExternalLink } from "lucide-react";
 import type { FullAnalysisResult } from "@/lib/types";
 
 const SECTION_LABELS = {
@@ -34,21 +36,24 @@ function AnalysisCard({
 
 function LoadingCards() {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {Object.values(SECTION_LABELS).map((label) => (
-                <Card key={label}>
-                    <CardHeader>
-                        <CardTitle className="text-sm font-medium">
-                            {label}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Chargement…
-                        </p>
-                    </CardContent>
-                </Card>
-            ))}
+        <div className="flex flex-col gap-4">
+            <BiasScoreSkeleton />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {Object.values(SECTION_LABELS).map((label) => (
+                    <Card key={label}>
+                        <CardHeader>
+                            <CardTitle className="text-sm font-medium">
+                                {label}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-xs text-gray-400 animate-pulse">
+                                Chargement…
+                            </p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
         </div>
     );
 }
@@ -74,12 +79,18 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
 
     return (
         <div className="flex flex-col gap-4">
+            {/* FIRST VISUAL: Bias Score */}
+            <BiasScoreCard score={data.cognitiveBias.globalScore} />
+
+            {/* Synthesis card full width */}
             {data.synthesis && (
                 <SynthesisCard
                     status="success"
                     points={data.synthesis.points}
                 />
             )}
+
+            {/* Analysis cards grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <AnalysisCard title={SECTION_LABELS.summary}>
                 <p className="text-xs">{data.summary}</p>
@@ -135,16 +146,19 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
             <AnalysisCard title={SECTION_LABELS.otherMedia}>
                 <ul className="text-xs space-y-2">
                     {data.otherMedia.map((item) => (
-                        <li key={item.url}>
+                        <li key={item.url} className="group">
                             <a
                                 href={item.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="font-medium hover:underline">
+                                className="font-medium text-gray-800 hover:text-blue-600 hover:underline flex items-center gap-1"
+                                aria-label={`${item.title} (ouvre dans un nouvel onglet)`}
+                            >
                                 {item.title}
+                                <ExternalLink className="w-3 h-3 opacity-50 group-hover:opacity-100 group-hover:text-blue-600" />
                             </a>
-                            <span className="text-gray-400 ml-1">
-                                — {item.media}
+                            <span className="text-gray-400 block">
+                                {item.media}
                             </span>
                         </li>
                     ))}

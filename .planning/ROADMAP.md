@@ -75,11 +75,11 @@ Plans:
 6. User can open alternative sources in browser from result cards
 7. First useful screen appears in <3s (loading screen with progress)
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 03-01-PLAN.md - PWA configuration (manifest, service worker, share handler)
-- [ ] 03-02-PLAN.md - Loading UI and BiasScoreCard (multi-stage progress, color-coded score)
+- [x] 03-02-PLAN.md - Loading UI and BiasScoreCard (multi-stage progress, color-coded score)
 
 **UI hint:** yes
 
@@ -111,7 +111,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & API Scaffold | 0/0 | Not started | - |
 | 2. Backend Pipeline | 3/3 | Complete | 2026-03-28 |
-| 3. Frontend & Integration | 0/2 | In progress | - |
+| 3. Frontend & Integration | 1/2 | In Progress|  |
 | 4. Robustness & Polish | 0/0 | Not started | - |
 
 ---

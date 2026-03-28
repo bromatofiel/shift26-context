@@ -35,11 +35,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Interface
 
-- [ ] **UI-01**: L'utilisateur voit un écran de chargement avec étapes (Analyse, Recherche, Synthèse)
-- [ ] **UI-02**: L'utilisateur voit le score couleur en premier (verdict visuel immédiat)
-- [ ] **UI-03**: L'utilisateur peut voir le détail des biais détectés
-- [ ] **UI-04**: L'utilisateur voit 2-3 cartes "Autres angles" cliquables
-- [ ] **UI-05**: L'utilisateur peut ouvrir les sources alternatives dans le navigateur
+- [x] **UI-01**: L'utilisateur voit un écran de chargement avec étapes (Analyse, Recherche, Synthèse)
+- [x] **UI-02**: L'utilisateur voit le score couleur en premier (verdict visuel immédiat)
+- [x] **UI-03**: L'utilisateur peut voir le détail des biais détectés
+- [x] **UI-04**: L'utilisateur voit 2-3 cartes "Autres angles" cliquables
+- [x] **UI-05**: L'utilisateur peut ouvrir les sources alternatives dans le navigateur
 
 ### Robustesse
 
@@ -108,11 +108,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANA-03 | Phase 2 | Complete |
 | ANA-04 | Phase 2 | Complete |
 | ANA-05 | Phase 2 | Complete |
-| UI-01 | Phase 3 | Pending |
-| UI-02 | Phase 3 | Pending |
-| UI-03 | Phase 3 | Pending |
-| UI-04 | Phase 3 | Pending |
-| UI-05 | Phase 3 | Pending |
+| UI-01 | Phase 3 | Complete |
+| UI-02 | Phase 3 | Complete |
+| UI-03 | Phase 3 | Complete |
+| UI-04 | Phase 3 | Complete |
+| UI-05 | Phase 3 | Complete |
 | ROB-01 | Phase 4 | Pending |
 | ROB-02 | Phase 4 | Pending |
 | ROB-03 | Phase 4 | Pending |

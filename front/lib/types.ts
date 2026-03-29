@@ -96,6 +96,32 @@ export interface SynthesisResult {
     points: SynthesisPoint[];
 }
 
+export type SourceQualityLevel = "low" | "medium" | "high";
+
+export type SourceUsageAssessment =
+    | "correct"
+    | "partially_correct"
+    | "misleading"
+    | "unverifiable";
+
+export interface SourceReference {
+    sourceName: string;
+    sourceType: string;
+    citationExcerpt?: string;
+    notoriety: SourceQualityLevel;
+    reliability: SourceQualityLevel;
+    relevance: SourceQualityLevel;
+    usageAssessment: SourceUsageAssessment;
+    issues: string[];
+    assessment: string;
+}
+
+export interface SourceVerificationResult {
+    sourceCount: number;
+    overallAssessment: string;
+    sources: SourceReference[];
+}
+
 export interface FullAnalysisResult {
     entities: Entity[];
     summary: string;

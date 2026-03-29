@@ -94,41 +94,49 @@ export default function CognitiveBiasCard({
                             </div>
 
                             {/* Signaux */}
-                            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                            <div className="space-y-3 max-h-[360px] overflow-y-auto pl-1 py-2 pr-1">
                                 {cognitiveBias.signals.map((signal, i) => (
-                                    <div
+                                    <Card
                                         key={i}
-                                        className="rounded-lg border border-gray-100 bg-gray-50 p-3 space-y-1.5">
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <span className="text-sm font-semibold text-gray-800">
-                                                {signal.bias}
-                                            </span>
-                                            <span
-                                                className={`text-[10px] rounded-full px-2 py-0.5 font-medium ${CONFIDENCE_STYLES[signal.confidence]}`}>
-                                                {
-                                                    CONFIDENCE_LABELS[
-                                                        signal.confidence
-                                                    ]
-                                                }
-                                            </span>
-                                            <span className="text-[10px] text-gray-400 ml-auto">
-                                                {FAMILY_LABELS[signal.family]}
-                                            </span>
-                                        </div>
-                                        {signal.excerpt && (
-                                            <div className="rounded bg-gray-100 border border-gray-200 px-2.5 py-1.5 space-y-0.5">
-                                                <p className="text-[9px] font-semibold uppercase tracking-wide text-gray-400">
-                                                    Extrait de l'article
-                                                </p>
-                                                <p className="text-[11px] text-gray-600 italic leading-snug">
-                                                    "{signal.excerpt}"
-                                                </p>
+                                        className="bg-gray-50 shadow-none">
+                                        <CardContent className="flex flex-col gap-3">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <span className="text-sm font-semibold text-gray-800">
+                                                    {signal.bias}
+                                                </span>
+                                                <span
+                                                    className={`text-[10px] rounded-full px-2 py-0.5 font-medium ${CONFIDENCE_STYLES[signal.confidence]}`}>
+                                                    {
+                                                        CONFIDENCE_LABELS[
+                                                            signal.confidence
+                                                        ]
+                                                    }
+                                                </span>
+                                                <span className="text-[10px] text-gray-400 ml-auto">
+                                                    {
+                                                        FAMILY_LABELS[
+                                                            signal.family
+                                                        ]
+                                                    }
+                                                </span>
                                             </div>
-                                        )}
-                                        <p className="text-xs text-gray-600 leading-relaxed">
-                                            {signal.explanation}
-                                        </p>
-                                    </div>
+                                            {signal.excerpt && (
+                                                <div className="rounded bg-white border border-gray-200 px-2.5 py-1.5 space-y-0.5">
+                                                    <p className="text-[9px] font-semibold uppercase tracking-wide text-gray-400">
+                                                        Extrait de
+                                                        l&apos;article
+                                                    </p>
+                                                    <p className="text-[11px] text-gray-600 italic leading-snug">
+                                                        &ldquo;{signal.excerpt}
+                                                        &rdquo;
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <p className="text-xs text-gray-500 leading-relaxed">
+                                                {signal.explanation}
+                                            </p>
+                                        </CardContent>
+                                    </Card>
                                 ))}
                             </div>
                         </>

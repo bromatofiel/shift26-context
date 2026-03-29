@@ -20,7 +20,9 @@ export default function SynthesisCard({
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle className="text-sm font-medium">Synthèse</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                    Synthèse des analyses
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <AnimatedCardContent contentKey={status}>

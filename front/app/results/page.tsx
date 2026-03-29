@@ -18,7 +18,7 @@ export default async function ResultsPage({
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Hero vidéo */}
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-42 overflow-hidden">
                 <video
                     autoPlay
                     muted

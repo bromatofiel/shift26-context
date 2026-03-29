@@ -14,6 +14,7 @@ import OtherMediaCard from "@/components/custom/analysis/OtherMediaCard";
 import CognitiveBiasCard from "@/components/custom/analysis/CognitiveBiasCard";
 import BlindSpotsCard from "@/components/custom/analysis/BlindSpotsCard";
 import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
+import SourceVerificationCard from "@/components/custom/analysis/SourceVerificationCard";
 import type {
     ArticleData,
     EntitiesResult,
@@ -23,7 +24,8 @@ import type {
     OtherMediaArticle,
     CognitiveBiasResult,
     BlindSpotsResult,
-    SynthesisResult
+    SynthesisResult,
+    SourceVerificationResult
 } from "@/lib/types";
 
 function WorkflowCard({
@@ -92,6 +94,13 @@ export default function AnalysisCards({
 
             {/* Reste des cards */}
             <div className="flex flex-col gap-4">
+                <p className="text-xs text-gray-500">
+                    Le modèle utilisé est GPT-5.4 par OpenAI. Les modèles d'AI
+                    peuvent parfois générer des résultats inexacts ou
+                    incohérents, donc prenez ces analyses comme des indications
+                    à vérifier.
+                </p>
+
                 <SummaryCard
                     status={results.summary.status}
                     summary={
@@ -127,6 +136,16 @@ export default function AnalysisCards({
                             .data as CognitiveBiasResult | null) ?? undefined
                     }
                     error={results.cognitiveBias.error}
+                />
+
+                <SourceVerificationCard
+                    status={results.sourceVerification.status}
+                    result={
+                        (results.sourceVerification
+                            .data as SourceVerificationResult | null) ??
+                        undefined
+                    }
+                    error={results.sourceVerification.error}
                 />
 
                 <OtherMediaCard

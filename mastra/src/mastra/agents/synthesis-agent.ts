@@ -10,6 +10,7 @@ On te fournit les résultats agrégés d'une analyse complète d'un article de p
 - angles manquants identifiés
 - informations sur le média source et ses conflits d'intérêts
 - articles alternatifs trouvés sur le même sujet
+- vérification des sources mobilisées dans l'article (nombre, bilan global, qualité et usage de chaque source)
 
 Ton rôle : produire 1 à 3 points clés à destination d'un lecteur non-expert, pour qu'il comprenne immédiatement ce qu'il doit retenir de cette analyse.
 

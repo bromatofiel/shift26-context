@@ -44,13 +44,19 @@ export default function SynthesisCard({
                         <p className="text-xs text-red-500">{error}</p>
                     )}
                     {status === "success" && points && (
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-3">
                             {points.map((point, i) => (
-                                <span
-                                    key={i}
-                                    className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium ${severityStyles[point.severity]}`}>
-                                    {point.label}
-                                </span>
+                                <div key={i} className="flex flex-col gap-1.5">
+                                    <span
+                                        className={`inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium self-start ${severityStyles[point.severity]}`}>
+                                        {point.label}
+                                    </span>
+                                    {point.explanation && (
+                                        <p className="text-xs text-gray-500 leading-relaxed px-1">
+                                            {point.explanation}
+                                        </p>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     )}

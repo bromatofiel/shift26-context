@@ -89,6 +89,7 @@ export interface OtherMediaArticle {
 export interface SynthesisPoint {
     label: string;
     severity: "green" | "orange" | "red";
+    explanation?: string;
 }
 
 export interface SynthesisResult {

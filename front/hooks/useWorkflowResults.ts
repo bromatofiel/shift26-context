@@ -10,7 +10,8 @@ import type {
     OtherMediaResult,
     CognitiveBiasResult,
     SynthesisResult,
-    OtherMediaArticle
+    OtherMediaArticle,
+    SourceVerificationResult
 } from "@/lib/types";
 
 export interface WorkflowResults {
@@ -22,6 +23,7 @@ export interface WorkflowResults {
     otherMedia: WorkflowState<OtherMediaResult>;
     cognitiveBias: WorkflowState<CognitiveBiasResult>;
     synthesis: WorkflowState<SynthesisResult>;
+    sourceVerification: WorkflowState<SourceVerificationResult>;
 }
 
 type WorkflowKey = keyof WorkflowResults;
@@ -43,7 +45,8 @@ const initialState: WorkflowResults = {
     media: makeIdle(),
     otherMedia: makeIdle(),
     cognitiveBias: makeIdle(),
-    synthesis: makeIdle()
+    synthesis: makeIdle(),
+    sourceVerification: makeIdle()
 };
 
 function reducer(state: WorkflowResults, action: Action): WorkflowResults {
@@ -106,6 +109,10 @@ const WORKFLOWS: { key: WorkflowKey; endpoint: string }[] = [
     {
         key: "cognitiveBias",
         endpoint: "/api/mastra/workflows/cognitive-bias-analysis/start-async"
+    },
+    {
+        key: "sourceVerification",
+        endpoint: "/api/mastra/workflows/source-verification/start-async"
     }
 ];
 
@@ -119,8 +126,14 @@ export function useWorkflowResults(articleData: ArticleData): {
 
     // Trigger synthesis only once all 4 dependencies succeed
     useEffect(() => {
-        const { blindspots, cognitiveBias, media, otherMedia, synthesis } =
-            results;
+        const {
+            blindspots,
+            cognitiveBias,
+            media,
+            otherMedia,
+            synthesis,
+            sourceVerification
+        } = results;
         if (
             blindspots.status === "success" &&
             blindspots.data != null &&
@@ -130,6 +143,8 @@ export function useWorkflowResults(articleData: ArticleData): {
             media.data != null &&
             otherMedia.status === "success" &&
             otherMedia.data != null &&
+            sourceVerification.status === "success" &&
+            sourceVerification.data != null &&
             synthesis.status === "idle"
         ) {
             const controller = new AbortController();
@@ -149,7 +164,8 @@ export function useWorkflowResults(articleData: ArticleData): {
                             otherMedia.data as unknown as {
                                 otherMedia: OtherMediaArticle[];
                             }
-                        ).otherMedia
+                        ).otherMedia,
+                        sourceVerification: sourceVerification.data
                     }
                 }),
                 signal: controller.signal
@@ -182,6 +198,7 @@ export function useWorkflowResults(articleData: ArticleData): {
         results.cognitiveBias.status,
         results.media.status,
         results.otherMedia.status,
+        results.sourceVerification.status,
         results.synthesis.status
     ]);
 

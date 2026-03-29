@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { Switch } from "@/components/ui/switch";
 import {
     useWorkflowResults,
     type WorkflowResults
@@ -14,6 +15,7 @@ import OtherMediaCard from "@/components/custom/analysis/OtherMediaCard";
 import CognitiveBiasCard from "@/components/custom/analysis/CognitiveBiasCard";
 import BlindSpotsCard from "@/components/custom/analysis/BlindSpotsCard";
 import SynthesisCard from "@/components/custom/analysis/SynthesisCard";
+import SourceVerificationCard from "@/components/custom/analysis/SourceVerificationCard";
 import type {
     ArticleData,
     EntitiesResult,
@@ -23,7 +25,8 @@ import type {
     OtherMediaArticle,
     CognitiveBiasResult,
     BlindSpotsResult,
-    SynthesisResult
+    SynthesisResult,
+    SourceVerificationResult
 } from "@/lib/types";
 
 function WorkflowCard({
@@ -68,6 +71,7 @@ export default function AnalysisCards({
     articleContent?: ReactNode;
 }) {
     const { results, start } = useWorkflowResults(articleData);
+    const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
         start();
@@ -92,62 +96,102 @@ export default function AnalysisCards({
 
             {/* Reste des cards */}
             <div className="flex flex-col gap-4">
-                <SummaryCard
-                    status={results.summary.status}
-                    summary={
-                        (results.summary.data as SummaryResult | null)?.summary
-                    }
-                    keywords={
-                        (results.keywords.data as KeywordsResult | null)
-                            ?.keywords
-                    }
-                    error={results.summary.error}
-                />
+                <div className="flex items-center gap-2">
+                    <Switch
+                        id="detail-toggle"
+                        checked={showDetails}
+                        onCheckedChange={setShowDetails}
+                        className="data-[state=checked]:bg-green-500"
+                    />
+                    <label
+                        htmlFor="detail-toggle"
+                        className="text-base font-medium text-gray-500 cursor-pointer select-none">
+                        {showDetails ? "Analyses détaillées" : "Synthèse"}
+                    </label>
+                </div>
 
-                <MediaCard
-                    status={results.media.status}
-                    media={
-                        (results.media.data as MediaResult | null) ?? undefined
-                    }
-                    error={results.media.error}
-                />
+                {showDetails && (
+                    <div className="flex flex-col gap-4">
+                        <p className="text-xs text-gray-500">
+                            Le modèle utilisé est GPT-5.4 par OpenAI. Les
+                            modèles d'AI peuvent parfois générer des résultats
+                            inexacts ou incohérents, donc prenez ces analyses
+                            comme des indications à vérifier.
+                        </p>
 
-                <BlindSpotsCard
-                    status={results.blindspots.status}
-                    blindspots={
-                        (results.blindspots.data as BlindSpotsResult | null)
-                            ?.blindspots
-                    }
-                    error={results.blindspots.error}
-                />
-                <CognitiveBiasCard
-                    status={results.cognitiveBias.status}
-                    cognitiveBias={
-                        (results.cognitiveBias
-                            .data as CognitiveBiasResult | null) ?? undefined
-                    }
-                    error={results.cognitiveBias.error}
-                />
+                        <SummaryCard
+                            status={results.summary.status}
+                            summary={
+                                (results.summary.data as SummaryResult | null)
+                                    ?.summary
+                            }
+                            keywords={
+                                (results.keywords.data as KeywordsResult | null)
+                                    ?.keywords
+                            }
+                            error={results.summary.error}
+                        />
 
-                <OtherMediaCard
-                    status={results.otherMedia.status}
-                    otherMedia={
-                        (
-                            results.otherMedia.data as {
-                                otherMedia: OtherMediaArticle[];
-                            } | null
-                        )?.otherMedia
-                    }
-                    error={results.otherMedia.error}
-                />
-                <EntitiesCard
-                    status={results.entities.status}
-                    entities={
-                        (results.entities.data as EntitiesResult | null)
-                            ?.entities
-                    }
-                    error={results.entities.error}
-                />
+                        <MediaCard
+                            status={results.media.status}
+                            media={
+                                (results.media.data as MediaResult | null) ??
+                                undefined
+                            }
+                            error={results.media.error}
+                        />
+
+                        <BlindSpotsCard
+                            status={results.blindspots.status}
+                            blindspots={
+                                (
+                                    results.blindspots
+                                        .data as BlindSpotsResult | null
+                                )?.blindspots
+                            }
+                            error={results.blindspots.error}
+                        />
+                        <CognitiveBiasCard
+                            status={results.cognitiveBias.status}
+                            cognitiveBias={
+                                (results.cognitiveBias
+                                    .data as CognitiveBiasResult | null) ??
+                                undefined
+                            }
+                            error={results.cognitiveBias.error}
+                        />
+
+                        <SourceVerificationCard
+                            status={results.sourceVerification.status}
+                            result={
+                                (results.sourceVerification
+                                    .data as SourceVerificationResult | null) ??
+                                undefined
+                            }
+                            error={results.sourceVerification.error}
+                        />
+
+                        <OtherMediaCard
+                            status={results.otherMedia.status}
+                            otherMedia={
+                                (
+                                    results.otherMedia.data as {
+                                        otherMedia: OtherMediaArticle[];
+                                    } | null
+                                )?.otherMedia
+                            }
+                            error={results.otherMedia.error}
+                        />
+                        <EntitiesCard
+                            status={results.entities.status}
+                            entities={
+                                (results.entities.data as EntitiesResult | null)
+                                    ?.entities
+                            }
+                            error={results.entities.error}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -98,7 +98,9 @@ export default function EntitiesCard({
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle className="text-sm font-medium">Entités</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                    Personnes mentionnées
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <AnimatedCardContent contentKey={status}>
@@ -106,9 +108,10 @@ export default function EntitiesCard({
                         <p className="text-xs text-gray-400">En attente…</p>
                     )}
                     {status === "loading" && (
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Chargement…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-orange-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">Chargement…</p>
+                        </div>
                     )}
                     {status === "error" && (
                         <p className="text-xs text-red-500">{error}</p>

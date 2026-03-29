@@ -15,7 +15,9 @@ export default function SummaryCard({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-sm font-medium">Résumé</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                    Résumé de l'article
+                </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
                 <AnimatedCardContent contentKey={status}>
@@ -23,9 +25,10 @@ export default function SummaryCard({
                         <p className="text-xs text-gray-400">En attente…</p>
                     )}
                     {status === "loading" && (
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Chargement…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-orange-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">Chargement…</p>
+                        </div>
                     )}
                     {status === "error" && (
                         <p className="text-xs text-red-500">{error}</p>

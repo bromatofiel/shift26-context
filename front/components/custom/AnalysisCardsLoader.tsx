@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import type { ArticleData } from "@/lib/types";
+import type React from "react";
 
 const AnalysisCards = dynamic(
     () => import("@/components/custom/AnalysisCards"),
@@ -21,9 +22,16 @@ const AnalysisCards = dynamic(
 );
 
 export default function AnalysisCardsLoader({
-    articleData
+    articleData,
+    articleContent
 }: {
     articleData: ArticleData;
+    articleContent?: React.ReactNode;
 }) {
-    return <AnalysisCards articleData={articleData} />;
+    return (
+        <AnalysisCards
+            articleData={articleData}
+            articleContent={articleContent}
+        />
+    );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import type { ReactNode } from "react";
 import {
     useWorkflowResults,
     type WorkflowResults
@@ -60,9 +61,11 @@ function WorkflowCard({
 }
 
 export default function AnalysisCards({
-    articleData
+    articleData,
+    articleContent
 }: {
     articleData: ArticleData;
+    articleContent?: ReactNode;
 }) {
     const { results, start } = useWorkflowResults(articleData);
 
@@ -71,18 +74,24 @@ export default function AnalysisCards({
     }, [start]);
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {results.synthesis.status !== "idle" && (
-                <SynthesisCard
-                    status={results.synthesis.status}
-                    points={
-                        (results.synthesis.data as SynthesisResult | null)
-                            ?.points
-                    }
-                    error={results.synthesis.error}
-                />
-            )}
-            <div className="sm:col-span-2">
+        <div className="flex flex-col gap-8">
+            {/* Article + Synthèse côte à côte */}
+            <div className="flex flex-col gap-8 md:flex-row md:gap-12">
+                <div className="flex-1 min-w-0">{articleContent}</div>
+                <div className="w-full md:w-100 md:shrink-0">
+                    <SynthesisCard
+                        status={results.synthesis.status}
+                        points={
+                            (results.synthesis.data as SynthesisResult | null)
+                                ?.points
+                        }
+                        error={results.synthesis.error}
+                    />
+                </div>
+            </div>
+
+            {/* Reste des cards */}
+            <div className="flex flex-col gap-4">
                 <SummaryCard
                     status={results.summary.status}
                     summary={
@@ -94,24 +103,32 @@ export default function AnalysisCards({
                     }
                     error={results.summary.error}
                 />
-            </div>
-            <BlindSpotsCard
-                status={results.blindspots.status}
-                blindspots={
-                    (results.blindspots.data as BlindSpotsResult | null)
-                        ?.blindspots
-                }
-                error={results.blindspots.error}
-            />
-            <CognitiveBiasCard
-                status={results.cognitiveBias.status}
-                cognitiveBias={
-                    (results.cognitiveBias
-                        .data as CognitiveBiasResult | null) ?? undefined
-                }
-                error={results.cognitiveBias.error}
-            />
-            <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <MediaCard
+                    status={results.media.status}
+                    media={
+                        (results.media.data as MediaResult | null) ?? undefined
+                    }
+                    error={results.media.error}
+                />
+
+                <BlindSpotsCard
+                    status={results.blindspots.status}
+                    blindspots={
+                        (results.blindspots.data as BlindSpotsResult | null)
+                            ?.blindspots
+                    }
+                    error={results.blindspots.error}
+                />
+                <CognitiveBiasCard
+                    status={results.cognitiveBias.status}
+                    cognitiveBias={
+                        (results.cognitiveBias
+                            .data as CognitiveBiasResult | null) ?? undefined
+                    }
+                    error={results.cognitiveBias.error}
+                />
+
                 <OtherMediaCard
                     status={results.otherMedia.status}
                     otherMedia={
@@ -123,21 +140,15 @@ export default function AnalysisCards({
                     }
                     error={results.otherMedia.error}
                 />
-                <MediaCard
-                    status={results.media.status}
-                    media={
-                        (results.media.data as MediaResult | null) ?? undefined
+                <EntitiesCard
+                    status={results.entities.status}
+                    entities={
+                        (results.entities.data as EntitiesResult | null)
+                            ?.entities
                     }
-                    error={results.media.error}
+                    error={results.entities.error}
                 />
             </div>
-            <EntitiesCard
-                status={results.entities.status}
-                entities={
-                    (results.entities.data as EntitiesResult | null)?.entities
-                }
-                error={results.entities.error}
-            />
         </div>
     );
 }

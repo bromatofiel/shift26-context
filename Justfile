@@ -1,3 +1,4 @@
+
 set shell := ["bash", "-cu"]
 
 # Generic Clever Cloud deployment helper.
@@ -14,3 +15,7 @@ deploy-front branch="main":
 
 # Deploy all configured services to Clever Cloud.
 deploy branch="main": (deploy-mastra branch) (deploy-front branch)
+
+# Start the local Docker Compose stack.
+up:
+  docker compose up --build

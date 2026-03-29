@@ -1,0 +1,25 @@
+services:
+  mastra:
+    build:
+      context: ./mastra
+      dockerfile: Dockerfile
+    env_file:
+      - ./mastra/.env.local
+    ports:
+      - "4111:4111"
+    volumes:
+      - mastra-data:/data
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    depends_on:
+      - mastra
+    environment:
+      MASTRA_URL: http://mastra:4111/api
+    ports:
+      - "3000:3000"
+
+volumes:
+  mastra-data:

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Spot Experience</title>
+    <style>
+        :root {
+            --bg-light: #f7f7f7;
+            --accent-glow: #ff4d4d;
+            --black: #000000;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-light); height: 100vh; overflow: hidden; width: 100vw; }
+
+        /* --- ÉCRAN 1 : ACCUEIL --- */
+        #screen-home {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.5s;
+            z-index: 10;
+        }
+        .video-accueil { height: 100vh; width: 100vw; object-fit: cover; }
+        
+        .bottom-bar {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; width: 90%; max-width: 550px; z-index: 11;
+        }
+
+        /* Animation Barre URL */
+        .url-bar-wrapper {
+            width: 60px; height: 60px; background: var(--black); border-radius: 30px;
+            display: flex; align-items: center; opacity: 0; flex-shrink: 0;
+            animation: 
+                slideUpIntro 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, 
+                expandBarWidth 0.8s cubic-bezier(0.7, 0, 0.3, 1) 1s forwards;
+        }
+        .url-input-field { width: 100%; height: 100%; background: transparent; border: none; outline: none; padding: 0 25px; color: white; font-size: 1.1rem; opacity: 0; animation: fadeIn 0.4s ease 1.6s forwards; }
+
+        .btn-next { 
+            width: 60px; height: 60px; background: var(--black); border-radius: 50%; 
+            border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            opacity: 0; flex-shrink: 0; animation: fadeIn 0.5s ease 1s forwards; transition: transform 0.3s;
+        }
+        .btn-next svg { fill: white; width: 24px; }
+
+        /* CORRECTIF MOBILE BARRE ACCUEIL */
+        @media (max-width: 500px) {
+            .bottom-bar { width: 80%; max-width: 300px; gap: 10px; } /* Marges forcées ici */
+            .url-bar-wrapper, .btn-next { height: 50px; }
+            .url-bar-wrapper { width: 50px; }
+            .btn-next { width: 50px; }
+            .url-input-field { font-size: 0.9rem; padding: 0 15px; }
+        }
+
+        /* --- ÉCRAN 2 : ARTICLE --- */
+        #screen-article {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            opacity: 0; pointer-events: none; display: flex; flex-direction: column; align-items: center;
+            transition: opacity 0.5s ease; overflow-y: auto; overflow-x: hidden; z-index: 5;
+        }
+        .video-bg-step2 { position: fixed; bottom: 0; right: 0; min-width: 100%; min-height: 100%; object-fit: cover; z-index: 1; }
+        .header-logo-container { width: 100%; position: relative; z-index: 5; display: flex; justify-content: center; }
+        .header-logo { width: 100%; max-width: 700px; height: auto; transform: translateX(-40px); }
+
+        .content-2 { position: relative; z-index: 5; width: 100%; max-width: 600px; padding: 20px 20px 250px 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 30px; row-gap: 80px; }
+        
+        .pastille {
+            background: var(--black); color: white; width: 85%; margin: 0 auto; 
+            aspect-ratio: 1/1; border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; padding: 0 20px 0 50px;
+            position: relative; font-size: 1.4rem; font-weight: 500; line-height: 1.1; cursor: pointer; z-index: 10;
+            --y-offset: 0px;
+            opacity: 0; transform: translateY(var(--y-offset)) scale(0);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        }
+        .pastille::before { content: ''; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; background: white; border-radius: 50%; }
+        .pastille:nth-child(even) { --y-offset: 60px; }
+
+        /* ANIMATION SCALE SURVOL */
+        .pastille:hover {
+            transform: translateY(var(--y-offset)) scale(1.1) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .glow {
+            box-shadow: 0 0 20px 2px rgba(0, 0, 0, 1), 0 0 50px 15px rgba(255, 77, 77, 0.8), 0 0 110px 40px rgba(255, 77, 77, 0.4), 0 0 180px 60px rgba(255, 77, 77, 0.2); 
+        }
+        .glow:hover {
+            box-shadow: 0 0 35px 10px rgba(0, 0, 0, 1), 0 0 50px 15px rgba(255, 77, 77, 0.8), 0 0 110px 40px rgba(255, 77, 77, 0.4), 0 0 180px 60px rgba(255, 77, 77, 0.2); 
+        }
+
+        /* --- ÉCRAN 3 : DETAIL NOIR --- */
+        #screen-detail {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--black); color: white;
+            z-index: 100; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease;
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 80px 40px; overflow-y: auto;
+        }
+        .detail-container { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: flex-start; }
+        .close-btn { position: fixed; top: 40px; right: 40px; background: none; border: none; cursor: pointer; z-index: 110; }
+        
+        .detail-header-circle {
+            width: 200px; height: 200px; background: white; border-radius: 50%;
+            display: flex; align-items: center; padding-left: 30px; color: black;
+            font-weight: 600; font-size: 1.5rem; margin-bottom: 50px; line-height: 1.2;
+        }
+        .detail-dot { width: 22px; height: 22px; background: black; border-radius: 50%; margin-right: 15px; flex-shrink: 0; }
+        .detail-body { font-size: 1.2rem; line-height: 1.7; opacity: 0.9; text-align: justify; }
+
+        #expander { position: fixed; background: var(--black); border-radius: 50%; z-index: 90; pointer-events: none; transform: scale(0); transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slideUpIntro { 0% { transform: translateY(150px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes expandBarWidth { to { width: 100%; flex-grow: 1; } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes popInCombined { to { opacity: 1; transform: translateY(var(--y-offset)) scale(1); } }
+
+        /* --- ÉTATS --- */
+        body.step-2 #screen-home { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+        body.step-2 #screen-article { opacity: 1; pointer-events: auto; }
+        body.step-2 .pastille { animation: popInCombined 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        body.step-2 .pastille:nth-child(1) { animation-delay: 0.3s; }
+        body.step-2 .pastille:nth-child(2) { animation-delay: 0.4s; }
+        body.step-2 .pastille:nth-child(3) { animation-delay: 0.5s; }
+        body.step-2 .pastille:nth-child(4) { animation-delay: 0.6s; }
+        body.step-2 .pastille:nth-child(5) { animation-delay: 0.7s; }
+        body.step-2 .pastille:nth-child(6) { animation-delay: 0.8s; }
+
+        body.step-3 #screen-detail { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body id="main-body">
+
+    <div id="expander"></div>
+
+    <!-- ÉCRAN 1 -->
+    <section id="screen-home">
+        <video class="video-accueil" autoplay muted playsinline>
+            <source src="videos/Video_Accueil_v02.mp4" type="video/mp4">
+        </video>
+        <div class="bottom-bar">
+            <div class="url-bar-wrapper">
+                <input type="url" class="url-input-field" placeholder="Entrez une URL ici...">
+            </div>
+            <button class="btn-next" onclick="goToStep2()">
+                <svg viewBox="0 0 24 24"><path d="M8.59,16.59L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.59Z"/></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- ÉCRAN 2 -->
+    <section id="screen-article">
+        <video class="video-bg-step2" autoplay loop muted playsinline>
+            <source src="videos/BG_B_01.mp4" type="video/mp4">
+        </video>
+        <div class="header-logo-container">
+            <img src="images/logo_titre.png" class="header-logo" alt="Logo">
+        </div>
+        <div class="content-2">
+            <div class="grid">
+                <div class="pastille" onclick="openDetail(this, 'Synthèse<br>article')">Synthèse<br>article</div>
+                <div class="pastille glow" onclick="openDetail(this, 'Article<br>manquant')">Article<br>manquant</div>
+                <div class="pastille" onclick="openDetail(this, 'Biais<br>cognitifs')">Biais<br>cognitifs</div>
+                <div class="pastille" onclick="openDetail(this, 'Analyse du<br>média')">Analyse du<br>média</div>
+                <div class="pastille" onclick="openDetail(this, 'Aller plus<br>loin')">Aller plus<br>loin</div>
+                <div class="pastille" onclick="openDetail(this, 'Personnes<br>mentionnées')">Personnes<br>mentionnées</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ÉCRAN 3 -->
+    <section id="screen-detail">
+        <button class="close-btn" onclick="closeDetail()">
+            <svg width="40" height="40" viewBox="0 0 24 24"><path fill="white" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+        </button>
+        <div class="detail-container">
+            <div class="detail-header-circle">
+                <div class="detail-dot"></div>
+                <span id="detail-title">Titre</span>
+            </div>
+            <div class="detail-body">
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const body = document.getElementById('main-body');
+        const expander = document.getElementById('expander');
+        const detailTitle = document.getElementById('detail-title');
+
+        function goToStep2() { 
+            body.classList.add('step-2'); 
+        }
+        
+        function openDetail(el, title) {
+            detailTitle.innerHTML = title;
+            const rect = el.getBoundingClientRect();
+            // On réinitialise l'expander à la position de la pastille
+            expander.style.transition = 'none';
+            expander.style.width = rect.width + 'px';
+            expander.style.height = rect.height + 'px';
+            expander.style.top = rect.top + 'px';
+            expander.style.left = rect.left + 'px';
+            expander.style.transform = 'scale(1)';
+            
+            // On force le rendu avant l'animation
+            expander.offsetHeight; 
+            
+            expander.style.transition = 'transform 0.8s cubic-bezier(0.7, 0, 0.3, 1)';
+            expander.style.transform = 'scale(60)';
+            
+            setTimeout(() => {
+                body.classList.add('step-3');
+            }, 400);
+        }
+        
+        function closeDetail() { 
+            body.classList.remove('step-3'); 
+            setTimeout(() => { expander.style.transform = 'scale(0)'; }, 300); 
+        }
+    </script>
+</body>
+</html>

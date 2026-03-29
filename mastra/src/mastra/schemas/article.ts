@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const articleSchema = z.object({
     source: z.string(),
+    sources: z.array(z.string()).optional(),
     title: z.string(),
     authors: z.array(z.string()),
     sections: z.array(
@@ -95,11 +96,15 @@ export const sourceReferenceSchema = z.object({
         .describe("Nom de la source citée ou mobilisée dans l'article"),
     sourceType: z
         .string()
-        .describe("Ex: étude, institution, expert, média, entreprise, base de données"),
+        .describe(
+            "Ex: étude, institution, expert, média, entreprise, base de données"
+        ),
     citationExcerpt: z
         .string()
         .optional()
-        .describe("Passage de l'article où la source est mentionnée ou utilisée"),
+        .describe(
+            "Passage de l'article où la source est mentionnée ou utilisée"
+        ),
     notoriety: sourceQualityLevelEnum.describe(
         "Niveau de notoriété publique ou institutionnelle de la source"
     ),

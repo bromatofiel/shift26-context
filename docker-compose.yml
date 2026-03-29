@@ -3,8 +3,8 @@ services:
     build:
       context: ./mastra
       dockerfile: Dockerfile
-    environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    env_file:
+      - ./mastra/.env.local
     ports:
       - "4111:4111"
     volumes:

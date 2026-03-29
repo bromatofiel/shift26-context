@@ -16,107 +16,86 @@ export default function SearchPage() {
     const canSubmit = value.trim().length > 0;
 
     return (
-        <main className="blindspot-video-page">
+        <main className="relative min-h-screen overflow-hidden bg-black">
             <video
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="blindspot-video"
+                className="absolute inset-0 h-full w-full object-cover"
                 src="/video-accueil-v02.mp4"
             />
-            <div className="blindspot-video-mask" />
 
-            <div className="blindspot-page-content">
-                <section className="blindspot-search-shell">
-                    <div className="space-y-6">
-                        <span className="blindspot-chip">
-                            Recherche manuelle / mode demo
-                        </span>
-                        <div className="space-y-4">
-                            <h1 className="blindspot-title">
-                                Colle un lien et ouvre l&apos;analyse en 7
-                                pastilles.
-                            </h1>
-                            <p className="blindspot-lead">
-                                Cette page sert de raccourci quand tu veux
-                                tester BlindSpot sans passer par le partage
-                                natif. Sur mobile, l&apos;usage ideal reste
-                                l&apos;ouverture depuis une app ou un navigateur.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="space-y-6">
-                        <div className="blindspot-search-bar blindspot-glass-panel">
-                            <Search className="ml-2 h-5 w-5 shrink-0 text-black/45" />
-                            <input
-                                type="url"
-                                value={value}
-                                onChange={(event) => setValue(event.target.value)}
-                                onKeyDown={(event) => {
-                                    if (event.key === "Enter" && canSubmit) {
-                                        navigateTo(value.trim());
-                                    }
-                                }}
-                                placeholder="Colle ici un article, une video ou une URL de news"
-                                className="blindspot-search-input"
-                            />
-                            {canSubmit && (
-                                <button
-                                    type="button"
-                                    onClick={() => setValue("")}
-                                    aria-label="Effacer l'URL"
-                                    className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition hover:bg-black/5 hover:text-black">
-                                    <X className="h-4 w-4" />
-                                </button>
-                            )}
+            <section className="relative z-10 flex min-h-screen flex-col justify-end px-4 py-4 sm:px-6 sm:py-6">
+                <div className="mx-auto w-full max-w-6xl space-y-4">
+                    <div className="blindspot-search-bar blindspot-glass-panel mx-auto w-full max-w-4xl bg-white/92 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-md">
+                        <Search className="ml-2 h-5 w-5 shrink-0 text-black/45" />
+                        <input
+                            type="url"
+                            value={value}
+                            onChange={(event) => setValue(event.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" && canSubmit) {
+                                    navigateTo(value.trim());
+                                }
+                            }}
+                            placeholder="Colle ici un article, une video ou une URL de news"
+                            className="blindspot-search-input"
+                        />
+                        {canSubmit && (
                             <button
                                 type="button"
-                                className="blindspot-search-submit"
-                                onClick={() => navigateTo(value.trim())}
-                                disabled={!canSubmit}
-                                aria-label="Lancer l'analyse">
-                                <ArrowRight className="h-5 w-5" />
+                                onClick={() => setValue("")}
+                                aria-label="Effacer l'URL"
+                                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition hover:bg-black/5 hover:text-black">
+                                <X className="h-4 w-4" />
                             </button>
+                        )}
+                        <button
+                            type="button"
+                            className="blindspot-search-submit"
+                            onClick={() => navigateTo(value.trim())}
+                            disabled={!canSubmit}
+                            aria-label="Lancer l'analyse">
+                            <ArrowRight className="h-5 w-5" />
+                        </button>
+                    </div>
+
+                    <div className="blindspot-glass-panel rounded-[2rem] bg-white/88 p-5 sm:p-6">
+                        <div className="mb-4 flex items-center justify-between gap-3">
+                            <div>
+                                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-black/50">
+                                    Exemples
+                                </p>
+                                <p className="mt-1 text-sm text-black/65">
+                                    Utilise un article de demo pour ouvrir
+                                    directement l&apos;experience.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="blindspot-glass-panel rounded-[2rem] p-5 sm:p-6">
-                            <div className="mb-4 flex items-center justify-between gap-3">
-                                <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-black/50">
-                                        Exemples
+                        <div className="blindspot-example-grid">
+                            {inputExample.map((article) => (
+                                <button
+                                    key={article.url}
+                                    type="button"
+                                    onClick={() => navigateTo(article.url)}
+                                    className="blindspot-example-card blindspot-glass-panel">
+                                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
+                                        {article.source}
                                     </p>
-                                    <p className="mt-1 text-sm text-black/65">
-                                        Utilise un article de demo pour ouvrir
-                                        directement l&apos;experience.
+                                    <h2 className="mt-3 text-left text-lg font-semibold leading-snug text-black">
+                                        {article.title}
+                                    </h2>
+                                    <p className="mt-4 text-sm leading-6 text-black/65">
+                                        {article.authors.join(", ") || "Article exemple"}
                                     </p>
-                                </div>
-                            </div>
-
-                            <div className="blindspot-example-grid">
-                                {inputExample.map((article) => (
-                                    <button
-                                        key={article.url}
-                                        type="button"
-                                        onClick={() => navigateTo(article.url)}
-                                        className="blindspot-example-card blindspot-glass-panel">
-                                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
-                                            {article.source}
-                                        </p>
-                                        <h2 className="mt-3 text-left text-lg font-semibold leading-snug text-black">
-                                            {article.title}
-                                        </h2>
-                                        <p className="mt-4 text-sm leading-6 text-black/65">
-                                            {article.authors.join(", ") || "Article exemple"}
-                                        </p>
-                                    </button>
-                                ))}
-                            </div>
+                                </button>
+                            ))}
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </main>
     );
 }

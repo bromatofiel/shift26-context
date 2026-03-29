@@ -11,13 +11,17 @@ type SharePageProps = {
 export default async function SharePage({ searchParams }: SharePageProps) {
     const { title, text, url } = await searchParams;
 
+    let target = null;
+
     if (url) {
-        console.log("Redirecting to results page with URL:", url);
-        redirect(`/results?url=${encodeURIComponent(url)}&title=${title}`);
+        target = `/results?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`
     }
     if (text) {
-        console.log("Redirecting to results page with URL:", text);
-        redirect(`/results?url=${encodeURIComponent(text)}&title=${title}`);
+        target = `/results?url=${encodeURIComponent(text)}&title=${encodeURIComponent(title)}`
+    }
+    if (target) {
+        console.log("Redirecting to results page with URL:", target);
+        redirect(target);
     }
 
     return (

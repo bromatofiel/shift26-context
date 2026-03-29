@@ -37,7 +37,7 @@ export default async function ResultsPage({
                         Analyse de votre article
                     </h2>
                     <h1 className="text-4xl font-bold text-gray-900 max-w-2xl wrap-break-word">
-                        {title ?? exampleArticle?.title ?? url}
+                        {exampleArticle?.title ?? title ?? url}
                     </h1>
                 </div>
                 {exampleArticle ? (

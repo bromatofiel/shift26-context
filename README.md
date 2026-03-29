@@ -68,6 +68,7 @@ Le `Justfile` utilise une cible générique interne de déploiement Clever Cloud
 ## Docker Compose
 
 Un `docker-compose.yml` est disponible à la racine pour lancer les apps `front` et `mastra` ensemble.
+Le mode de lancement local recommandé pour ce projet est Docker Compose. Éviter les `npm install` et démarrages manuels sur l'hôte, sauf besoin explicite de debug hors conteneur.
 
 Prérequis :
 

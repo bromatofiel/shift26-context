@@ -18,6 +18,7 @@ import { otherMediaWorkflow } from "./workflows/other-media-workflow";
 import { cognitiveBiasWorkflow } from "./workflows/cognitive-bias-workflow";
 import { articleExtractorWorkflow } from "./workflows/article-extractor-workflow";
 import { synthesisWorkflow } from "./workflows/synthesis-workflow";
+import { sourceVerificationWorkflow } from "./workflows/source-verification-workflow";
 import { weatherAgent } from "./agents/example-weather-agent";
 import { articleAgent } from "./agents/article-agent";
 import { entityAgent } from "./agents/entity-agent";
@@ -29,6 +30,7 @@ import { otherMediaAgent } from "./agents/other-media";
 import { cognitiveBiasAgent } from "./agents/cognitive-bias-agent";
 import { articleExtractorAgent } from "./agents/article-extractor-agent";
 import { synthesisAgent } from "./agents/synthesis-agent";
+import { sourceVerificationAgent } from "./agents/source-verification-agent";
 import {
     toolCallAppropriatenessScorer,
     completenessScorer,
@@ -47,7 +49,8 @@ export const mastra = new Mastra({
         otherMediaWorkflow,
         cognitiveBiasWorkflow,
         articleExtractorWorkflow,
-        synthesisWorkflow
+        synthesisWorkflow,
+        sourceVerificationWorkflow
     },
     agents: {
         weatherAgent,
@@ -60,7 +63,8 @@ export const mastra = new Mastra({
         otherMediaAgent,
         cognitiveBiasAgent,
         articleExtractorAgent,
-        synthesisAgent
+        synthesisAgent,
+        sourceVerificationAgent
     },
     scorers: {
         toolCallAppropriatenessScorer,

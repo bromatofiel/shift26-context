@@ -51,6 +51,7 @@ export default function SearchInput({
             <button
                 onClick={() => value.trim() && onSubmit?.(value.trim())}
                 disabled={!value.trim()}
+                suppressHydrationWarning
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed">
                 Analyser
             </button>

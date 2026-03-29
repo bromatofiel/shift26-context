@@ -80,6 +80,66 @@ export const cognitiveBiasSchema = z.object({
         )
 });
 
+export const sourceQualityLevelEnum = z.enum(["low", "medium", "high"]);
+
+export const sourceUsageAssessmentEnum = z.enum([
+    "correct",
+    "partially_correct",
+    "misleading",
+    "unverifiable"
+]);
+
+export const sourceReferenceSchema = z.object({
+    sourceName: z
+        .string()
+        .describe("Nom de la source citée ou mobilisée dans l'article"),
+    sourceType: z
+        .string()
+        .describe("Ex: étude, institution, expert, média, entreprise, base de données"),
+    citationExcerpt: z
+        .string()
+        .optional()
+        .describe("Passage de l'article où la source est mentionnée ou utilisée"),
+    notoriety: sourceQualityLevelEnum.describe(
+        "Niveau de notoriété publique ou institutionnelle de la source"
+    ),
+    reliability: sourceQualityLevelEnum.describe(
+        "Niveau de fiabilité estimé de la source au vu de sa nature et de sa réputation"
+    ),
+    relevance: sourceQualityLevelEnum.describe(
+        "Pertinence de cette source pour étayer l'affirmation visée dans l'article"
+    ),
+    usageAssessment: sourceUsageAssessmentEnum.describe(
+        "La manière dont l'article utilise la source"
+    ),
+    issues: z
+        .array(z.string())
+        .describe(
+            "Points de vigilance éventuels : citation tronquée, décontextualisation, ambiguïté, extrapolation, etc."
+        ),
+    assessment: z
+        .string()
+        .describe(
+            "Analyse synthétique de la qualité de la source et de la justesse de son usage"
+        )
+});
+
+export const sourceVerificationSchema = z.object({
+    sourceCount: z
+        .number()
+        .int()
+        .min(0)
+        .describe("Nombre total de sources identifiées dans l'article"),
+    overallAssessment: z
+        .string()
+        .describe(
+            "Synthèse globale de la qualité des sources et de leur usage dans l'article"
+        ),
+    sources: z
+        .array(sourceReferenceSchema)
+        .describe("Analyse détaillée de chaque source identifiée")
+});
+
 export const synthesisPointSchema = z.object({
     label: z.string().describe("Point clé en 12 mots maximum"),
     severity: z

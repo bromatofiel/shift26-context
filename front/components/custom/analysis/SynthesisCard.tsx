@@ -25,14 +25,20 @@ export default function SynthesisCard({
             <CardContent>
                 <AnimatedCardContent contentKey={status}>
                     {status === "idle" && (
-                        <p className="text-xs text-gray-400">
-                            En attente des analyses…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-orange-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">
+                                En attente des analyses…
+                            </p>
+                        </div>
                     )}
                     {status === "loading" && (
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Synthèse en cours…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-blue-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">
+                                Synthèse en cours…
+                            </p>
+                        </div>
                     )}
                     {status === "error" && (
                         <p className="text-xs text-red-500">{error}</p>

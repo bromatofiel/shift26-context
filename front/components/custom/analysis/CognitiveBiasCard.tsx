@@ -68,9 +68,10 @@ export default function CognitiveBiasCard({
                         <p className="text-xs text-gray-400">En attente…</p>
                     )}
                     {status === "loading" && (
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Chargement…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-orange-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">Chargement…</p>
+                        </div>
                     )}
                     {status === "error" && (
                         <p className="text-xs text-red-500">{error}</p>
@@ -115,9 +116,14 @@ export default function CognitiveBiasCard({
                                             </span>
                                         </div>
                                         {signal.excerpt && (
-                                            <p className="text-[11px] text-gray-500 italic leading-snug">
-                                                {signal.excerpt}
-                                            </p>
+                                            <div className="rounded bg-gray-100 border border-gray-200 px-2.5 py-1.5 space-y-0.5">
+                                                <p className="text-[9px] font-semibold uppercase tracking-wide text-gray-400">
+                                                    Extrait de l'article
+                                                </p>
+                                                <p className="text-[11px] text-gray-600 italic leading-snug">
+                                                    "{signal.excerpt}"
+                                                </p>
+                                            </div>
                                         )}
                                         <p className="text-xs text-gray-600 leading-relaxed">
                                             {signal.explanation}

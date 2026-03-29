@@ -18,7 +18,7 @@ export default function SynthesisCard({
     error?: string | null;
 }) {
     return (
-        <Card className="sm:col-span-2">
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle className="text-sm font-medium">Synthèse</CardTitle>
             </CardHeader>

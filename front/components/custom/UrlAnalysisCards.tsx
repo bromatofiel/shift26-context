@@ -41,9 +41,9 @@ export default function UrlAnalysisCards({ url }: { url: string }) {
     if (!data) return null;
 
     return (
-        <div className="flex flex-col gap-8 w-full">
-            <ArticleContent article={data} />
-            <AnalysisCardsLoader articleData={data} />
-        </div>
+        <AnalysisCardsLoader
+            articleData={data}
+            articleContent={<ArticleContent article={data} />}
+        />
     );
 }

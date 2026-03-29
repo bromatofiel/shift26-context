@@ -96,7 +96,7 @@ export default function EntitiesCard({
             ) ?? [];
 
     return (
-        <Card className="sm:col-span-2">
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle className="text-sm font-medium">Entités</CardTitle>
             </CardHeader>

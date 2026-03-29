@@ -31,7 +31,7 @@ export default async function ResultsPage({
             </div>
 
             {/* Contenu */}
-            <div className="max-w-[66%] mx-auto px-4 py-8 gap-8 flex flex-col">
+            <div className="w-full sm:max-w-[1200px] mx-auto px-4 py-8 gap-8 flex flex-col">
                 <div className="flex flex-col gap-1">
                     <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide">
                         Analyse de votre article
@@ -41,10 +41,12 @@ export default async function ResultsPage({
                     </h1>
                 </div>
                 {exampleArticle ? (
-                    <div className="flex flex-col gap-8 w-full">
-                        <ArticleContent article={exampleArticle} />
-                        <AnalysisCards articleData={exampleArticle} />
-                    </div>
+                    <AnalysisCards
+                        articleData={exampleArticle}
+                        articleContent={
+                            <ArticleContent article={exampleArticle} />
+                        }
+                    />
                 ) : (
                     <UrlAnalysisCards url={url} />
                 )}

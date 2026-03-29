@@ -12,7 +12,7 @@ export default function ArticleContent({ article }: { article: ArticleData }) {
             <div className="relative">
                 <div
                     className={`overflow-hidden scroll-y-auto transition-[max-height] duration-300 ease-in-out ${
-                        expanded ? "max-h-[700px]" : "max-h-[300px]"
+                        expanded ? "max-h-[9999px]" : "max-h-[300px]"
                     }`}>
                     <p className="text-xs text-gray-400 mb-4">
                         {article.source}

@@ -175,16 +175,18 @@ function ResultsScene({
                 src="/bg-b-01.mp4"
             />
             <div className="blindspot-results-video-mask" />
+            <div className="blindspot-results-hero">
+                <Image
+                    src="/logo-titre.png"
+                    alt="BlindSpot"
+                    width={1440}
+                    height={390}
+                    className="blindspot-results-hero-image"
+                    priority
+                />
+            </div>
             <div className="blindspot-results-layout">
                 <div className="blindspot-results-header">
-                    <Image
-                        src="/logo-titre.png"
-                        alt="BlindSpot"
-                        width={700}
-                        height={190}
-                        className="blindspot-results-logo"
-                        priority
-                    />
                     <p className="blindspot-results-subtitle">
                         Explore l&apos;article par couches de contexte. Chaque
                         pastille ouvre un angle d&apos;analyse distinct sans te

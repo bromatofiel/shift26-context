@@ -28,7 +28,7 @@ import { blindspotsAgent } from "./agents/blindspots-agent";
 import { mediaAgent } from "./agents/media-agent";
 import { otherMediaAgent } from "./agents/other-media";
 import { cognitiveBiasAgent } from "./agents/cognitive-bias-agent";
-import { articleExtractorAgent } from "./agents/article-extractor-agent";
+import { articleStructurerAgent } from "./agents/article-structurer-agent";
 import { synthesisAgent } from "./agents/synthesis-agent";
 import { sourceVerificationAgent } from "./agents/source-verification-agent";
 import {
@@ -62,7 +62,7 @@ export const mastra = new Mastra({
         mediaAgent,
         otherMediaAgent,
         cognitiveBiasAgent,
-        articleExtractorAgent,
+        articleStructurerAgent,
         synthesisAgent,
         sourceVerificationAgent
     },

@@ -1,5 +1,6 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
+import { ScrapingBeeClient } from "scrapingbee";
 import {
     articleSchema,
     articleDataSchema,
@@ -20,11 +21,28 @@ const fetchArticleStep = createStep({
     inputSchema: z.object({ url: z.string() }),
     outputSchema: articleDataSchema,
     execute: async ({ inputData, mastra }) => {
-        const agent = mastra?.getAgent("articleExtractorAgent");
-        if (!agent) throw new Error("articleExtractorAgent not found");
-        const result = await agent.generate(inputData.url, {
-            structuredOutput: { schema: articleDataSchema }
+        const apiKey = process.env.SCRAPINGBEE_API_KEY;
+        if (!apiKey) throw new Error("SCRAPINGBEE_API_KEY is not set");
+
+        const client = new ScrapingBeeClient(apiKey);
+        const response = await client.htmlApi({
+            url: inputData.url,
+            params: {
+                return_page_markdown: true,
+                render_js: false
+            }
         });
+
+        const markdown = new TextDecoder().decode(response.data);
+
+        const agent = mastra?.getAgent("articleStructurerAgent");
+        if (!agent) throw new Error("articleStructurerAgent not found");
+
+        const result = await agent.generate(
+            `URL: ${inputData.url}\n\n${markdown}`,
+            { structuredOutput: { schema: articleDataSchema } }
+        );
+
         return result.object;
     }
 });

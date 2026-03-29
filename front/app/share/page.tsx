@@ -14,12 +14,15 @@ export default async function SharePage({ searchParams }: SharePageProps) {
     let target = null;
 
     if (url) {
-        target = `/results?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`
+        target = `/results?url=${encodeURIComponent(url)}`
     }
     if (text) {
-        target = `/results?url=${encodeURIComponent(text)}&title=${encodeURIComponent(title)}`
+        target = `/results?url=${encodeURIComponent(text)}`
     }
     if (target) {
+        if (title) {
+            target += `&title=${encodeURIComponent(title)}`
+        }
         console.log("Redirecting to results page with URL:", target);
         redirect(target);
     }

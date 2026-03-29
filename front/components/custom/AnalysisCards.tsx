@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { Switch } from "@/components/ui/switch";
 import {
     useWorkflowResults,
     type WorkflowResults
@@ -70,6 +71,7 @@ export default function AnalysisCards({
     articleContent?: ReactNode;
 }) {
     const { results, start } = useWorkflowResults(articleData);
+    const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
         start();
@@ -94,79 +96,104 @@ export default function AnalysisCards({
 
             {/* Reste des cards */}
             <div className="flex flex-col gap-4">
-                <p className="text-xs text-gray-500">
-                    Le modèle utilisé est GPT-5.4 par OpenAI. Les modèles d'AI
-                    peuvent parfois générer des résultats inexacts ou
-                    incohérents, donc prenez ces analyses comme des indications
-                    à vérifier.
-                </p>
+                <div className="flex items-center gap-2">
+                    <Switch
+                        id="detail-toggle"
+                        checked={showDetails}
+                        onCheckedChange={setShowDetails}
+                        className="data-[state=checked]:bg-green-500"
+                    />
+                    <label
+                        htmlFor="detail-toggle"
+                        className="text-base font-medium text-gray-500 cursor-pointer select-none">
+                        {showDetails
+                            ? "Masquer les analyses détaillées"
+                            : "Voir les analyses détaillées"}
+                    </label>
+                </div>
 
-                <SummaryCard
-                    status={results.summary.status}
-                    summary={
-                        (results.summary.data as SummaryResult | null)?.summary
-                    }
-                    keywords={
-                        (results.keywords.data as KeywordsResult | null)
-                            ?.keywords
-                    }
-                    error={results.summary.error}
-                />
+                {showDetails && (
+                    <div className="flex flex-col gap-4">
+                        <p className="text-xs text-gray-500">
+                            Le modèle utilisé est GPT-5.4 par OpenAI. Les
+                            modèles d'AI peuvent parfois générer des résultats
+                            inexacts ou incohérents, donc prenez ces analyses
+                            comme des indications à vérifier.
+                        </p>
 
-                <MediaCard
-                    status={results.media.status}
-                    media={
-                        (results.media.data as MediaResult | null) ?? undefined
-                    }
-                    error={results.media.error}
-                />
+                        <SummaryCard
+                            status={results.summary.status}
+                            summary={
+                                (results.summary.data as SummaryResult | null)
+                                    ?.summary
+                            }
+                            keywords={
+                                (results.keywords.data as KeywordsResult | null)
+                                    ?.keywords
+                            }
+                            error={results.summary.error}
+                        />
 
-                <BlindSpotsCard
-                    status={results.blindspots.status}
-                    blindspots={
-                        (results.blindspots.data as BlindSpotsResult | null)
-                            ?.blindspots
-                    }
-                    error={results.blindspots.error}
-                />
-                <CognitiveBiasCard
-                    status={results.cognitiveBias.status}
-                    cognitiveBias={
-                        (results.cognitiveBias
-                            .data as CognitiveBiasResult | null) ?? undefined
-                    }
-                    error={results.cognitiveBias.error}
-                />
+                        <MediaCard
+                            status={results.media.status}
+                            media={
+                                (results.media.data as MediaResult | null) ??
+                                undefined
+                            }
+                            error={results.media.error}
+                        />
 
-                <SourceVerificationCard
-                    status={results.sourceVerification.status}
-                    result={
-                        (results.sourceVerification
-                            .data as SourceVerificationResult | null) ??
-                        undefined
-                    }
-                    error={results.sourceVerification.error}
-                />
+                        <BlindSpotsCard
+                            status={results.blindspots.status}
+                            blindspots={
+                                (
+                                    results.blindspots
+                                        .data as BlindSpotsResult | null
+                                )?.blindspots
+                            }
+                            error={results.blindspots.error}
+                        />
+                        <CognitiveBiasCard
+                            status={results.cognitiveBias.status}
+                            cognitiveBias={
+                                (results.cognitiveBias
+                                    .data as CognitiveBiasResult | null) ??
+                                undefined
+                            }
+                            error={results.cognitiveBias.error}
+                        />
 
-                <OtherMediaCard
-                    status={results.otherMedia.status}
-                    otherMedia={
-                        (
-                            results.otherMedia.data as {
-                                otherMedia: OtherMediaArticle[];
-                            } | null
-                        )?.otherMedia
-                    }
-                    error={results.otherMedia.error}
-                />
-                <EntitiesCard
-                    status={results.entities.status}
-                    entities={
-                        (results.entities.data as EntitiesResult | null)
-                            ?.entities
-                    }
-                    error={results.entities.error}
-                />
+                        <SourceVerificationCard
+                            status={results.sourceVerification.status}
+                            result={
+                                (results.sourceVerification
+                                    .data as SourceVerificationResult | null) ??
+                                undefined
+                            }
+                            error={results.sourceVerification.error}
+                        />
+
+                        <OtherMediaCard
+                            status={results.otherMedia.status}
+                            otherMedia={
+                                (
+                                    results.otherMedia.data as {
+                                        otherMedia: OtherMediaArticle[];
+                                    } | null
+                                )?.otherMedia
+                            }
+                            error={results.otherMedia.error}
+                        />
+                        <EntitiesCard
+                            status={results.entities.status}
+                            entities={
+                                (results.entities.data as EntitiesResult | null)
+                                    ?.entities
+                            }
+                            error={results.entities.error}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

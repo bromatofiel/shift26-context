@@ -22,7 +22,7 @@ export default function SearchPage() {
                 muted
                 loop
                 playsInline
-                className="fixed top-0 left-1/2 h-[100dvh] w-auto max-w-none -translate-x-1/2 object-contain object-center sm:absolute sm:top-0 sm:left-1/2 sm:h-screen sm:w-auto sm:max-w-none sm:-translate-x-1/2 sm:object-contain"
+                className="fixed top-0 left-1/2 h-[100dvh] w-auto max-w-none -translate-x-1/2 object-contain object-center sm:h-screen"
                 src="/video-accueil-v02.mp4"
             />
 

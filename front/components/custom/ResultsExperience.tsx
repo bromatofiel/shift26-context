@@ -187,11 +187,6 @@ function ResultsScene({
             </div>
             <div className="blindspot-results-layout">
                 <div className="blindspot-results-header">
-                    <p className="blindspot-results-subtitle">
-                        Explore l&apos;article par couches de contexte. Chaque
-                        pastille ouvre un angle d&apos;analyse distinct sans te
-                        sortir de la lecture.
-                    </p>
                     <div className="blindspot-glass-panel blindspot-results-status">
                         <p className="font-semibold text-black">{title}</p>
                         <p className="mt-1 text-sm text-black/65">{subtitle}</p>
@@ -414,16 +409,22 @@ function ResultsLoadedView({
                 className={`blindspot-modal ${overlayOpen ? "blindspot-modal-open" : ""}`}
                 aria-hidden={!overlayOpen}>
                 {visibleOrb && (
-                    <>
-                        <button
-                            type="button"
-                            className="blindspot-modal-close"
-                            onClick={handleClose}
-                            aria-label="Fermer le detail">
-                            <X className="h-5 w-5" />
-                        </button>
-                        <div className="blindspot-modal-content">
-                            <div className="blindspot-modal-heading">
+                    <div className="blindspot-modal-content">
+                        <div className="flex justify-end pb-4">
+                            <button
+                                type="button"
+                                className="blindspot-modal-close"
+                                onClick={handleClose}
+                                aria-label="Fermer le detail">
+                                <X className="h-7 w-7" />
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                type="button"
+                                className="blindspot-modal-heading"
+                                onClick={handleClose}
+                                aria-label="Retour aux resultats">
                                 <div className="blindspot-modal-dot" />
                                 <div className="blindspot-modal-title">
                                     {ORBS.find((orb) => orb.id === visibleOrb)?.title
@@ -432,7 +433,7 @@ function ResultsLoadedView({
                                             <div key={line}>{line}</div>
                                         ))}
                                 </div>
-                            </div>
+                            </button>
                             {modalContent}
                             <div className="mt-8 flex justify-center pb-4">
                                 <button
@@ -443,7 +444,7 @@ function ResultsLoadedView({
                                 </button>
                             </div>
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
 

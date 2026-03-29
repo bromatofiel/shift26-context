@@ -378,7 +378,8 @@
   .blindspot-results-hero {
     position: relative;
     z-index: 1;
-    width: 100%;
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
   }
 
   .blindspot-results-hero-image {
@@ -523,14 +524,15 @@
   .blindspot-modal-content {
     width: min(920px, calc(100% - 2rem));
     min-height: 100%;
-    padding: 5rem 0 3rem;
+    padding: 0 0 3rem;
     color: #ffffff;
   }
 
   .blindspot-modal-close {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 1.5rem;
+    right: max(1rem, calc((100vw - min(920px, calc(100% - 2rem))) / 2));
+    z-index: 60;
     width: 4rem;
     height: 4rem;
     display: inline-flex;
@@ -572,11 +574,14 @@
     width: min(300px, 72vw);
     aspect-ratio: 1 / 1;
     border-radius: 9999px;
+    border: 0;
     background: #ffffff;
     color: #111111;
     padding: 2rem 2rem 2rem 2.3rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0 2rem;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    text-align: left;
+    cursor: pointer;
   }
 
   .blindspot-modal-dot {
@@ -692,12 +697,12 @@
 
     .blindspot-modal-content {
       width: calc(100% - 1rem);
-      padding-top: 4.5rem;
+      padding-top: 0;
     }
 
     .blindspot-modal-close {
-      top: 0.75rem;
-      right: 0.75rem;
+      top: 1rem;
+      right: max(0.5rem, calc((100vw - (100% - 1rem)) / 2));
       width: 3.5rem;
       height: 3.5rem;
     }

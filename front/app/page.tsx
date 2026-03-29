@@ -36,7 +36,7 @@ export default function Home() {
                             </Link>
                             <a
                                 href="#installation"
-                                className="blindspot-button blindspot-button-secondary">
+                                className="blindspot-button blindspot-button-secondary md:hidden">
                                 Voir l&apos;installation
                             </a>
                         </div>

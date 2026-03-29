@@ -106,9 +106,7 @@ export default function AnalysisCards({
                     <label
                         htmlFor="detail-toggle"
                         className="text-base font-medium text-gray-500 cursor-pointer select-none">
-                        {showDetails
-                            ? "Masquer les analyses détaillées"
-                            : "Voir les analyses détaillées"}
+                        {showDetails ? "Analyses détaillées" : "Synthèse"}
                     </label>
                 </div>
 

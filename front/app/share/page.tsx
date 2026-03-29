@@ -13,11 +13,11 @@ export default async function SharePage({ searchParams }: SharePageProps) {
 
     if (url) {
         console.log("Redirecting to results page with URL:", url);
-        redirect(`/results?url=${encodeURIComponent(url)}`);
+        redirect(`/results?url=${encodeURIComponent(url)}&title=${title}`);
     }
     if (text) {
         console.log("Redirecting to results page with URL:", text);
-        redirect(`/results?url=${encodeURIComponent(text)}`);
+        redirect(`/results?url=${encodeURIComponent(text)}&title=${title}`);
     }
 
     return (

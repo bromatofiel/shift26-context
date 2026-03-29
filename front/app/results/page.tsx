@@ -7,9 +7,9 @@ import { inputExample } from "@/lib/input-example";
 export default async function ResultsPage({
     searchParams
 }: {
-    searchParams: Promise<{ url?: string }>;
+    searchParams: Promise<{ url?: string, title?: string }>;
 }) {
-    const { url } = await searchParams;
+    const { url, title } = await searchParams;
 
     if (!url) redirect("/search");
 
@@ -37,7 +37,7 @@ export default async function ResultsPage({
                         Analyse de votre article
                     </h2>
                     <h1 className="text-4xl font-bold text-gray-900 max-w-2xl wrap-break-word">
-                        {exampleArticle?.title ?? url}
+                        {title ?? exampleArticle?.title ?? url}
                     </h1>
                 </div>
                 {exampleArticle ? (

@@ -20,14 +20,13 @@ export default function Home() {
                             PWA Android via partage natif
                         </span>
                         <h1 className="blindspot-title">
-                            Installe BlindSpot, puis partage ce que tu veux
-                            vraiment comprendre.
+                            Installe BlindSpot, puis partage du contenu pour y découvrir les angles morts.
                         </h1>
                         <p className="blindspot-lead">
                             BlindSpot n&apos;est pas une app qu&apos;on ouvre pour
                             chercher de l&apos;info. Elle s&apos;active au moment
-                            ou tu tombes sur un article, une video ou un contenu
-                            qui merite plus de contexte.
+                            ou tu tombes sur un article ou un contenu
+                            qui mérite plus de contexte.
                         </p>
                         <div className="blindspot-actions">
                             <Link
@@ -50,15 +49,6 @@ export default function Home() {
                             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-black/55">
                                 Comment ca marche
                             </p>
-                            <h2 className="text-2xl font-semibold text-black">
-                                Le bon geste d&apos;usage
-                            </h2>
-                            <p className="text-sm leading-7 text-black/70">
-                                L&apos;experience cible est mobile. On installe la
-                                PWA, puis on envoie vers BlindSpot un contenu
-                                depuis le menu de partage du navigateur ou d&apos;une
-                                app sociale.
-                            </p>
                         </div>
 
                         <div className="blindspot-step-list">
@@ -69,7 +59,7 @@ export default function Home() {
                                 </h3>
                                 <p className="mt-2 text-sm leading-7 text-black/70">
                                     Depuis Android, ouvre BlindSpot dans le
-                                    navigateur puis choisis &quot;Ajouter a
+                                    navigateur puis choisis &quot;Installer sur
                                     l&apos;ecran d&apos;accueil&quot;.
                                 </p>
                             </div>
@@ -79,7 +69,7 @@ export default function Home() {
                                     Partager un contenu
                                 </h3>
                                 <p className="mt-2 text-sm leading-7 text-black/70">
-                                    Depuis un article, YouTube, Google News ou
+                                    Depuis un article, une app média, Google News ou
                                     un lien recu, utilise la feuille de partage
                                     et choisis BlindSpot.
                                 </p>
@@ -90,9 +80,8 @@ export default function Home() {
                                     Lire les 7 couches d&apos;analyse
                                 </h3>
                                 <p className="mt-2 text-sm leading-7 text-black/70">
-                                    Tu recuperes une vue synthese, les biais
-                                    detectes, les angles manquants, les autres
-                                    medias et les acteurs cites.
+                                    En quelques secondes tu récupères une synthese avec : les biais
+                                    détectés, les angles manquants, les infos média et des références externes si tu souhaite aller plus loin.
                                 </p>
                             </div>
                         </div>

@@ -17,7 +17,7 @@ export default function SummaryCard({
             <CardHeader>
                 <CardTitle className="text-sm font-medium">Résumé</CardTitle>
             </CardHeader>
-            <CardContent className="max-h-[300px] overflow-y-auto space-y-3">
+            <CardContent className="space-y-3">
                 <AnimatedCardContent contentKey={status}>
                     {status === "idle" && (
                         <p className="text-xs text-gray-400">En attente…</p>

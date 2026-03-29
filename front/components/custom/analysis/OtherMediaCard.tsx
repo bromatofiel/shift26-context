@@ -19,7 +19,7 @@ export default function OtherMediaCard({
                     Autres médias
                 </CardTitle>
             </CardHeader>
-            <CardContent className="max-h-[300px] overflow-y-auto">
+            <CardContent>
                 <AnimatedCardContent contentKey={status}>
                     {status === "idle" && (
                         <p className="text-xs text-gray-400">En attente…</p>

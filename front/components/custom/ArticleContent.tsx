@@ -4,15 +4,26 @@ import { useState } from "react";
 import type { ArticleData } from "@/lib/types";
 import { Button } from "../ui/button";
 
-export default function ArticleContent({ article }: { article: ArticleData }) {
+export default function ArticleContent({
+    article,
+    fullPage = false
+}: {
+    article: ArticleData;
+    fullPage?: boolean;
+}) {
     const [expanded, setExpanded] = useState(false);
+    const isExpanded = fullPage || expanded;
 
     return (
         <div className="w-full flex flex-col justify-center">
             <div className="relative">
                 <div
-                    className={`overflow-hidden overflow-y-auto overscroll-contain pr-2 transition-[max-height] duration-300 ease-in-out ${
-                        expanded ? "max-h-[9999px]" : "max-h-[300px]"
+                    className={`pr-2 ${
+                        fullPage
+                            ? ""
+                            : `overflow-hidden overflow-y-auto overscroll-contain transition-[max-height] duration-300 ease-in-out ${
+                                  isExpanded ? "max-h-[9999px]" : "max-h-[300px]"
+                              }`
                     }`}>
                     <p className="mb-4 text-xs text-white/60">
                         {article.source}
@@ -38,13 +49,15 @@ export default function ArticleContent({ article }: { article: ArticleData }) {
                     ))}
                 </div>
             </div>
-            <Button
-                onClick={() => setExpanded(!expanded)}
-                className="mt-3 mx-auto border border-white/20 bg-white text-black hover:cursor-pointer hover:bg-white/90">
-                {expanded
-                    ? "Réduire l'article ↑"
-                    : "Voir l'article en entier ↓"}
-            </Button>
+            {!fullPage && (
+                <Button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mt-3 mx-auto border border-white/20 bg-white text-black hover:cursor-pointer hover:bg-white/90">
+                    {expanded
+                        ? "Réduire l'article ↑"
+                        : "Voir l'article en entier ↓"}
+                </Button>
+            )}
         </div>
     );
 }

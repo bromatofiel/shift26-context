@@ -93,7 +93,7 @@ export default function CognitiveBiasCard({
                             </div>
 
                             {/* Signaux */}
-                            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                            <div className="space-y-3 pr-1">
                                 {cognitiveBias.signals.map((signal, i) => (
                                     <div
                                         key={i}

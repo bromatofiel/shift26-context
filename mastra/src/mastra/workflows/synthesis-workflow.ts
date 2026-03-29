@@ -4,6 +4,7 @@ import {
     cognitiveBiasSchema,
     mediaSchema,
     otherMediaArticleSchema,
+    sourceVerificationSchema,
     synthesisResultSchema
 } from "../schemas/article";
 
@@ -11,7 +12,8 @@ const inputSchema = z.object({
     blindspots: z.array(z.string()),
     cognitiveBias: cognitiveBiasSchema,
     media: mediaSchema,
-    otherMedia: z.array(otherMediaArticleSchema)
+    otherMedia: z.array(otherMediaArticleSchema),
+    sourceVerification: sourceVerificationSchema
 });
 
 const synthesisStep = createStep({
@@ -23,7 +25,13 @@ const synthesisStep = createStep({
         const agent = mastra?.getAgent("synthesisAgent");
         if (!agent) throw new Error("synthesisAgent not found");
 
-        const { cognitiveBias, media, blindspots, otherMedia } = inputData;
+        const {
+            cognitiveBias,
+            media,
+            blindspots,
+            otherMedia,
+            sourceVerification
+        } = inputData;
 
         const parts: string[] = [
             "## Biais cognitifs détectés",
@@ -44,7 +52,14 @@ const synthesisStep = createStep({
                   ]
                 : []),
             "\n## Articles alternatifs trouvés",
-            ...otherMedia.map((a) => `- "${a.title}" (${a.media})`)
+            ...otherMedia.map((a) => `- "${a.title}" (${a.media})`),
+            "\n## Vérification des sources",
+            `Nombre de sources identifiées : ${sourceVerification.sourceCount}`,
+            `Bilan global : ${sourceVerification.overallAssessment}`,
+            ...sourceVerification.sources.map(
+                (s) =>
+                    `- ${s.sourceName} (${s.sourceType}) : usage ${s.usageAssessment}, notoriété ${s.notoriety}, fiabilité ${s.reliability}. ${s.assessment}`
+            )
         ];
 
         const result = await agent.generate(parts.join("\n"), {

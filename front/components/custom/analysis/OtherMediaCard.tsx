@@ -16,7 +16,7 @@ export default function OtherMediaCard({
         <Card>
             <CardHeader>
                 <CardTitle className="text-sm font-medium">
-                    Autres médias
+                    Aller plus loin sur le sujet
                 </CardTitle>
             </CardHeader>
             <CardContent className="max-h-[300px] overflow-y-auto">
@@ -25,9 +25,10 @@ export default function OtherMediaCard({
                         <p className="text-xs text-gray-400">En attente…</p>
                     )}
                     {status === "loading" && (
-                        <p className="text-xs text-gray-400 animate-pulse">
-                            Chargement…
-                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-orange-400 animate-pulse" />
+                            <p className="text-xs text-gray-400">Chargement…</p>
+                        </div>
                     )}
                     {status === "error" && (
                         <p className="text-xs text-red-500">{error}</p>

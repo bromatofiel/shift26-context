@@ -151,6 +151,11 @@ export const synthesisPointSchema = z.object({
         .enum(["green", "orange", "red"])
         .describe(
             "green = élément positif, orange = risque modéré, red = biais fort ou conflit critique"
+        ),
+    explanation: z
+        .string()
+        .describe(
+            "Explication en 1-2 phrases pour le lecteur non-expert : pourquoi ce point est important, qu'est-ce que cela signifie concrètement pour la lecture de l'article"
         )
 });
 
